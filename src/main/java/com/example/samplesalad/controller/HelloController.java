@@ -1,4 +1,4 @@
-package com.example.samplesalad;
+package com.example.samplesalad.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
