@@ -55,7 +55,19 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     public void update(User user) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE contacts SET firstName = ?, lastName = ?, password = ?, phone = ?, email = ? WHERE id = ?"
+            );
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setString(3, user.getHashedPassword());
+            statement.setString(4, user.getPhone());
+            statement.setString(5, user.getEmail());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(User user) {
