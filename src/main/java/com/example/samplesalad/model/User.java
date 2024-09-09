@@ -14,12 +14,12 @@ public class User {
     public User(String firstName, String lastName, String password, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.hashedPassword = hashPassword(password);
+        this.hashedPassword = password;
         this.email = email;
         this.phone = phone;
     }
 
-    public int getID(){
+    public int getId(){
         return id;
     }
     public String getFirstName(){
@@ -34,23 +34,12 @@ public class User {
     public String getPhone(){
         return phone;
     }
-
     public String getEmail(){
         return email;
     }
 
-
-    private String hashPassword(String password){
-        try{
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b: hashedBytes){
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    public void setId(int id){
+        this.id = id;
     }
+
 }
