@@ -1,7 +1,5 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.controller.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
