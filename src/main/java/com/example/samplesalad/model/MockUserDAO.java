@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAO implements ISampleSaladDAO<User> {
+public class MockUserDAO implements ISampleSaladDAO<User> {
     public static final ArrayList<User> users = new ArrayList<>();
 
 
     private Connection connection;
 
-    public UserDAO () {
-        connection = DatabaseConnection.getInstance();
+    public MockUserDAO () {
+        connection = MockDatabaseConnection.getInstance();
         createTable();
     }
 
