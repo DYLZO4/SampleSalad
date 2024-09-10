@@ -8,9 +8,9 @@ import java.util.List;
  * the CRUD operations for the Contact class with the database.
  */
 public interface ISampleSaladDAO<T> {
-    void add();
-    void update();
-    void delete();
+    void add(T t);
+    void update(T t);
+    void delete(T t);
     T get(int id);
     List<T> getAll();
 }
