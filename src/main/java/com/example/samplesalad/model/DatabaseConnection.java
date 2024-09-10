@@ -2,17 +2,17 @@ package com.example.samplesalad.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 public class DatabaseConnection {
     private static Connection instance = null;
 
     private DatabaseConnection() {
-        String url = "jdbc:sqlite:SampleSalad.db";
+        String url = "jdbc:mysql://127.0.0.1:3306/SampleSaladDB";
+
         try {
-            instance = DriverManager.getConnection(url);
-        } catch (SQLException sqlEx) {
-            System.err.println(sqlEx);
-        }
+            Class.forName("com.mysql.jdbc.Driver");
+            instance = DriverManager.getConnection(url, "SampleSaladConnector", "SampleSaladPass");
+        } catch (Exception e)
+            { System.out.println(e);}
     }
 
     public static Connection getInstance() {
