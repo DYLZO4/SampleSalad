@@ -1,4 +1,4 @@
-package com.example.samplesalad;
+package com.example.samplesalad.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
