@@ -14,7 +14,7 @@ public class User {
     public User(String firstName, String lastName, String password, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.hashedPassword = password;
+        this.hashedPassword = HashUtil.hashPassword(password);
         this.email = email;
         this.phone = phone;
     }

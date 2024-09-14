@@ -1,4 +1,4 @@
-package com.example.samplesalad;
+package com.example.samplesalad.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +20,5 @@ public class libraryController extends HelloController {
         loadPage("library-expanded.fxml");
     }
 
-    @FXML
-    private void openCondensedLibrary(MouseEvent event) {
-        loadPage("library-condensed.fxml");
-    }
+
 }

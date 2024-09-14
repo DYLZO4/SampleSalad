@@ -85,7 +85,8 @@ public class HelloController implements Initializable {
     private void goToMain(MouseEvent event) {
         loadPage("hello-view");
     }
-    private void loadPage(String page) {
+
+    public void loadPage(String page) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(page + ".fxml"));
             Parent root = loader.load();
@@ -100,5 +101,8 @@ public class HelloController implements Initializable {
         } catch (java.io.IOException ex) {
             Logger.getLogger(HelloController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+    }
+
+    public void openCondensedLibrary(MouseEvent mouseEvent) {
     }
 }
