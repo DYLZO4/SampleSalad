@@ -1,12 +1,9 @@
 package com.example.samplesalad.model;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class UserService {
     private UserDAO userDAO;
 
-    public UserService(UserDAO userDAO){
+    public UserService(FakeUserDAO userDAO){
         this.userDAO = userDAO;
     }
 
