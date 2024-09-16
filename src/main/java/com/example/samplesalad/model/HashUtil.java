@@ -14,6 +14,15 @@ import java.security.NoSuchAlgorithmException;
 public class HashUtil {
 
     /**
+     * Constructs a {@code HashUtil} object.
+     * <p>
+     * Since this class contains only static methods, this constructor is not typically used
+     * in application logic, but it is provided for completeness.
+     * </p>
+     */
+    public HashUtil() {}
+
+    /**
      * Hashes a password using the SHA-256 algorithm.
      * <p>
      * This method takes a plain text password, applies SHA-256 hashing, and returns
