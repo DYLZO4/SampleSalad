@@ -1,9 +1,11 @@
 package com.example.samplesalad;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -14,11 +16,7 @@ public class HelloApplication extends Application {
     double x, y = 0;
     @Override
     public void start(Stage primaryStage) throws IOException {
-<<<<<<< HEAD
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
-=======
-        Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
->>>>>>> origin/master
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         root.setOnMousePressed(event -> {
             x = event.getSceneX();

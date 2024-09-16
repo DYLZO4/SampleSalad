@@ -1,4 +1,4 @@
-package com.example.samplesalad;
+package com.example.samplesalad.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -13,10 +13,6 @@ import javafx.util.Duration;
 
 import java.util.logging.Logger;
 
-public abstract interface IController extends Initializable {
-
-    @Override
-    public void initialize(java.net.URL url, java.util.ResourceBundle resourceBundle);
-
+public abstract interface IController {
     abstract void loadPage(String page);
 }
