@@ -58,7 +58,7 @@ public class UserValidator {
      *     <li>Contain at least 8 characters</li>
      *     <li>Include at least one uppercase letter</li>
      *     <li>Contain at least one digit</li>
-     *     <li>Include at least one special character (e.g., @$!%*?&)</li>
+     *     <li>Include at least one special character (e.g., @$!%*?&amp;)</li>
      * </ul>
      *
      * @param password the password to validate
