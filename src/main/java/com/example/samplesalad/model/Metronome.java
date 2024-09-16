@@ -15,9 +15,6 @@ public class Metronome {
 
     /**
      * Constructs a {@code Metronome} with the specified BPM and playing state.
-     *
-     * @param bpm       the initial BPM of the metronome
-     * @param isPlaying the initial playing state of the metronome (true if playing, false otherwise)
      */
     public Metronome() {
     }
