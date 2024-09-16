@@ -15,11 +15,10 @@ public class DrumKit {
      * Constructs a {@code DrumKit} with a specified name and number of pads.
      *
      * @param kitName The name of the drum kit.
-     * @param numberOfPads The number of pads in the drum kit.
      */
-    public DrumKit(String kitName, int numberOfPads) {
+    public DrumKit(String kitName) {
         this.kitName = kitName;
-        this.pads = new ArrayList<>(numberOfPads);
+        this.pads = new ArrayList<>();
     }
 
     /**
