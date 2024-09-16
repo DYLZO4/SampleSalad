@@ -1,9 +1,24 @@
 import com.example.samplesalad.model.User;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for {@link User}.
+ * <p>
+ * This class contains test cases for the methods of the {@link User} class,
+ * including user creation, password hashing, and validation of hash consistency.
+ * </p>
+ */
 class UserTest {
 
+    /**
+     * Tests user creation with valid data.
+     * <p>
+     * Verifies that a {@link User} object is created correctly with the provided details,
+     * and the hashed password is not null.
+     * </p>
+     */
     @Test
     void testUserCreation() {
         // Test User creation with valid data
@@ -21,6 +36,12 @@ class UserTest {
         assertNotNull(user.getHashedPassword());
     }
 
+    /**
+     * Tests that the password is hashed correctly.
+     * <p>
+     * Verifies that the raw password is not the same as the hashed password.
+     * </p>
+     */
     @Test
     void testPasswordHashing() {
         String firstName = "Dylan";
@@ -33,6 +54,12 @@ class UserTest {
         assertNotEquals(password, user.getHashedPassword(), "Hashed password should not be equal to the raw password.");
     }
 
+    /**
+     * Tests that hashing is consistent across different user instances.
+     * <p>
+     * Verifies that the same password produces the same hashed value for different users.
+     * </p>
+     */
     @Test
     void testHashingIsConsistent() {
         String password = "password123";
@@ -53,6 +80,12 @@ class UserTest {
         assertEquals(user1.getHashedPassword(), user2.getHashedPassword(), "Hashing should be consistent.");
     }
 
+    /**
+     * Tests that different passwords produce different hashes.
+     * <p>
+     * Verifies that different passwords result in different hashed values.
+     * </p>
+     */
     @Test
     void testDifferentPasswordsProduceDifferentHashes() {
         String password = "password123";
