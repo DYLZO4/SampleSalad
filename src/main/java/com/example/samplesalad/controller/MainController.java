@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * Controller class for handling user interactions and scene transitions.
  * Implements {@link Initializable} to initialize UI components after they are loaded.
  */
-public class HelloController implements Initializable {
+public class MainController implements Initializable {
 
     @FXML
     private ImageView exit, menu;
@@ -39,7 +39,7 @@ public class HelloController implements Initializable {
     /**
      * Default constructor for the {@code HelloController} class.
      */
-    public HelloController (){}
+    public MainController (){}
 
     /**
      * Initializes the controller class. Sets up event handlers and transitions.
@@ -132,8 +132,8 @@ public class HelloController implements Initializable {
      * @param event The mouse event triggered by clicking the condensed library button.
      */
     @FXML
-    private void openCondensedLibrary(MouseEvent event) {
-        loadPage("library-condensed");
+    private void openLibrary(MouseEvent event) {
+        loadPage("library-expanded");
     }
 
     /**
@@ -143,7 +143,7 @@ public class HelloController implements Initializable {
      */
     @FXML
     private void goToMain(MouseEvent event) {
-        loadPage("hello-view");
+        loadPage("main-view");
     }
 
     /**
@@ -155,19 +155,19 @@ public class HelloController implements Initializable {
         try {
             URL fxmlLocation = getClass().getResource("/com/example/samplesalad/" + page + ".fxml");
             if (fxmlLocation == null) {
-                Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, "FXML file not found: " + page + ".fxml");
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, "FXML file not found: " + page + ".fxml");
                 return;
             }
-            Logger.getLogger(HelloController.class.getName()).log(Level.INFO, "Loading FXML file: " + fxmlLocation.toString());
+            Logger.getLogger(MainController.class.getName()).log(Level.INFO, "Loading FXML file: " + fxmlLocation.toString());
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
-            if (page.equals("hello-view")) {
+            if (page.equals("main-view")) {
                 bp.setCenter(root);
             } else {
                 contentPane.getChildren().setAll(root);
             }
         } catch (IOException ex) {
-            Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
