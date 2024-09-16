@@ -19,88 +19,74 @@ public class Pad {
         this.sample = sample;
     }
 
-    /**
-     * Assigns an instance of Sample to the "sample" field in pad
-     */
-    void assignSample(Sample newSample) {
+    public void setSample(Sample newSample) {
         sample = newSample;
     };
+    public Sample getSample() {
+        return sample;
+    };
+
 
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
      */
-    void triggerPad() {
-        if (sample != null && !sample.isPlaying()) {
-            sample.play(); // Play the assigned sample
-        }
+    public void triggerPad() {
+        //Logic for triggering pad
+        System.out.println("Pad" +  padId + " has been triggered");
     };
 
     /**
      * Mutes the pad's assigned sample
      */
-    void mutePad() {
-        if (sample != null) {
-            sample.mute();
-        }
+    public void mutePad() {
+        //Logic for muting pad
+        System.out.println("pad" + padId + " is muted");
     };
 
     /**
      * Unmutes the pad's sample
      */
-    void unmutePad() {
-        if (sample != null) {
-            sample.unmute();
-        }
+    public void unmutePad() {
+        //Logic for unmuting pad
+        System.out.println("pad" + padId + " is unmuted");
     };
 
-    /**
-     * Sets the volume of the pad's sample
-     * @param volume
-     */
-    void setVolume(float volume) {
+
+    public void setVolume(double volume) {
         this.volume = volume;
         if (sample != null) {
             sample.setVolume(volume);
+            System.out.println("Volume was changed to " + volume);
         }
     };
 
-    /**
-     * Retrieves the keybind
-     * @return
-     */
+
     public String getKeybind() {
+        System.out.println("keybind is " + keybind);
         return keybind;
     }
 
-    /**
-     * Sets the keybind
-     * @param keybind
-     */
-    public void setKeybind(String keybind) {
-        this.keybind = keybind;
+    public void setKeybind(String newKeybind) {
+        System.out.println("keybind has been set to " + newKeybind);
+        this.keybind = newKeybind;
     }
 
     /**
      * Returns true if the sample audio is currently playing, false otherwise
      * @return true if the sample audio is currently playing, false otherwise
      */
-    boolean isPlaying() {
-        return sample != null && sample.isPlaying();
+    public boolean isPlaying() {
+        System.out.println("pad" +  padId +  " is currently playing");
+        return false;
     };
 
-    /**
-     * Gets the pad ID.
-     * @return The ID of the pad.
-     */
+
     public int getPadId() {
+        System.out.println("Current pad: pad" +  padId);
         return padId;
     }
-
-    /**
-     * Sets the pad ID.
-     * @param padId The ID to be assigned to this pad.
-     */
     public void setPadId(int padId) {
+        System.out.println("Pad has been set as pad" +  padId);
         this.padId = padId;
     }
 }
