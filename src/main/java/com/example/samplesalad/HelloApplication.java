@@ -33,11 +33,7 @@ public class HelloApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-<<<<<<< HEAD
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
-=======
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
->>>>>>> origin/master
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         // Set up event handlers for dragging the window
