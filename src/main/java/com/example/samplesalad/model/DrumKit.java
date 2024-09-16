@@ -4,23 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code DrumKit} class represents a collection of pads
+ * The {@code DrumKit} class represents a collection of pads, each of which can be assigned a {@link Sample}.
+ * It provides methods to add pads, load a kit with samples, save the kit, and manage individual pads.
  */
-
 public class DrumKit {
     private String kitName;
     private List<Pad> pads; // A collection of pads in the drum kit
 
-    // Constructor
+    /**
+     * Constructs a {@code DrumKit} with a specified name and number of pads.
+     *
+     * @param kitName The name of the drum kit.
+     * @param numberOfPads The number of pads in the drum kit.
+     */
     public DrumKit(String kitName, int numberOfPads) {
         this.kitName = kitName;
         this.pads = new ArrayList<>(numberOfPads);
     }
 
     /**
-     * Adds a pad to the drum kit.
+     * Adds a pad to the drum kit with the given sample.
      *
-     * @param sample The sample to be assigned to the pad.
+     * @param sample The sample to be assigned to the new pad.
      */
     public void addPad(Sample sample) {
         Pad newPad = new Pad(sample); // Create a new Pad with the given sample
@@ -39,7 +44,7 @@ public class DrumKit {
     }
 
     /**
-     * Saves the current drum kit state to a file (implementation can vary).
+     * Saves the current drum kit state to a file. The implementation of saving can vary (e.g., JSON or XML format).
      *
      * @param filePath The path where the drum kit should be saved.
      */
@@ -51,7 +56,8 @@ public class DrumKit {
      * Returns the pad assigned to a specific pad number.
      *
      * @param padNumber The pad number (0-based index).
-     * @return The Pad object.
+     * @return The Pad object at the specified pad number.
+     * @throws IllegalArgumentException If the pad number is out of range.
      */
     public Pad getPad(int padNumber) {
         if (padNumber >= 0 && padNumber < pads.size()) {
@@ -65,7 +71,8 @@ public class DrumKit {
      * Assigns a sample to a specific pad.
      *
      * @param sample The sample to be assigned.
-     * @param padNumber The pad number (0-based index).
+     * @param padNumber The pad number (0-based index) to which the sample will be assigned.
+     * @throws IllegalArgumentException If the pad number is out of range.
      */
     public void assignSampleToPad(Sample sample, int padNumber) {
         if (padNumber >= 0 && padNumber < pads.size()) {
@@ -76,7 +83,7 @@ public class DrumKit {
     }
 
     /**
-     * Gets the kit name.
+     * Gets the name of the drum kit.
      *
      * @return The name of the drum kit.
      */
@@ -85,7 +92,7 @@ public class DrumKit {
     }
 
     /**
-     * Sets the kit name.
+     * Sets the name of the drum kit.
      *
      * @param kitName The name to be set for the drum kit.
      */
@@ -94,7 +101,7 @@ public class DrumKit {
     }
 
     /**
-     * Returns the list of pads.
+     * Returns the list of pads in the drum kit.
      *
      * @return The list of pads.
      */
