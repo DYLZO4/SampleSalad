@@ -197,3 +197,4 @@ public class Sample {
         appliedEffects.remove(effect);
         System.out.println("Effect removed: " + effect.getEffectType());
     }
+}
