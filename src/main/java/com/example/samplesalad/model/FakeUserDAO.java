@@ -12,7 +12,22 @@ import java.util.Map;
  */
 public class FakeUserDAO extends UserDAO {
 
+    /**
+     * An in-memory data structure to store users.
+     * <p>
+     * The {@code HashMap} uses the user's email as the key and the {@code User} object as the value.
+     * </p>
+     */
     private Map<String, User> users = new HashMap<>();
+
+    /**
+     * Default constructor for {@code FakeUserDAO}.
+     * <p>
+     * Initializes the in-memory data structure for simulating database operations.
+     * </p>
+     */
+    public FakeUserDAO() {
+    }
 
     /**
      * Adds a user to the in-memory data structure.
