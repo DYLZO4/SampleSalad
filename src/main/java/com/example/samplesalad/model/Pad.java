@@ -13,15 +13,24 @@ public class Pad {
 
 
     /**
-     *
+     * Initialised with an instance of the Sample Class
      */
     public Pad(Sample sample) {
         this.sample = sample;
     }
 
+    /**
+     * Assigns an instance of Sample to the "sample" field in Pad.
+     * @param newSample The sample object to be assigned to this pad.
+     */
     public void setSample(Sample newSample) {
         sample = newSample;
     };
+
+    /**
+     * Retrieves the instance of Sample in the "sample" field in Pad.
+     * @return sample The sample object stored in pad
+     */
     public Sample getSample() {
         return sample;
     };
