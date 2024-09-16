@@ -19,9 +19,7 @@ public class Metronome {
      * @param bpm       the initial BPM of the metronome
      * @param isPlaying the initial playing state of the metronome (true if playing, false otherwise)
      */
-    public Metronome(int bpm, boolean isPlaying) {
-        this.bpm = bpm;
-        this.isPlaying = isPlaying;
+    public Metronome() {
     }
 
     /**
