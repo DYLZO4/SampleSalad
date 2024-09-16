@@ -11,9 +11,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
-import java.util.logging.Logger;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HelloController implements Initializable {
     @FXML
@@ -82,27 +85,41 @@ public class HelloController implements Initializable {
     }
 
     @FXML
+    private void register(MouseEvent event) {
+        loadPage("signup");
+    }
+
+    @FXML
+    private void account(MouseEvent event) {
+        loadPage("account");
+    }
+
+    @FXML
+    private void openCondensedLibrary(MouseEvent event) {
+        loadPage("library-condensed");
+    }
+    @FXML
     private void goToMain(MouseEvent event) {
         loadPage("hello-view");
     }
 
     public void loadPage(String page) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(page + ".fxml"));
+            URL fxmlLocation = getClass().getResource("/com/example/samplesalad/" + page + ".fxml");
+            if (fxmlLocation == null) {
+                Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, "FXML file not found: " + page + ".fxml");
+                return;
+            }
+            Logger.getLogger(HelloController.class.getName()).log(Level.INFO, "Loading FXML file: " + fxmlLocation.toString());
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
             if (page.equals("hello-view")) {
-                AnchorPane newContentPane = (AnchorPane) root.lookup("#contentPane");
-                if (newContentPane != null) {
-                    contentPane.getChildren().setAll(newContentPane.getChildren());
-                }
+                bp.setCenter(root);
             } else {
                 contentPane.getChildren().setAll(root);
             }
-        } catch (java.io.IOException ex) {
-            Logger.getLogger(HelloController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void openCondensedLibrary(MouseEvent mouseEvent) {
     }
 }

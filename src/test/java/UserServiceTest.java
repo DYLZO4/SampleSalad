@@ -6,15 +6,33 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for {@link UserService}.
+ * <p>
+ * This class contains test cases for the methods of the {@link UserService} class,
+ * including user registration and login functionality using a {@link FakeUserDAO} for in-memory testing.
+ * </p>
+ */
 class UserServiceTest {
     private FakeUserDAO userDAO;
     private UserService userService;
 
+    /**
+     * Sets up the test environment by initializing {@link FakeUserDAO} and {@link UserService}
+     * instances before each test.
+     */
     @BeforeEach
     void setUp() {
         userDAO = new FakeUserDAO();  // FakeUserDAO is used as the in-memory implementation of UserDAO
         userService = new UserService(userDAO);
     }
+
+    /**
+     * Tests the {@link UserService#registerUser(String, String, String, String, String)} method.
+     * <p>
+     * Verifies that a user is registered and added to the {@link FakeUserDAO}.
+     * </p>
+     */
     @Test
     void testRegisterUser() {
         // Simulate registering a user
@@ -34,6 +52,12 @@ class UserServiceTest {
         assertNotNull(registeredUser.getHashedPassword(), "User should have a hashed password.");
     }
 
+    /**
+     * Tests the {@link UserService#loginUser(String, String)} method with correct credentials.
+     * <p>
+     * Verifies that login is successful when using the correct password.
+     * </p>
+     */
     @Test
     void testLoginUserWithCorrectPassword() {
         // Simulate registering a user
@@ -50,6 +74,12 @@ class UserServiceTest {
         assertTrue(userService.loginUser(email, password), "Login should succeed with correct password.");
     }
 
+    /**
+     * Tests the {@link UserService#loginUser(String, String)} method with incorrect credentials.
+     * <p>
+     * Verifies that login fails when using an incorrect password.
+     * </p>
+     */
     @Test
     void testLoginUserWithIncorrectPassword() {
         // Simulate registering a user
@@ -64,6 +94,6 @@ class UserServiceTest {
 
         // Test login with incorrect password
         String incorrectPassword = "wrongPassword";
+        assertFalse(userService.loginUser(email, incorrectPassword), "Login should fail with incorrect password.");
     }
 }
-
