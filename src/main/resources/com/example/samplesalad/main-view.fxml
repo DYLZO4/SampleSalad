@@ -26,7 +26,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.HelloController">
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
       <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #e0dfdc;">
          <children>
@@ -64,8 +64,8 @@
                         <RowConstraints />
                      </rowConstraints>
                   </GridPane>
-                  <Spinner layoutX="20.0" layoutY="140.0" />
-                  <Label layoutX="80.0" layoutY="120.0" text="BPM" />
+                  <Spinner layoutX="-10.0" layoutY="140.0" />
+                  <Label layoutX="50.0" layoutY="120.0" text="BPM" />
                   <JFXButton layoutX="300.0" layoutY="90.0" text="">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
@@ -129,6 +129,11 @@
                               <Image url="@images/setting.png" />
                            </image>
                         </ImageView>
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/library icon.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </VBox>
                </children>
@@ -153,7 +158,7 @@
                               <Image url="@images/setting.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" opacity="0.25">
                            <image>
                               <Image url="@images/library icon.png" />
                            </image>
@@ -181,7 +186,7 @@
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openCondensedLibrary" prefHeight="38.0" prefWidth="179.0" text="Library">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openExpandedLibrary" prefHeight="38.0" prefWidth="179.0" text="Library">
                            <font>
                               <Font size="16.0" />
                            </font>

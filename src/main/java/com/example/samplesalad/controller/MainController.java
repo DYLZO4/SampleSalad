@@ -1,4 +1,4 @@
-package com.example.samplesalad;
+package com.example.samplesalad.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -15,19 +15,20 @@ import java.util.logging.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HelloController implements IController {
+public class MainController implements Initializable {
     @FXML
-    protected ImageView exit, menu;
+    private ImageView exit, menu;
 
     @FXML
-    protected AnchorPane pane1, pane2;
+    private AnchorPane pane1, pane2;
 
     @FXML
     private BorderPane bp;
 
     @FXML
-    protected AnchorPane contentPane;
+    private AnchorPane contentPane;
 
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -85,9 +86,11 @@ public class HelloController implements IController {
         loadPage("hello-view");
     }
 
-    public void loadPage(String page) {
+    public void openExpandedLibrary(MouseEvent mouseEvent) { loadPage("library-expanded"); }
+
+    protected void loadPage(String page) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(page + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/" + page + ".fxml"));
             Parent root = loader.load();
             if (page.equals("hello-view")) {
                 AnchorPane newContentPane = (AnchorPane) root.lookup("#contentPane");
@@ -98,7 +101,7 @@ public class HelloController implements IController {
                 contentPane.getChildren().setAll(root);
             }
         } catch (java.io.IOException ex) {
-            Logger.getLogger(HelloController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 }
