@@ -37,6 +37,11 @@ public class HelloController implements Initializable {
     private AnchorPane contentPane;
 
     /**
+     * Default constructor for the {@code HelloController} class.
+     */
+    public HelloController (){}
+
+    /**
      * Initializes the controller class. Sets up event handlers and transitions.
      * This method is called after the FXML file has been loaded.
      *

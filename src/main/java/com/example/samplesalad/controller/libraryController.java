@@ -14,6 +14,11 @@ import java.io.IOException;
 public class libraryController extends HelloController {
 
     /**
+     * Default constructor for the {@code libraryController} class.
+     */
+    public libraryController(){}
+
+    /**
      * Handles the event when text is entered into the search bar.
      * This method is used to search through the table based on the entered text.
      *
