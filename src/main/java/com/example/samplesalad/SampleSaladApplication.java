@@ -1,11 +1,9 @@
 package com.example.samplesalad;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -16,13 +14,13 @@ import java.util.Objects;
  * Main application class for launching the JavaFX application.
  * This class extends {@link Application} and sets up the primary stage with a custom style.
  */
-public class HelloApplication extends Application {
+public class SampleSaladApplication extends Application {
     private double x, y = 0;
 
     /**
      * Default constructor for the {@code HelloApplication} class.
      */
-    public HelloApplication (){}
+    public SampleSaladApplication(){}
     /**
      * Starts the JavaFX application by setting up the primary stage.
      * Loads the FXML file to create the scene, applies an undecorated style to the stage,
