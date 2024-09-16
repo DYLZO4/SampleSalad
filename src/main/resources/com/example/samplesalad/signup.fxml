@@ -16,7 +16,6 @@
       </ImageView>
       <TextField fx:id="usernameField" layoutX="215.0" layoutY="196.0" promptText="Username" />
       <PasswordField fx:id="passwordField" layoutX="215.0" layoutY="235.0" promptText="Password" />
-      <Button layoutX="308.0" layoutY="272.0" prefHeight="26.0" prefWidth="57.0" text="Login" />
-      <Button layoutX="215.0" layoutY="272.0" text="Sign up" />
+      <Button layoutX="255.0" layoutY="273.0" text="Sign up" />
    </children>
 </AnchorPane>
