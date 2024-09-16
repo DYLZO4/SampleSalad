@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="contentPane" prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.LoginController">
+<AnchorPane prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="71.0" fitWidth="137.0" layoutX="255.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -16,7 +16,6 @@
       </ImageView>
       <TextField fx:id="usernameField" layoutX="215.0" layoutY="196.0" promptText="Username" />
       <PasswordField fx:id="passwordField" layoutX="215.0" layoutY="235.0" promptText="Password" />
-      <Button layoutX="308.0" layoutY="272.0" prefHeight="26.0" prefWidth="57.0" text="Login" />
-      <Button layoutX="215.0" layoutY="272.0" text="Sign up" />
+      <Button layoutX="255.0" layoutY="273.0" text="Sign up" />
    </children>
 </AnchorPane>

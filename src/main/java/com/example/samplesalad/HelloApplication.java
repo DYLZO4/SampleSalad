@@ -12,12 +12,35 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Main application class for launching the JavaFX application.
+ * This class extends {@link Application} and sets up the primary stage with a custom style.
+ */
 public class HelloApplication extends Application {
-    double x, y = 0;
+    private double x, y = 0;
+
+    /**
+     * Default constructor for the {@code HelloApplication} class.
+     */
+    public HelloApplication (){}
+    /**
+     * Starts the JavaFX application by setting up the primary stage.
+     * Loads the FXML file to create the scene, applies an undecorated style to the stage,
+     * and sets up drag functionality to move the window.
+     *
+     * @param primaryStage The primary stage for this application, onto which the application scene is set.
+     * @throws IOException If an error occurs while loading the FXML file.
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
+<<<<<<< HEAD
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
+=======
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+>>>>>>> origin/master
         primaryStage.initStyle(StageStyle.UNDECORATED);
+
+        // Set up event handlers for dragging the window
         root.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
@@ -26,10 +49,17 @@ public class HelloApplication extends Application {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });
+
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 
+    /**
+     * The main entry point for the JavaFX application.
+     * Launches the application by invoking the {@code launch} method.
+     *
+     * @param args Command-line arguments passed to the application.
+     */
     public static void main(String[] args) {
         launch(args);
     }

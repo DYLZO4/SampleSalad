@@ -11,11 +11,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
-import java.util.logging.Logger;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Controller class for handling user interactions and scene transitions.
+ * Implements {@link Initializable} to initialize UI components after they are loaded.
+ */
 public class MainController implements Initializable {
+
     @FXML
     private ImageView exit, menu;
 
@@ -28,6 +36,18 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane contentPane;
 
+    /**
+     * Default constructor for the {@code HelloController} class.
+     */
+    public HelloController (){}
+
+    /**
+     * Initializes the controller class. Sets up event handlers and transitions.
+     * This method is called after the FXML file has been loaded.
+     *
+     * @param url The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or {@code null} if the root object is not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         exit.setOnMouseClicked(event -> {
@@ -76,32 +96,78 @@ public class MainController implements Initializable {
         });
     }
 
+    /**
+     * Handles the login button click event. Loads the login page.
+     *
+     * @param event The mouse event triggered by clicking the login button.
+     */
     @FXML
     private void login(MouseEvent event) {
         loadPage("login");
     }
 
+    /**
+     * Handles the register button click event. Loads the registration page.
+     *
+     * @param event The mouse event triggered by clicking the register button.
+     */
+    @FXML
+    private void register(MouseEvent event) {
+        loadPage("signup");
+    }
+
+    /**
+     * Handles the account button click event. Loads the account page.
+     *
+     * @param event The mouse event triggered by clicking the account button.
+     */
+    @FXML
+    private void account(MouseEvent event) {
+        loadPage("account");
+    }
+
+    /**
+     * Handles the condensed library button click event. Loads the condensed library page.
+     *
+     * @param event The mouse event triggered by clicking the condensed library button.
+     */
+    @FXML
+    private void openCondensedLibrary(MouseEvent event) {
+        loadPage("library-condensed");
+    }
+
+    /**
+     * Handles the go to main button click event. Loads the main page.
+     *
+     * @param event The mouse event triggered by clicking the go to main button.
+     */
     @FXML
     private void goToMain(MouseEvent event) {
         loadPage("hello-view");
     }
 
-    public void openExpandedLibrary(MouseEvent mouseEvent) { loadPage("library-expanded"); }
-
-    protected void loadPage(String page) {
+    /**
+     * Loads the specified FXML page and sets it as the content of the main UI elements.
+     *
+     * @param page The name of the FXML file to load, excluding the ".fxml" extension.
+     */
+    public void loadPage(String page) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/" + page + ".fxml"));
+            URL fxmlLocation = getClass().getResource("/com/example/samplesalad/" + page + ".fxml");
+            if (fxmlLocation == null) {
+                Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, "FXML file not found: " + page + ".fxml");
+                return;
+            }
+            Logger.getLogger(HelloController.class.getName()).log(Level.INFO, "Loading FXML file: " + fxmlLocation.toString());
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
             if (page.equals("hello-view")) {
-                AnchorPane newContentPane = (AnchorPane) root.lookup("#contentPane");
-                if (newContentPane != null) {
-                    contentPane.getChildren().setAll(newContentPane.getChildren());
-                }
+                bp.setCenter(root);
             } else {
                 contentPane.getChildren().setAll(root);
             }
-        } catch (java.io.IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

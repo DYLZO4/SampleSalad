@@ -1,40 +1,49 @@
 package com.example.samplesalad.model;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
+/**
+ * The {@code UserService} class provides high-level services for managing users.
+ * It handles user registration and login operations, interacting with the {@code UserDAO} to manage user data.
+ */
 public class UserService {
+
     private UserDAO userDAO;
 
-    public UserService(UserDAO userDAO){
+    /**
+     * Constructs a {@code UserService} object with the specified {@code UserDAO}.
+     *
+     * @param userDAO the data access object used for user-related database operations
+     */
+    public UserService(FakeUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public void registerUser(String firstName, String lastName, String password, String email, String phone){
-        User user = new User(firstName, lastName, hashPassword(password), email, phone);
+    /**
+     * Registers a new user by creating a {@code User} object and adding it to the database via {@code UserDAO}.
+     *
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param password the user's password (which will be hashed before storing)
+     * @param email the email address of the user
+     * @param phone the phone number of the user
+     */
+    public void registerUser(String firstName, String lastName, String password, String email, String phone) {
+        User user = new User(firstName, lastName, password, email, phone);
         userDAO.add(user);
     }
 
+    /**
+     * Attempts to log in a user by checking if the provided email and password match the stored credentials.
+     *
+     * @param email the email address of the user attempting to log in
+     * @param password the password provided for authentication
+     * @return {@code true} if the login is successful, {@code false} otherwise
+     */
     public boolean loginUser(String email, String password) {
         User user = userDAO.getByEmail(email);
         if (user != null) {
-            String hashedPassword = hashPassword(password);
+            String hashedPassword = HashUtil.hashPassword(password);
             return hashedPassword.equals(user.getHashedPassword());
         }
         return false;
-    }
-
-    private String hashPassword(String password){
-        try{
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b: hashedBytes){
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
