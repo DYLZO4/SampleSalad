@@ -2,7 +2,7 @@ package com.example.samplesalad.model;
 
 /**
  * A triggerable object that holds and plays a sample,
- * with properties for sensitivity, volume, and muting,
+ * with properties for sensitivity, volume, and key binding,
  * simulating the physical pads on an Akai MPC.
  */
 public class Pad {
@@ -11,58 +11,61 @@ public class Pad {
     private double volume;
     private String keybind;
 
-
     /**
-     * Initialised with an instance of the Sample Class
+     * Initializes the pad with a specific sample.
+     *
+     * @param sample the sample object to be assigned to this pad
      */
     public Pad(Sample sample) {
         this.sample = sample;
     }
 
     /**
-     * Assigns an instance of Sample to the "sample" field in Pad.
-     * @param newSample The sample object to be assigned to this pad.
+     * Sets a new sample to this pad.
+     *
+     * @param newSample the new sample object to be assigned
      */
     public void setSample(Sample newSample) {
         sample = newSample;
-    };
+    }
 
     /**
-     * Retrieves the instance of Sample in the "sample" field in Pad.
-     * @return sample The sample object stored in pad
+     * Retrieves the sample assigned to this pad.
+     *
+     * @return the sample object assigned to this pad
      */
     public Sample getSample() {
         return sample;
-    };
-
+    }
 
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
      */
     public void triggerPad() {
-        //Logic for triggering pad
-        System.out.println("Pad" +  padId + " has been triggered");
-    };
+        // Logic for triggering the pad's sample
+        System.out.println("Pad " + padId + " has been triggered");
+    }
 
     /**
-     * Mutes the pad's assigned sample
+     * Mutes the sample assigned to this pad.
      */
     public void mutePad() {
-        //Logic for muting pad
-        System.out.println("pad" + padId + " is muted");
-    };
+        // Logic for muting the pad's sample
+        System.out.println("Pad " + padId + " is muted");
+    }
 
     /**
-     * Unmutes the pad's sample
+     * Unmutes the sample assigned to this pad.
      */
     public void unmutePad() {
-        //Logic for unmuting pad
-        System.out.println("pad" + padId + " is unmuted");
-    };
+        // Logic for unmuting the pad's sample
+        System.out.println("Pad " + padId + " is unmuted");
+    }
 
     /**
-     * Sets the volume of the pad's sample
-     * @param volume the volume of the sample
+     * Sets the volume for the sample assigned to this pad.
+     *
+     * @param volume the volume to set for the sample
      */
     public void setVolume(double volume) {
         this.volume = volume;
@@ -70,50 +73,55 @@ public class Pad {
             sample.setVolume(volume);
             System.out.println("Volume was changed to " + volume);
         }
-    };
+    }
 
     /**
-     * Retrieves the keybind
-     * @return keybind the key binding currently mapped to the pad
+     * Retrieves the keybind mapped to this pad.
+     *
+     * @return the key binding currently mapped to the pad
      */
     public String getKeybind() {
-        System.out.println("keybind is " + keybind);
+        System.out.println("Keybind is " + keybind);
         return keybind;
     }
 
     /**
-     * Sets the keybind
+     * Sets a new keybind for this pad.
+     *
      * @param newKeybind the new key binding to map to the pad
      */
     public void setKeybind(String newKeybind) {
-        System.out.println("keybind has been set to " + newKeybind);
+        System.out.println("Keybind has been set to " + newKeybind);
         this.keybind = newKeybind;
     }
 
     /**
-     * Returns true if the sample audio is currently playing, false otherwise
-     * @return true if the sample audio is currently playing, false otherwise
+     * Checks whether the sample assigned to this pad is currently playing.
+     *
+     * @return true if the sample is playing, false otherwise
      */
     public boolean isPlaying() {
-        System.out.println("pad" +  padId +  " is currently playing");
-        return false;
-    };
+        System.out.println("Pad " + padId + " is currently playing");
+        return false; // This should be updated with actual logic to check playback
+    }
 
     /**
-     * Gets the pad ID.
-     * @return The ID of the pad.
+     * Gets the ID of this pad.
+     *
+     * @return the pad ID
      */
     public int getPadId() {
-        System.out.println("Current pad: pad" +  padId);
+        System.out.println("Current pad: pad " + padId);
         return padId;
     }
 
     /**
-     * Sets the pad ID.
-     * @param padId The ID to be assigned to this pad.
+     * Sets the ID for this pad.
+     *
+     * @param padId the ID to be assigned to this pad
      */
     public void setPadId(int padId) {
-        System.out.println("Pad has been set as pad" +  padId);
+        System.out.println("Pad has been set as pad " + padId);
         this.padId = padId;
     }
 }
