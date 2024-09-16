@@ -1,9 +1,11 @@
 package com.example.samplesalad;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -31,7 +33,7 @@ public class HelloApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         // Set up event handlers for dragging the window
