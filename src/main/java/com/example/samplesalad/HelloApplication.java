@@ -18,6 +18,10 @@ public class HelloApplication extends Application {
     private double x, y = 0;
 
     /**
+     * Default constructor for the {@code HelloApplication} class.
+     */
+    public HelloApplication (){}
+    /**
      * Starts the JavaFX application by setting up the primary stage.
      * Loads the FXML file to create the scene, applies an undecorated style to the stage,
      * and sets up drag functionality to move the window.
