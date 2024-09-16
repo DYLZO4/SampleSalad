@@ -97,6 +97,15 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Handles the settings button click event. Loads settings page
+     * @param event The mouse event triggered by clicking the settings button
+     */
+    @FXML
+    private void openSettings(MouseEvent event){
+        loadPage("settings");
+    }
+
+    /**
      * Handles the login button click event. Loads the login page.
      *
      * @param event The mouse event triggered by clicking the login button.
