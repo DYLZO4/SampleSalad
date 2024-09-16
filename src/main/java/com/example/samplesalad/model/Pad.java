@@ -13,15 +13,24 @@ public class Pad {
 
 
     /**
-     *
+     * Initialised with an instance of the Sample Class
      */
     public Pad(Sample sample) {
         this.sample = sample;
     }
 
+    /**
+     * Assigns an instance of Sample to the "sample" field in Pad.
+     * @param newSample The sample object to be assigned to this pad.
+     */
     public void setSample(Sample newSample) {
         sample = newSample;
     };
+
+    /**
+     * Retrieves the instance of Sample in the "sample" field in Pad.
+     * @return sample The sample object stored in pad
+     */
     public Sample getSample() {
         return sample;
     };
@@ -51,7 +60,10 @@ public class Pad {
         System.out.println("pad" + padId + " is unmuted");
     };
 
-
+    /**
+     * Sets the volume of the pad's sample
+     * @param volume the volume of the sample
+     */
     public void setVolume(double volume) {
         this.volume = volume;
         if (sample != null) {
@@ -60,12 +72,19 @@ public class Pad {
         }
     };
 
-
+    /**
+     * Retrieves the keybind
+     * @return keybind the key binding currently mapped to the pad
+     */
     public String getKeybind() {
         System.out.println("keybind is " + keybind);
         return keybind;
     }
 
+    /**
+     * Sets the keybind
+     * @param newKeybind the new key binding to map to the pad
+     */
     public void setKeybind(String newKeybind) {
         System.out.println("keybind has been set to " + newKeybind);
         this.keybind = newKeybind;
@@ -80,11 +99,19 @@ public class Pad {
         return false;
     };
 
-
+    /**
+     * Gets the pad ID.
+     * @return The ID of the pad.
+     */
     public int getPadId() {
         System.out.println("Current pad: pad" +  padId);
         return padId;
     }
+
+    /**
+     * Sets the pad ID.
+     * @param padId The ID to be assigned to this pad.
+     */
     public void setPadId(int padId) {
         System.out.println("Pad has been set as pad" +  padId);
         this.padId = padId;
