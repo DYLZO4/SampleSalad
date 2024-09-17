@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  */
 public abstract interface IController {
 
+    public AnchorPane contentPane = null;
+
     /**
      * When implemented, loads the specific FXML page and sets it as the content of the main UI elements
      * 
