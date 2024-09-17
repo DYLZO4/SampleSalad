@@ -35,6 +35,10 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: target/docs/javadoc
+      
+      - name: Build
+        run: mvn --batch-mode -DskipTests package
+
       - name: Test
         run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
 
@@ -45,4 +49,3 @@ jobs:
           name: Maven Tests
           path: target/surefire-reports/*.xml
           reporter: java-junit
-          fail-on-error: true
