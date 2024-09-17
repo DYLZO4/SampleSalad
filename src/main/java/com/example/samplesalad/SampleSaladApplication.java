@@ -1,5 +1,7 @@
 package com.example.samplesalad;
 
+import com.example.samplesalad.model.MockUserDAO;
+import com.example.samplesalad.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,6 +36,7 @@ public class SampleSaladApplication extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
+
         // Set up event handlers for dragging the window
         root.setOnMousePressed(event -> {
             x = event.getSceneX();
@@ -46,6 +49,14 @@ public class SampleSaladApplication extends Application {
 
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
+
+        MockUserDAO testDAO = new MockUserDAO();
+        User user1 = new User("Simon", "Thomas", "password", "fakeemail@email", "04444444440");
+        User user2 = new User("Simone", "Thompson", "passnot", "realemail@email", "0444111111");
+        testDAO.add(user1);
+        testDAO.add(user2);
+        testDAO.delete(user1);
+        testDAO.add(user1);
     }
 
     /**
@@ -56,5 +67,6 @@ public class SampleSaladApplication extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+
     }
 }

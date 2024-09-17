@@ -20,19 +20,7 @@ public class DatabaseConnection {
      * Connects to the MySQL database using the JDBC URL, username, and password.
      * </p>
      */
-    private DatabaseConnection() {
-        String url = "jdbc:mysql://127.0.0.1:3306/SampleSaladDB";
-
-        try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            // Establish the database connection
-            instance = DriverManager.getConnection(url, "SampleSaladConnector", "SampleSaladPass");
-        } catch (Exception e) {
-            // Print any exceptions that occur during connection setup
-            System.out.println(e);
-        }
-    }
+    private DatabaseConnection() {    }
 
     /**
      * Returns the singleton instance of the database connection.
@@ -44,8 +32,23 @@ public class DatabaseConnection {
      */
     public static Connection getInstance() {
         if (instance == null) {
-            new DatabaseConnection();
+            try {
+                String url = "jdbc:mysql://127.0.0.1:3306/SampleSaladDB";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                instance = DriverManager.getConnection(url, "root", "Asdf1Aqw2ARIMAK!@#");
+                instance.setAutoCommit(true); // This is usually the default setting
+                if (instance != null) {
+                    System.out.println("Connected to the database successfully!");
+                }
+            } catch (ClassNotFoundException e) {
+                System.out.println("MySQL JDBC Driver not found.");
+                e.printStackTrace();
+            } catch (SQLException e) {
+                System.out.println("Connection failed.");
+                e.printStackTrace();
+            }
         }
         return instance;
     }
+
 }
