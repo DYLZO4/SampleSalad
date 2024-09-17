@@ -35,6 +35,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: target/docs/javadoc
+      
       - name: Build
         run: mvn --batch-mode -DskipTests package
 
