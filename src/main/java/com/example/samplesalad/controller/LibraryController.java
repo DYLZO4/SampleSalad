@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.logging.Logger;
@@ -52,4 +53,13 @@ public class LibraryController implements IController {
         }
     }
 
+    public void openRecents(MouseEvent mouseEvent) {
+        System.out.println("openRecent called");
+        // TODO: Implement view to sort by last opened/added
+    }
+
+    public void uploadSong(MouseEvent mouseEvent) {
+        System.out.println("uploadSong called");
+        // TODO: create dialogue box to upload a song to the database
+    }
 }
