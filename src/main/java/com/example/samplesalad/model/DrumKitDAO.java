@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrumKitDAO {
+public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
     private Connection connection;
 
     public DrumKitDAO(Connection connection) {
@@ -34,7 +34,8 @@ public class DrumKitDAO {
         }
     }
 
-    public void addDrumKit(DrumKit drumKit) {
+    @Override
+    public void add(DrumKit drumKit) {
         String query = "INSERT INTO drumkits (kitName) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, drumKit.getKitName());
@@ -69,7 +70,8 @@ public class DrumKitDAO {
         }
     }
 
-    public void updateDrumKit(DrumKit drumKit) {
+    @Override
+    public void update(DrumKit drumKit) {
         String query = "UPDATE drumkits SET kitName = ? WHERE kitID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, drumKit.getKitName());
@@ -97,7 +99,8 @@ public class DrumKitDAO {
         }
     }
 
-    public void deleteDrumKit(DrumKit drumKit) {
+    @Override
+    public void delete(DrumKit drumKit) {
         String query = "DELETE FROM drumkits WHERE kitID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int kitID = getKitIDByName(drumKit.getKitName());
@@ -121,7 +124,8 @@ public class DrumKitDAO {
         }
     }
 
-    public DrumKit getDrumKit(int kitID) {
+    @Override
+    public DrumKit get(int kitID) {
         DrumKit drumKit = null;
         String query = "SELECT * FROM drumkits WHERE kitID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -188,7 +192,8 @@ public class DrumKitDAO {
         return -1; // Return an invalid ID if not found
     }
 
-    public List<DrumKit> getAllDrumKits() {
+    @Override
+    public List<DrumKit> getAll() {
         List<DrumKit> drumKits = new ArrayList<>();
         String query = "SELECT * FROM drumkits";
         try (PreparedStatement stmt = connection.prepareStatement(query);
