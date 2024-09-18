@@ -75,7 +75,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent>{
                 double timeStamp = resultSet.getDouble("timeStamp");
 
                 // Retrieve the associated Pad object
-                PadDAO padDAO = new PadDAO();
+                PadDAO padDAO = new PadDAO(connection);
                 Pad pad = padDAO.get(padId);
 
                 // Create and return the PadEvent
