@@ -23,7 +23,7 @@ class PadEventTest {
 
     @Test
     void testPadEventInitialization() {
-        assertEquals(mockPad.getPadId(), padEvent.getPadId());
+        assertEquals(mockPad.getPadId(), padEvent.getPadID());
         assertTrue(padEvent.getTimeStamp() > 0);
     }
 
@@ -38,7 +38,7 @@ class PadEventTest {
 
     @Test
     void testGetPadId() {
-        assertEquals(mockPad.getPadId(), padEvent.getPadId());
+        assertEquals(mockPad.getPadId(), padEvent.getPadID());
     }
 
     @Test
