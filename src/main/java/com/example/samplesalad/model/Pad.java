@@ -38,6 +38,8 @@ public class Pad {
         return sample;
     }
 
+    public Double getVolume() { return volume; }
+
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
      */
