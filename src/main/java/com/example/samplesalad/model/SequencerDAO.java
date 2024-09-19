@@ -1,0 +1,209 @@
+package com.example.samplesalad.model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
+    private Connection connection;
+
+    public SequencerDAO(Connection connection) {
+        this.connection = connection;
+        createTable();
+    }
+
+    private void createTable() {
+        try {
+            Statement statement = connection.createStatement();
+
+            // Create a table for sequencers
+            String query = "CREATE TABLE IF NOT EXISTS sequencers ("
+                    + "sequencerId INT AUTO_INCREMENT PRIMARY KEY, "
+                    + "tempo INT, "
+                    + "timeSignatureNumerator INT, "
+                    + "timeSignatureDenominator INT, "
+                    + "isPlaying BOOLEAN)";
+            statement.execute(query);
+
+            // Create a table for patterns associated with a sequencer
+            String patternsQuery = "CREATE TABLE IF NOT EXISTS sequencer_patterns ("
+                    + "sequencerId INT, "
+                    + "patternId INT, "
+                    + "FOREIGN KEY (sequencerId) REFERENCES sequencers(sequencerId), "
+                    + "FOREIGN KEY (patternId) REFERENCES patterns(patternId))";
+            statement.execute(patternsQuery);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void add(Sequencer sequencer) {
+        String query = "INSERT INTO sequencers (tempo, timeSignatureNumerator, timeSignatureDenominator, isPlaying) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, sequencer.getTempo());
+            stmt.setInt(2, sequencer.getTimeSignatureNumerator());
+            stmt.setInt(3, sequencer.getTimeSignatureDenominator());
+            stmt.setBoolean(4, sequencer.isPlaying());
+
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int sequencerId = generatedKeys.getInt(1);
+                        addSequencerPatterns(sequencerId, sequencer.getPatterns());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addSequencerPatterns(int sequencerId, List<Pattern> patterns) {
+        String query = "INSERT INTO sequencer_patterns (sequencerId, patternId) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            for (Pattern pattern : patterns) {
+                stmt.setInt(1, sequencerId);
+                stmt.setInt(2, pattern.getPatternID()); // Assuming the Pattern class has a getId() method
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(Sequencer sequencer) {
+        String query = "UPDATE sequencers SET tempo = ?, timeSignatureNumerator = ?, timeSignatureDenominator = ?, isPlaying = ? WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencer.getTempo());
+            stmt.setInt(2, sequencer.getTimeSignatureNumerator());
+            stmt.setInt(3, sequencer.getTimeSignatureDenominator());
+            stmt.setBoolean(4, sequencer.isPlaying());
+            stmt.setInt(5, sequencer.getSequencerID()); // Assuming Sequencer has getId() method
+
+            stmt.executeUpdate();
+
+            // Update sequencer patterns
+            deleteSequencerPatterns(sequencer.getSequencerID());
+            addSequencerPatterns(sequencer.getSequencerID(), sequencer.getPatterns());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteSequencerPatterns(int sequencerId) {
+        String query = "DELETE FROM sequencer_patterns WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencerId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(Sequencer sequencer) {
+        String query = "DELETE FROM sequencers WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencer.getSequencerID()); // Assuming Sequencer has getId() method
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                deleteSequencerPatterns(sequencer.getSequencerID());
+                System.out.println("Sequencer and its patterns deleted successfully.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Sequencer get(int id) {
+        String query = "SELECT * FROM sequencers WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                int sequencerId = resultSet.getInt("sequencerId");
+                int tempo = resultSet.getInt("tempo");
+                int numerator = resultSet.getInt("timeSignatureNumerator");
+                int denominator = resultSet.getInt("timeSignatureDenominator");
+                boolean isPlaying = resultSet.getBoolean("isPlaying");
+
+                Sequencer sequencer = new Sequencer(tempo, numerator, denominator);
+                if (isPlaying) {
+                    sequencer.playSequence();
+                }
+                List<Pattern> patterns = getSequencerPatterns(sequencerId);
+                for (Pattern pattern : patterns) {
+                    sequencer.addPattern(pattern);
+                }
+
+                return sequencer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private List<Pattern> getSequencerPatterns(int sequencerId) {
+        List<Pattern> patterns = new ArrayList<>();
+        String query = "SELECT patternId FROM sequencer_patterns WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencerId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int patternId = resultSet.getInt("patternId");
+
+                PatternDAO patternDAO = new PatternDAO(connection);
+                Pattern pattern = patternDAO.get(patternId);
+                if (pattern != null) {
+                    patterns.add(pattern);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patterns;
+    }
+
+    @Override
+    public List<Sequencer> getAll() {
+        List<Sequencer> sequencers = new ArrayList<>();
+        String query = "SELECT * FROM sequencers";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet resultSet = stmt.executeQuery()) {
+
+            while (resultSet.next()) {
+                int sequencerId = resultSet.getInt("sequencerId");
+                int tempo = resultSet.getInt("tempo");
+                int numerator = resultSet.getInt("timeSignatureNumerator");
+                int denominator = resultSet.getInt("timeSignatureDenominator");
+                boolean isPlaying = resultSet.getBoolean("isPlaying");
+
+                Sequencer sequencer = new Sequencer(tempo, numerator, denominator);
+                if (isPlaying) {
+                    sequencer.playSequence();
+                }
+
+                List<Pattern> patterns = getSequencerPatterns(sequencerId);
+                for (Pattern pattern : patterns) {
+                    sequencer.addPattern(pattern);
+                }
+
+                sequencers.add(sequencer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sequencers;
+    }
+}

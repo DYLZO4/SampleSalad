@@ -5,63 +5,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code MockUserDAO} class provides an implementation of the {@code ISampleSaladDAO}
- * interface for managing {@link User} objects using a mock database connection.
- * This class includes methods for creating, updating, deleting, and retrieving users
- * from the database.
+ * The {@code UserDAO} class provides data access methods for interacting with user records in a database.
+ * It implements the {@code ISampleSaladDAO} interface for CRUD operations on the {@code User} object.
+ * This class uses JDBC for database operations.
  */
 public class UserDAO implements ISampleSaladDAO<User> {
 
+    /**
+     * A list to hold users locally. This is primarily for demonstration purposes,
+     * as the data is typically retrieved and stored in a database.
+     */
     public static final ArrayList<User> users = new ArrayList<>();
 
     private Connection connection;
 
     /**
-     * Constructor for {@code MockUserDAO}.
-     * Initializes the database connection and creates the users table if it doesn't exist.
+     * Constructs a new {@code UserDAO} object and initializes the database connection.
+     * It also ensures the users table exists by invoking the {@code createTable()} method.
      */
     public UserDAO() {
         connection = DatabaseConnection.getInstance();
-
         createTable();
     }
 
     /**
-     * Creates the users table in the database if it does not already exist.
-     * The table includes columns for user id, first name, last name, password, phone, and email.
+     * Creates the "users" table in the database if it doesn't already exist.
+     * The table includes columns for user ID, first name, last name, password, phone, and email.
      */
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS users ("
-                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
-                    + "firstName VARCHAR(255) NOT NULL,"
-                    + "lastName VARCHAR(255) NOT NULL,"
-                    + "hashedPassword VARCHAR(255) NOT NULL,"
-                    + "phone VARCHAR(20) NOT NULL,"
-                    + "email VARCHAR(255) NOT NULL"
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "firstName VARCHAR NOT NULL,"
+                    + "lastName VARCHAR NOT NULL,"
+                    + "password VARCHAR NOT NULL,"
+                    + "phone VARCHAR NOT NULL,"
+                    + "email VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
-            System.out.println("Table 'users' created or already exists.");
-
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error creating table: " + e.getMessage());
-
         }
     }
 
     /**
-     * Adds a new {@link User} to the database.
+     * Adds a new {@code User} to the database by inserting the user’s details into the "users" table.
+     * The user’s ID is automatically generated and set after the insertion.
      *
-     * @param user the user to add to the database
+     * @param user the {@code User} object to be added to the database
      */
     @Override
     public void add(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO users (firstName, lastName, hashedPassword, phone, email) VALUES (?, ?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
+                    "INSERT INTO contacts (firstName, lastName, hashedPassword, phone, email) VALUES (?, ?, ?, ?, ?)"
             );
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -69,8 +67,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
             statement.setString(4, user.getPhone());
             statement.setString(5, user.getEmail());
             statement.executeUpdate();
-
-            // Set the id of the new user
+            // Set the ID of the newly added user
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getInt(1));
@@ -81,14 +78,15 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     /**
-     * Updates an existing {@link User} in the database.
+     * Updates an existing {@code User} in the database.
+     * The user's first name, last name, password, phone, and email are updated based on the user’s ID.
      *
-     * @param user the user whose information is to be updated
+     * @param user the {@code User} object containing the updated information
      */
     public void update(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE users SET firstName = ?, lastName = ?, hashedPassword = ?, phone = ?, email = ? WHERE id = ?"
+                    "UPDATE contacts SET firstName = ?, lastName = ?, password = ?, phone = ?, email = ? WHERE id = ?"
             );
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -103,9 +101,9 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     /**
-     * Deletes a {@link User} from the database.
+     * Deletes a {@code User} from the database based on the user's ID.
      *
-     * @param user the user to delete from the database
+     * @param user the {@code User} object to be deleted
      */
     public void delete(User user) {
         try {
@@ -118,10 +116,10 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     /**
-     * Retrieves a {@link User} from the database by email address.
+     * Retrieves a {@code User} from the database by the user's email address.
      *
-     * @param email the email address of the user to retrieve
-     * @return the {@link User} object with the specified email address, or {@code null} if not found
+     * @param email the email of the user to be retrieved
+     * @return the {@code User} object corresponding to the specified email, or {@code null} if not found
      */
     public User getByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
@@ -131,7 +129,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
             if (resultSet.next()) {
                 String firstName = resultSet.getString("firstName");
                 String lastName = resultSet.getString("lastName");
-                String password = resultSet.getString("hashedPassword");
+                String password = resultSet.getString("password"); // Password is hashed
                 String phone = resultSet.getString("phone");
                 return new User(firstName, lastName, password, phone, email);
             }
@@ -142,15 +140,15 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     /**
-     * Retrieves a {@link User} from the database by ID.
+     * Retrieves a {@code User} from the database by the user's ID.
      *
-     * @param id the ID of the user to retrieve
-     * @return the {@link User} object with the specified ID, or {@code null} if not found
+     * @param id the ID of the user to be retrieved
+     * @return the {@code User} object corresponding to the specified ID, or {@code null} if not found
      */
     @Override
     public User get(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM contacts WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -168,16 +166,16 @@ public class UserDAO implements ISampleSaladDAO<User> {
     }
 
     /**
-     * Retrieves a list of all {@link User} objects in the database.
+     * Retrieves all {@code User} objects from the database.
      *
-     * @return a list of all users in the database
+     * @return a {@code List} of all users in the database
      */
     @Override
     public List<User> getAll() {
-        List<User> users = new ArrayList<>();
+        List<User> contacts = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM users";
+            String query = "SELECT * FROM contacts";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -187,11 +185,11 @@ public class UserDAO implements ISampleSaladDAO<User> {
                 String phone = resultSet.getString("phone");
                 String email = resultSet.getString("email");
                 User user = new User(firstName, lastName, hashedPassword, phone, email);
-                users.add(user);
+                contacts.add(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return users;
+        return contacts;
     }
 }

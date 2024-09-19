@@ -21,8 +21,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
      * Initializes the database connection and creates the users table if it doesn't exist.
      */
     public MockUserDAO() {
-        connection = DatabaseConnection.getInstance();
-
+        connection = MockDatabaseConnection.getInstance();
         createTable();
     }
 
@@ -33,21 +32,17 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS mockUsers ("
-                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
-                    + "firstName VARCHAR(255) NOT NULL,"
-                    + "lastName VARCHAR(255) NOT NULL,"
-                    + "hashedPassword VARCHAR(255) NOT NULL,"
-                    + "phone VARCHAR(20) NOT NULL,"
-                    + "email VARCHAR(255) NOT NULL"
+            String query = "CREATE TABLE IF NOT EXISTS users ("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "firstName VARCHAR NOT NULL,"
+                    + "lastName VARCHAR NOT NULL,"
+                    + "password VARCHAR NOT NULL,"
+                    + "phone VARCHAR NOT NULL,"
+                    + "email VARCHAR NOT NULL"
                     + ")";
             statement.execute(query);
-            System.out.println("Table 'mockUsers' created or already exists.");
-
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error creating table: " + e.getMessage());
-
         }
     }
 
@@ -60,7 +55,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
     public void add(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO mockUsers (firstName, lastName, hashedPassword, phone, email) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO contacts (firstName, lastName, hashedPassword, phone, email) VALUES (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
             statement.setString(1, user.getFirstName());
@@ -88,7 +83,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
     public void update(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE mockUsers SET firstName = ?, lastName = ?, hashedPassword = ?, phone = ?, email = ? WHERE id = ?"
+                    "UPDATE contacts SET firstName = ?, lastName = ?, password = ?, phone = ?, email = ? WHERE id = ?"
             );
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -109,7 +104,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
      */
     public void delete(User user) {
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM mockUsers WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?");
             statement.setInt(1, user.getId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -124,14 +119,14 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
      * @return the {@link User} object with the specified email address, or {@code null} if not found
      */
     public User getByEmail(String email) {
-        String sql = "SELECT * FROM mockUsers WHERE email = ?";
+        String sql = "SELECT * FROM users WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String firstName = resultSet.getString("firstName");
                 String lastName = resultSet.getString("lastName");
-                String password = resultSet.getString("hashedPassword");
+                String password = resultSet.getString("password");
                 String phone = resultSet.getString("phone");
                 return new User(firstName, lastName, password, phone, email);
             }
@@ -150,7 +145,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
     @Override
     public User get(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM mockUsers WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM contacts WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -177,7 +172,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
         List<User> users = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM mockUsers";
+            String query = "SELECT * FROM contacts";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");

@@ -8,6 +8,7 @@ import java.util.List;
  * It provides methods to add pads, load a kit with samples, save the kit, and manage individual pads.
  */
 public class DrumKit {
+    private Integer kitID;
     private String kitName;
     private List<Pad> pads; // A collection of pads in the drum kit
 
@@ -29,6 +30,12 @@ public class DrumKit {
     public void addPad(Sample sample) {
         Pad newPad = new Pad(sample); // Create a new Pad with the given sample
         pads.add(newPad); // Add the pad to the drum kit
+    }
+
+    public void setKitID(Integer kitID){this.kitID = kitID;}
+
+    public Integer getKitID(){
+        return this.kitID;
     }
 
     /**

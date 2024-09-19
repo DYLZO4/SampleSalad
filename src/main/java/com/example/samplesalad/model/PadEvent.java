@@ -40,7 +40,7 @@ public class PadEvent {
      * Retrieves the pad ID associated with this event.
      * @return The ID of the triggered pad.
      */
-    public int getPadId() {
+    public int getPadID() {
         System.out.println("Recording events for pad" +  padId);
         return padId;
     }
