@@ -36,6 +36,17 @@ public class Sample {
         this.appliedEffects = new ArrayList<>();
     }
 
+    public Sample(int sampleID, String filePath, double pitch, double volume, double startTime, double endTime){
+        this.sampleID = sampleID;
+        this.filePath = filePath;
+        this.pitch = pitch;
+        this.volume = volume;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.appliedEffects = new ArrayList<>();
+    }
+
+
     /**
      * Gets the unique identifier for the sample.
      *
