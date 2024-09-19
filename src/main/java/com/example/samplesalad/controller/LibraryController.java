@@ -4,9 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static javafx.application.Application.launch;
@@ -58,8 +64,23 @@ public class LibraryController implements IController {
         // TODO: Implement view to sort by last opened/added
     }
 
-    public void uploadSong(MouseEvent mouseEvent) {
-        System.out.println("uploadSong called");
+    @FXML
+    public void uploadSong(MouseEvent mouseEvent) throws IOException {
+        URL popupURL = getClass().getResource("/com/example/samplesalad/file-picker-dialog.fxml");
+        if (popupURL == null) {
+            Logger.getLogger(LibraryController.class.getName()).log(Level.SEVERE, "FXML file not found: file-picker-dialog.fxml");
+            return;
+        }
+        Logger.getLogger(LibraryController.class.getName()).log(Level.INFO, "Loading FXML file: " + popupURL.toString());
+        FXMLLoader popupLoader = new FXMLLoader(popupURL);
+
+        Scene scene = popupLoader.load();
+
+        Stage popup = new Stage();
+        popup.setTitle("Upload new song");
+        popup.setScene(scene);
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.showAndWait();
         // TODO: create dialogue box to upload a song to the database
     }
 }
