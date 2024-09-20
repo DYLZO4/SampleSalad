@@ -1,34 +1,55 @@
 package com.example.samplesalad.model;
 
-import java.util.ArrayList;
+import java.sql.Connection;
 import java.util.List;
 
+public class ProjectLoader {
 
+    private ProjectDAO projectDAO;
+    private ProjectSequenceDAO projectSequenceDAO;
+    private SequencerDAO sequencerDAO;
+    private PatternDAO patternDAO;
+    private Connection connection;
 
-public class projectLoader {
-    /**
-     * Main idea for this class:
-     * Load project from DB with DAO
-     * Iterate through proj sequencer IDs and get all sequences that correspond with that proj ID?
-     * Get all corresponding Sequencers in an object list?
-     * Iterate through sequencers and retrieve all dependant patterns?
-     *
-     */
-    private ProjectDAO projDAO;
-    private Project currProject;
-    private ProjectSequenceDAO projSeqDAO;
-    private List<Integer> projSequenceIDs = new ArrayList<>();
-
-    public projectLoader() {
-
+    public ProjectLoader(ProjectDAO projectDAO, ProjectSequenceDAO projectSequenceDAO,
+                         SequencerDAO sequencerDAO, PatternDAO patternDAO, Connection connection) {
+        this.projectDAO = projectDAO;
+        this.projectSequenceDAO = projectSequenceDAO;
+        this.sequencerDAO = sequencerDAO;
+        this.patternDAO = patternDAO;
+        this.connection = connection;
     }
 
-    public void loadProject(int projID) {
-        currProject= projDAO.get(projID);
-        projSequenceIDs = projSeqDAO.getAll();
+    public Project loadProject(int projectId) {
+        Project project = projectDAO.get(projectId);
 
-        for (int sequenceIDs : projSequenceIDs) {
+        if (project != null) {
+            List<Integer> sequencerIds = projectSequenceDAO.getSequencerIdsByProjectId(projectId);
+            for (int sequencerId : sequencerIds) {
+                Sequencer sequencer = sequencerDAO.get(sequencerId);
+                if (sequencer != null) {
+                    project.addSequence(sequencer);
+                    loadPatternsForSequencer(sequencer);
+                }
+            }
+        }
 
+        return project;
+    }
+
+    private void loadPatternsForSequencer(Sequencer sequencer) {
+        List<Pattern> patterns = patternDAO.getPatternsBySequencerId(sequencer.getSequencerID());
+        for (Pattern pattern : patterns) {
+            sequencer.addPattern(pattern);
+            loadPadEventsForPattern(pattern);
+        }
+    }
+
+    private void loadPadEventsForPattern(Pattern pattern) {
+        PadEventDAO padEventDAO = new PadEventDAO(connection);
+        List<PadEvent> padEvents = padEventDAO.getPadEventsByPatternId(pattern.getPatternID());
+        for (PadEvent padEvent : padEvents) {
+            pattern.addPadEvent(padEvent);
         }
     }
 }

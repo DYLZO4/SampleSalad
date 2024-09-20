@@ -97,6 +97,21 @@ public class ProjectSequenceDAO {
         }
         return sequencerIds;
     }
+
+    public List<Integer> getSequencerIdsByProjectId(int projectId) {
+        List<Integer> sequencerIds = new ArrayList<>();
+        String query = "SELECT sequencerId FROM projectSequencers WHERE projectId = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, projectId);
+            ResultSet results = statement.executeQuery();
+            while (results.next()) {
+                sequencerIds.add(results.getInt("sequencerId"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sequencerIds;
+    }
 }
 
 
