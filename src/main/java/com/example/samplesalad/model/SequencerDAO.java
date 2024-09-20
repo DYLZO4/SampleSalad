@@ -90,7 +90,7 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             for (Pattern pattern : patterns) {
                 stmt.setInt(1, sequencerId);
-                stmt.setInt(2, pattern.getPatternID()); // Assuming the Pattern class has a getPatternID() method
+                stmt.setInt(2, pattern.getPatternID());
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -112,7 +112,7 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
             stmt.setInt(2, sequencer.getTimeSignatureNumerator());
             stmt.setInt(3, sequencer.getTimeSignatureDenominator());
             stmt.setBoolean(4, sequencer.isPlaying());
-            stmt.setInt(5, sequencer.getSequencerID()); // Assuming Sequencer has getSequencerID() method
+            stmt.setInt(5, sequencer.getSequencerID());
 
             stmt.executeUpdate();
 
@@ -149,7 +149,7 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
     public void delete(Sequencer sequencer) {
         String query = "DELETE FROM sequencers WHERE sequencerId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, sequencer.getSequencerID()); // Assuming Sequencer has getSequencerID() method
+            stmt.setInt(1, sequencer.getSequencerID());
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows > 0) {

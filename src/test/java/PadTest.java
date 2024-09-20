@@ -27,21 +27,18 @@ class PadTest {
     void testTriggerPad() {
         pad.setPadId(1);
         pad.triggerPad();
-        // Check output in the console or create a real trigger method to assert changes
     }
 
     @Test
     void testMutePad() {
         pad.setPadId(1);
         pad.mutePad();
-        // Check if pad is muted through any changes in the object or console output
     }
 
     @Test
     void testUnmutePad() {
         pad.setPadId(1);
         pad.unmutePad();
-        // Verify the object state after unmuting or check console output
     }
 
     @Test

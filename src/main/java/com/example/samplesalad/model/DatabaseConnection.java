@@ -25,7 +25,7 @@ public class DatabaseConnection {
 
         try {
             // Load MySQL JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // Establish the database connection
             instance = DriverManager.getConnection(url, "SampleSaladConnector", "SampleSaladPass");
         } catch (Exception e) {

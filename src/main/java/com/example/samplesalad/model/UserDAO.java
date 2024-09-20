@@ -36,12 +36,12 @@ public class UserDAO implements ISampleSaladDAO<User> {
         try {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS users ("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "firstName VARCHAR NOT NULL,"
-                    + "lastName VARCHAR NOT NULL,"
-                    + "password VARCHAR NOT NULL,"
-                    + "phone VARCHAR NOT NULL,"
-                    + "email VARCHAR NOT NULL"
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
+                    + "firstName VARCHAR(255) NOT NULL,"
+                    + "lastName VARCHAR(255) NOT NULL,"
+                    + "password VARCHAR(255) NOT NULL,"
+                    + "phone VARCHAR(255) NOT NULL,"
+                    + "email VARCHAR(255) NOT NULL"
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -59,7 +59,8 @@ public class UserDAO implements ISampleSaladDAO<User> {
     public void add(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO contacts (firstName, lastName, hashedPassword, phone, email) VALUES (?, ?, ?, ?, ?)"
+                    "INSERT INTO users (firstName, lastName, password, phone, email) VALUES (?, ?, ?, ?, ?)",
+                         Statement.RETURN_GENERATED_KEYS
             );
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -86,7 +87,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
     public void update(User user) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE contacts SET firstName = ?, lastName = ?, password = ?, phone = ?, email = ? WHERE id = ?"
+                    "UPDATE users SET firstName = ?, lastName = ?, password = ?, phone = ?, email = ? WHERE id = ?"
             );
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
@@ -148,7 +149,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
     @Override
     public User get(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM contacts WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -172,10 +173,10 @@ public class UserDAO implements ISampleSaladDAO<User> {
      */
     @Override
     public List<User> getAll() {
-        List<User> contacts = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM contacts";
+            String query = "SELECT * FROM users";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -185,11 +186,11 @@ public class UserDAO implements ISampleSaladDAO<User> {
                 String phone = resultSet.getString("phone");
                 String email = resultSet.getString("email");
                 User user = new User(firstName, lastName, hashedPassword, phone, email);
-                contacts.add(user);
+                users.add(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return contacts;
+        return users;
     }
 }
