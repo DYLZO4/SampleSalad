@@ -4,16 +4,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for interacting with the Project table in the database.
+ * This class provides methods for CRUD operations: create, read, update, and delete projects.
+ */
 public class ProjectDAO implements ISampleSaladDAO<Project> {
 
     private Connection connection;
 
+    /**
+     * Constructor that initializes the ProjectDAO with a database connection.
+     *
+     * @param connection the database connection to be used by the DAO
+     */
     public ProjectDAO(Connection connection) {
         this.connection = connection;
         createTable();
     }
 
-    // Create the table for storing projects if it doesn't already exist
+    /**
+     * Creates the table for storing projects if it doesn't already exist in the database.
+     */
     private void createTable() {
         try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS projects ("
@@ -27,6 +38,11 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
         }
     }
 
+    /**
+     * Inserts a new project into the database.
+     *
+     * @param project the project object to be added to the database
+     */
     @Override
     public void add(Project project) {
         String query = "INSERT INTO projects (projectName, projectBPM, filePath) VALUES (?, ?, ?)";
@@ -47,6 +63,11 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
         }
     }
 
+    /**
+     * Updates an existing project in the database.
+     *
+     * @param project the project object with updated values to be saved in the database
+     */
     @Override
     public void update(Project project) {
         String query = "UPDATE projects SET projectName = ?, projectBPM = ?, filePath = ? WHERE projectId = ?";
@@ -61,6 +82,11 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
         }
     }
 
+    /**
+     * Deletes a project from the database.
+     *
+     * @param project the project object to be deleted from the database
+     */
     @Override
     public void delete(Project project) {
         String query = "DELETE FROM projects WHERE projectId = ?";
@@ -72,6 +98,12 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
         }
     }
 
+    /**
+     * Retrieves a project from the database by its ID.
+     *
+     * @param id the ID of the project to retrieve
+     * @return the project object corresponding to the specified ID, or null if not found
+     */
     @Override
     public Project get(int id) {
         String query = "SELECT * FROM projects WHERE projectId = ?";
@@ -93,6 +125,11 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
         return null;
     }
 
+    /**
+     * Retrieves all projects from the database.
+     *
+     * @return a list of all project objects in the database
+     */
     @Override
     public List<Project> getAll() {
         List<Project> projects = new ArrayList<>();
