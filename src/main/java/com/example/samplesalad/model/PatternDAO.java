@@ -216,6 +216,33 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
     }
 
     /**
+     * Retrieves all {@link Pattern} objects associated with a specific
+     * {@link Sequencer} ID.
+     *
+     * @param sequencerId The ID of the {@link Sequencer}.
+     * @return A list of {@link Pattern} objects.
+     */
+    public List<Pattern> getPatternsBySequencerId(int sequencerId) {
+        List<Pattern> patterns = new ArrayList<>();
+        String query = "SELECT patternId FROM sequencer_patterns WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencerId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int patternId = resultSet.getInt("patternId");
+                    Pattern pattern = get(patternId);
+                if (pattern != null) {
+                    patterns.add(pattern);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patterns;
+    }
+
+    /**
      * Retrieves all {@link Pattern} objects from the database.
      *
      * @return A list of {@link Pattern} objects.
