@@ -4,14 +4,29 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code DrumKitDAO} class is responsible for performing CRUD operations
+ * (Create, Read, Update, Delete) on {@link DrumKit} objects in a database.
+ * This class implements the {@link ISampleSaladDAO} interface to provide
+ * specific database management for drum kits and their associated pads.
+ */
 public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
     private Connection connection;
 
+    /**
+     * Constructor for {@code DrumKitDAO} class.
+     * Initializes the connection and creates the drumkits and pads tables if they don't exist.
+     *
+     * @param connection the SQL database connection to be used for the DAO operations
+     */
     public DrumKitDAO(Connection connection) {
         this.connection = connection;
         createTable();
     }
 
+    /**
+     * Creates the drumkits and pads tables in the database if they do not exist.
+     */
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -34,6 +49,11 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Adds a new {@code DrumKit} to the drumkits table in the database and its pads to the pads table.
+     *
+     * @param drumKit the {@code DrumKit} to be added to the database
+     */
     @Override
     public void add(DrumKit drumKit) {
         String query = "INSERT INTO drumkits (kitName) VALUES (?)";
@@ -57,6 +77,12 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Adds a new {@code Pad} to the pads table, associating it with a drumkit.
+     *
+     * @param pad the {@code Pad} to be added
+     * @param kitID the ID of the drumkit to which this pad belongs
+     */
     private void addPad(Pad pad, int kitID) {
         String query = "INSERT INTO pads (kitID, sampleID, volume, keybind) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -70,6 +96,11 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Updates an existing {@code DrumKit} and its associated pads in the database.
+     *
+     * @param drumKit the {@code DrumKit} to be updated in the database
+     */
     @Override
     public void update(DrumKit drumKit) {
         String query = "UPDATE drumkits SET kitName = ? WHERE kitID = ?";
@@ -86,6 +117,12 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Updates a {@code Pad} in the pads table.
+     *
+     * @param pad the {@code Pad} to be updated
+     * @param kitID the ID of the drumkit associated with the pad
+     */
     private void updatePad(Pad pad, int kitID) {
         String query = "UPDATE pads SET sampleID = ?, volume = ?, keybind = ? WHERE padID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -99,6 +136,11 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Deletes a {@code DrumKit} and its associated pads from the database.
+     *
+     * @param drumKit the {@code DrumKit} to be deleted from the database
+     */
     @Override
     public void delete(DrumKit drumKit) {
         String query = "DELETE FROM drumkits WHERE kitID = ?";
@@ -114,6 +156,11 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Deletes all pads associated with a specific drumkit from the pads table.
+     *
+     * @param kitID the ID of the drumkit whose pads are to be deleted
+     */
     private void deletePadsByKitID(int kitID) {
         String query = "DELETE FROM pads WHERE kitID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -124,6 +171,12 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         }
     }
 
+    /**
+     * Retrieves a {@code DrumKit} from the database based on the given kit ID.
+     *
+     * @param kitID the ID of the drumkit to retrieve
+     * @return the {@code DrumKit} object with the specified ID, or {@code null} if not found
+     */
     @Override
     public DrumKit get(int kitID) {
         DrumKit drumKit = null;
@@ -148,6 +201,12 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         return drumKit;
     }
 
+    /**
+     * Retrieves all pads associated with a specific drumkit.
+     *
+     * @param kitID the ID of the drumkit whose pads are to be retrieved
+     * @return a {@code List} of {@code Pad} objects associated with the drumkit
+     */
     private List<Pad> getPadsByKitID(int kitID) {
         List<Pad> pads = new ArrayList<>();
         String query = "SELECT * FROM pads WHERE kitID = ?";
@@ -178,6 +237,12 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         return pads;
     }
 
+    /**
+     * Retrieves the kit ID for a drumkit based on its name.
+     *
+     * @param kitName the name of the drumkit
+     * @return the ID of the drumkit with the specified name, or -1 if not found
+     */
     private int getKitIDByName(String kitName) {
         String query = "SELECT kitID FROM drumkits WHERE kitName = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -192,6 +257,11 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
         return -1; // Return an invalid ID if not found
     }
 
+    /**
+     * Retrieves all {@code DrumKit} objects from the drumkits table in the database.
+     *
+     * @return a {@code List} of all {@code DrumKit} objects in the database
+     */
     @Override
     public List<DrumKit> getAll() {
         List<DrumKit> drumKits = new ArrayList<>();
