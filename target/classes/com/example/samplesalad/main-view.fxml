@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
       <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #e0dfdc;">
          <children>
@@ -115,7 +115,7 @@
                         </ImageView>
                         <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/setting.png" />
+                              <Image url="@images/settings.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
@@ -137,22 +137,17 @@
                               <Image url="@images/home.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" opacity="0.5">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/sign-in.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" opacity="0.5">
-                           <image>
-                              <Image url="@images/register.png" />
-                           </image>
-                        </ImageView>
                         <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/setting.png" />
+                              <Image url="@images/settings.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" opacity="0.25">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/library icon.png" />
                            </image>
@@ -176,11 +171,6 @@
                            </font>
                         </JFXButton>
                         <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="38.0" prefWidth="179.0" text="Sign in">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#register" prefHeight="38.0" prefWidth="179.0" text="Sign up">
                            <font>
                               <Font size="16.0" />
                            </font>

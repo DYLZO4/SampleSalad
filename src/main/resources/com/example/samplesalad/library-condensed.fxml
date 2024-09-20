@@ -13,7 +13,7 @@
 <SplitPane fx:controller = "com.example.samplesalad.controller.LibraryController" dividerPositions="0.36454849498327757" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
         <StackPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="242.0">
-                    <Button id="expandButton" layoutX="187.0" layoutY="-1.0" mnemonicParsing="false" onMouseClicked="#onSideBarClicked" prefHeight="400.0" prefWidth="15.0" text="&gt;" />
+                    <Button id="expandButton" layoutX="187.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="15.0" text="&gt;" />
                     <Separator layoutX="4.0" layoutY="32.0" prefHeight="3.0" prefWidth="177.0" />
                     <Separator layoutX="56.0" layoutY="33.0" orientation="VERTICAL" prefHeight="365.0" prefWidth="6.0" />
                     <Button id="recentSongs" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="29.0" text="Button" />
