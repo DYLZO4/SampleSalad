@@ -89,6 +89,31 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent>{
         return null;
     }
 
+    public List<PadEvent> getPadEventsByPatternId(int patternId) {
+        List<PadEvent> padEvents = new ArrayList<>();
+        String query = "SELECT * FROM pattern_events WHERE patternId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, patternId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int padId = resultSet.getInt("padId");
+                double timeStamp = resultSet.getDouble("timeStamp");
+
+                // Fetch the associated Pad
+                PadDAO padDAO = new PadDAO(connection);
+                Pad pad = padDAO.get(padId);
+
+                PadEvent event = new PadEvent(pad);
+                event.triggerEvent(); // Sets the timestamp (if needed)
+                padEvents.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions
+        }
+        return padEvents;
+    }
+
     @Override
     public List getAll() {
         return List.of();

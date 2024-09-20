@@ -180,4 +180,24 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
         return patterns;
     }
+
+    public List<Pattern> getPatternsBySequencerId(int sequencerId) {
+        List<Pattern> patterns = new ArrayList<>();
+        String query = "SELECT patternId FROM sequencer_patterns WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencerId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int patternId = resultSet.getInt("patternId");
+                Pattern pattern = get(patternId); // Reuse your existing get(id) method
+                if (pattern != null) {
+                    patterns.add(pattern);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patterns;
+    }
 }
