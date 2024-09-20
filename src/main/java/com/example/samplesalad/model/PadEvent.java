@@ -23,7 +23,7 @@ public class PadEvent {
      * (Temporarily retrieve current time)
      */
     public void triggerEvent() {
-        this.timeStamp = System.currentTimeMillis() / 1000.0;
+        this.timeStamp = (double) System.currentTimeMillis() / 1000.0;
         System.out.println("Event recorded at: " +  timeStamp);
     }
 
