@@ -4,14 +4,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PadDAO implements ISampleSaladDAO<Pad>{
+/**
+ * The {@code PadDAO} class handles CRUD operations (Create, Read, Update, Delete) for {@link Pad} objects in a database.
+ * This class implements the {@link ISampleSaladDAO} interface, providing specific operations for the pads.
+ */
+public class PadDAO implements ISampleSaladDAO<Pad> {
     private Connection connection;
 
+    /**
+     * Constructor for the {@code PadDAO} class.
+     * Initializes the database connection and creates the pads table if it does not exist.
+     *
+     * @param connection the SQL database connection to be used for DAO operations
+     */
     public PadDAO(Connection connection) {
         this.connection = connection;
         createTable();
     }
 
+    /**
+     * Creates the pads table in the database if it does not exist.
+     */
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -28,6 +41,11 @@ public class PadDAO implements ISampleSaladDAO<Pad>{
         }
     }
 
+    /**
+     * Adds a new {@link Pad} to the pads table in the database.
+     *
+     * @param pad the {@code Pad} object to be added
+     */
     @Override
     public void add(Pad pad) {
         String query = "INSERT INTO pads (sampleId, volume, keybind) VALUES (?, ?, ?)";
@@ -50,7 +68,11 @@ public class PadDAO implements ISampleSaladDAO<Pad>{
         }
     }
 
-
+    /**
+     * Updates an existing {@code Pad} in the pads table.
+     *
+     * @param pad the {@code Pad} object to be updated
+     */
     @Override
     public void update(Pad pad) {
         String query = "UPDATE pads SET sampleId = ?, volume = ?, keybind = ? WHERE padId = ?";
@@ -71,6 +93,11 @@ public class PadDAO implements ISampleSaladDAO<Pad>{
         }
     }
 
+    /**
+     * Deletes a {@code Pad} from the pads table in the database.
+     *
+     * @param pad the {@code Pad} object to be deleted
+     */
     @Override
     public void delete(Pad pad) {
         String query = "DELETE FROM pads WHERE padId = ?";
@@ -87,6 +114,12 @@ public class PadDAO implements ISampleSaladDAO<Pad>{
         }
     }
 
+    /**
+     * Retrieves a {@code Pad} from the pads table based on the pad ID.
+     *
+     * @param id the ID of the {@code Pad} to be retrieved
+     * @return the {@code Pad} object with the specified ID, or {@code null} if not found
+     */
     @Override
     public Pad get(int id) {
         String query = "SELECT * FROM pads WHERE padId = ?";
@@ -115,6 +148,11 @@ public class PadDAO implements ISampleSaladDAO<Pad>{
         return null;
     }
 
+    /**
+     * Retrieves all {@code Pad} objects from the pads table.
+     *
+     * @return a {@code List} of all {@code Pad} objects in the database
+     */
     @Override
     public List<Pad> getAll() {
         List<Pad> pads = new ArrayList<>();
