@@ -10,6 +10,7 @@ import java.util.List;
 public class Project {
 
     private String projectName;
+    private int projectID;
     private int projectBPM; // The overall BPM for the project
     private List<Sequencer> sequences; // A project can have multiple sequences
     private String filePath; // Path for saving/loading the project
@@ -115,5 +116,13 @@ public class Project {
     public void saveProject() {
         // Logic to save the project to a file
         System.out.println("Project saved to " + filePath);
+    }
+
+    public int getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(int newProjectID) {
+        projectID = newProjectID;
     }
 }
