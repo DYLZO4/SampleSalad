@@ -152,6 +152,8 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
         return padEvents;
     }
 
+
+
     /**
      * Retrieves all {@code PadEvent} objects. Currently returns an empty list as it is not implemented.
      *
@@ -159,6 +161,6 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
      */
     @Override
     public List<PadEvent> getAll() {
-        return List.of(); // Return an empty list for now
+        return List.of();
     }
 }

@@ -45,7 +45,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
             statement.execute(eventsTableQuery);
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions appropriately in your application
+            e.printStackTrace();
         }
     }
 
@@ -71,7 +71,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
     }
 
@@ -93,7 +93,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
             }
             stmt.executeBatch();
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
     }
 
@@ -115,7 +115,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
             addPatternEvents(pattern.getPatternID(), pattern.getPadEvents());
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
     }
 
@@ -131,7 +131,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
             stmt.setInt(1, patternId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
     }
 
@@ -151,7 +151,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 System.out.println("Pattern and its events deleted successfully.");
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
     }
 
@@ -178,7 +178,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 return pattern;
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
         return null;
     }
@@ -210,9 +210,36 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 padEvents.add(event);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
         return padEvents;
+    }
+
+    /**
+     * Retrieves all {@link Pattern} objects associated with a specific
+     * {@link Sequencer} ID.
+     *
+     * @param sequencerId The ID of the {@link Sequencer}.
+     * @return A list of {@link Pattern} objects.
+     */
+    public List<Pattern> getPatternsBySequencerId(int sequencerId) {
+        List<Pattern> patterns = new ArrayList<>();
+        String query = "SELECT patternId FROM sequencer_patterns WHERE sequencerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sequencerId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int patternId = resultSet.getInt("patternId");
+                    Pattern pattern = get(patternId);
+                if (pattern != null) {
+                    patterns.add(pattern);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patterns;
     }
 
     /**
@@ -237,34 +264,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 patterns.add(pattern);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
-        }
-        return patterns;
-    }
-
-    /**
-     * Retrieves all {@link Pattern} objects associated with a specific
-     * {@link Sequencer} ID.
-     *
-     * @param sequencerId The ID of the {@link Sequencer}.
-     * @return A list of {@link Pattern} objects.
-     */
-    public List<Pattern> getPatternsBySequencerId(int sequencerId) {
-        List<Pattern> patterns = new ArrayList<>();
-        String query = "SELECT patternId FROM sequencer_patterns WHERE sequencerId = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, sequencerId);
-            ResultSet resultSet = stmt.executeQuery();
-
-            while (resultSet.next()) {
-                int patternId = resultSet.getInt("patternId");
-                Pattern pattern = get(patternId);
-                if (pattern != null) {
-                    patterns.add(pattern);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace();
         }
         return patterns;
     }

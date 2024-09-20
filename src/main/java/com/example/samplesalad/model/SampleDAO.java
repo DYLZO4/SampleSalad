@@ -58,7 +58,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
 
             int affectedRows = stmt.executeUpdate();
 
-            // Retrieve the generated SampleID and set it in the Sample object
+            // Check if the insert was successful
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
@@ -85,10 +85,10 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
             stmt.setDouble(3, sample.getVolume());
             stmt.setDouble(4, sample.getStartTime());
             stmt.setDouble(5, sample.getEndTime());
-            stmt.setInt(6, sample.getSampleID());
 
             int affectedRows = stmt.executeUpdate();
 
+            // Optionally check if the update was successful
             if (affectedRows > 0) {
                 System.out.println("Sample updated successfully.");
             } else {
@@ -110,7 +110,6 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, sample.getSampleID());
             int affectedRows = stmt.executeUpdate();
-
             if (affectedRows > 0) {
                 System.out.println("Sample deleted successfully.");
             } else {
@@ -168,17 +167,19 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                 Double startTime = resultSet.getDouble("startTime");
                 Double endTime = resultSet.getDouble("endTime");
 
-                filePath = resultSet.wasNull() ? null : filePath;
-                pitch = resultSet.wasNull() ? null : pitch;
-                volume = resultSet.wasNull() ? null : volume;
-                startTime = resultSet.wasNull() ? null : startTime;
-                endTime = resultSet.wasNull() ? null : endTime;
+                    // Handle default values for nullable columns if needed
+                    filePath = resultSet.wasNull() ? null : filePath;
+                    pitch = resultSet.wasNull() ? null : pitch;
+                    volume = resultSet.wasNull() ? null : volume;
+                    startTime = resultSet.wasNull() ? null : startTime;
+                    endTime = resultSet.wasNull() ? null : endTime;
 
-                samples.add(new Sample(sampleID, filePath, pitch, volume, startTime, endTime));
+                    // Create a Sample object and add it to the list
+                    samples.add(new Sample(sampleID, filePath, pitch, volume, startTime, endTime));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return samples;
+            return samples;
     }
 }

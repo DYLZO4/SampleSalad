@@ -121,16 +121,6 @@ public class MainController implements Initializable {
      * @param event The mouse event triggered by clicking the register button.
      */
     @FXML
-    private void register(MouseEvent event) {
-        loadPage("signup");
-    }
-
-    /**
-     * Handles the account button click event. Loads the account page.
-     *
-     * @param event The mouse event triggered by clicking the account button.
-     */
-    @FXML
     private void account(MouseEvent event) {
         loadPage("account");
     }
