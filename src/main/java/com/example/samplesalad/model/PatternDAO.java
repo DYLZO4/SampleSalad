@@ -4,14 +4,29 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code PatternDAO} class provides data access methods for interacting with
+ * musical patterns in the database.
+ * It implements the {@code ISampleSaladDAO} interface for CRUD operations on
+ * {@link Pattern} objects.
+ */
 public class PatternDAO implements ISampleSaladDAO<Pattern> {
     private Connection connection;
 
+    /**
+     * Constructs a {@code PatternDAO} object with the given database connection.
+     *
+     * @param connection The database connection to use.
+     */
     public PatternDAO(Connection connection) {
         this.connection = connection;
         createTable();
     }
 
+    /**
+     * Creates the necessary tables in the database if they don't exist.
+     * This includes the `patterns` table and the `pattern_events` table.
+     */
     private void createTable() {
         try {
             Statement statement = connection.createStatement();
@@ -34,6 +49,11 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Adds a new {@link Pattern} to the database.
+     *
+     * @param pattern The {@link Pattern} object to be added.
+     */
     @Override
     public void add(Pattern pattern) {
         String query = "INSERT INTO patterns (length) VALUES (?)";
@@ -55,6 +75,13 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Adds the {@link PadEvent}s associated with a {@link Pattern} to the
+     * `pattern_events` table.
+     *
+     * @param patternId The ID of the {@link Pattern}.
+     * @param padEvents The list of {@link PadEvent}s to be added.
+     */
     private void addPatternEvents(int patternId, List<PadEvent> padEvents) {
         String query = "INSERT INTO pattern_events (patternId, padId, timeStamp) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -70,12 +97,17 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Updates an existing {@link Pattern} in the database.
+     *
+     * @param pattern The {@link Pattern} object with updated information.
+     */
     @Override
     public void update(Pattern pattern) {
         String query = "UPDATE patterns SET length = ? WHERE patternId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, pattern.getLength());
-            stmt.setInt(2, pattern.getPatternID()); // Assuming the Pattern class has a getId() method.
+            stmt.setInt(2, pattern.getPatternID());
             stmt.executeUpdate();
 
             // Update pattern events
@@ -87,6 +119,12 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Deletes the {@link PadEvent}s associated with a {@link Pattern} from the
+     * `pattern_events` table.
+     *
+     * @param patternId The ID of the {@link Pattern}.
+     */
     private void deletePatternEvents(int patternId) {
         String query = "DELETE FROM pattern_events WHERE patternId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -97,11 +135,16 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Deletes a {@link Pattern} from the database.
+     *
+     * @param pattern The {@link Pattern} object to be deleted.
+     */
     @Override
     public void delete(Pattern pattern) {
         String query = "DELETE FROM patterns WHERE patternId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, pattern.getPatternID()); // Assuming the Pattern class has a getId() method.
+            stmt.setInt(1, pattern.getPatternID());
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
                 deletePatternEvents(pattern.getPatternID());
@@ -112,6 +155,12 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         }
     }
 
+    /**
+     * Retrieves a {@link Pattern} from the database by its ID.
+     *
+     * @param id The ID of the {@link Pattern} to retrieve.
+     * @return The {@link Pattern} object, or {@code null} if not found.
+     */
     @Override
     public Pattern get(int id) {
         String query = "SELECT * FROM patterns WHERE patternId = ?";
@@ -134,6 +183,13 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         return null;
     }
 
+    /**
+     * Retrieves the {@link PadEvent}s associated with a {@link Pattern} from the
+     * `pattern_events` table.
+     *
+     * @param patternId The ID of the {@link Pattern}.
+     * @return A list of {@link PadEvent} objects.
+     */
     private List<PadEvent> getPadEvents(int patternId) {
         List<PadEvent> padEvents = new ArrayList<>();
         String query = "SELECT * FROM pattern_events WHERE patternId = ?";
@@ -159,6 +215,11 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
         return padEvents;
     }
 
+    /**
+     * Retrieves all {@link Pattern} objects from the database.
+     *
+     * @return A list of {@link Pattern} objects.
+     */
     @Override
     public List<Pattern> getAll() {
         List<Pattern> patterns = new ArrayList<>();
