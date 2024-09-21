@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Pattern {
 
+    private int patternID;
     private int length;
     private List<PadEvent> padEvents;
 
@@ -60,4 +61,9 @@ public class Pattern {
     public void setLength(int length) {
         this.length = length;
     }
+
+    public void setPatternID(int patternID){ this.patternID = patternID;}
+
+    public int getPatternID(){ return  patternID;}
 }
+

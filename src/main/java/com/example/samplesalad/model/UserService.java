@@ -13,7 +13,7 @@ public class UserService {
      *
      * @param userDAO the data access object used for user-related database operations
      */
-    public UserService(FakeUserDAO userDAO) {
+    public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

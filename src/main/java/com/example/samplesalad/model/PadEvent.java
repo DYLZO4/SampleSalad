@@ -23,7 +23,7 @@ public class PadEvent {
      * (Temporarily retrieve current time)
      */
     public void triggerEvent() {
-        this.timeStamp = System.currentTimeMillis() / 1000.0;
+        this.timeStamp = (double) System.currentTimeMillis() / 1000.0;
         System.out.println("Event recorded at: " +  timeStamp);
     }
 
@@ -40,7 +40,7 @@ public class PadEvent {
      * Retrieves the pad ID associated with this event.
      * @return The ID of the triggered pad.
      */
-    public int getPadId() {
+    public int getPadID() {
         System.out.println("Recording events for pad" +  padId);
         return padId;
     }
