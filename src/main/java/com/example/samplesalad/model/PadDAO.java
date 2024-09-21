@@ -15,10 +15,9 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
      * Constructor for the {@code PadDAO} class.
      * Initializes the database connection and creates the pads table if it does not exist.
      *
-     * @param connection the SQL database connection to be used for DAO operations
      */
-    public PadDAO(Connection connection) {
-        this.connection = connection;
+    public PadDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 

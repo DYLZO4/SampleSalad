@@ -16,10 +16,10 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
     /**
      * Constructs a {@code PatternDAO} object with the given database connection.
      *
-     * @param connection The database connection to use.
+
      */
-    public PatternDAO(Connection connection) {
-        this.connection = connection;
+    public PatternDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -202,7 +202,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 double timeStamp = resultSet.getDouble("timeStamp");
 
                 // Fetch the associated Pad
-                PadDAO padDAO = new PadDAO(connection);
+                PadDAO padDAO = new PadDAO();
                 Pad pad = padDAO.get(padId);
 
                 PadEvent event = new PadEvent(pad);
