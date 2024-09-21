@@ -1,7 +1,4 @@
-package com.example.samplesalad.model;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+package com.example.samplesalad.model.user;
 
 /**
  * The {@code User} class represents a user in the system.

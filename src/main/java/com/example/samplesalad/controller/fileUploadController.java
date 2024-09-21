@@ -1,8 +1,7 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.DatabaseConnection;
 import com.example.samplesalad.model.Sample;
-import com.example.samplesalad.model.SampleDAO;
+import com.example.samplesalad.model.DAO.SampleDAO;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
