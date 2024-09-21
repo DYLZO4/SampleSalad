@@ -1,15 +1,19 @@
 package com.example.samplesalad.controller;
-
+import com.example.samplesalad.model.DAO.SampleDAO;
+import com.example.samplesalad.model.LibraryService;
+import com.example.samplesalad.model.Sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -25,11 +29,15 @@ import static javafx.application.Application.launch;
 public class LibraryController implements IController {
 
     public AnchorPane contentPane;
+    private SampleDAO sampleDAO; // DAO for handling database operations
+    private LibraryService libraryService = new LibraryService(); // Service for library operations
 
     /**
      * Default constructor for the {@code libraryController} class.
      */
-    public LibraryController(){}
+    public LibraryController() {
+        this.sampleDAO = new SampleDAO(); // Initialize the DAO
+    }
 
     /**
      * Handles the event when text is entered into the search bar.
@@ -73,14 +81,31 @@ public class LibraryController implements IController {
         }
         Logger.getLogger(LibraryController.class.getName()).log(Level.INFO, "Loading FXML file: " + popupURL.toString());
         FXMLLoader popupLoader = new FXMLLoader(popupURL);
+        Parent popupRoot = popupLoader.load();
 
-        Scene scene = popupLoader.load();
+        // Add this line to find the TextField for the file path
+        TextField filePathField = (TextField) popupRoot.lookup("#filePathField");
 
         Stage popup = new Stage();
         popup.setTitle("Upload new song");
-        popup.setScene(scene);
+        popup.setScene(new Scene(popupRoot));
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.showAndWait();
-        // TODO: create dialogue box to upload a song to the database
+
+        // Handle file upload after the dialog is closed
+        String filePath = filePathField.getText();
+        if (!filePath.isEmpty()) {
+            File file = new File(filePath);
+            if (file.exists()) {
+                // Create a new Sample and add it to the database
+                Sample newSample = new Sample(0, file.getPath(), "New Sample", "Artist", "Genre");
+                sampleDAO.add(newSample);
+                System.out.println("Uploaded song: " + file.getName());
+            } else {
+                Logger.getLogger(LibraryController.class.getName()).log(Level.WARNING, "File does not exist: " + filePath);
+            }
+        }
     }
 }
+
+        // TODO: create dialogue box to upload a song to the database
