@@ -1,7 +1,7 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.UserDAO;
-import com.example.samplesalad.model.UserService;
+import com.example.samplesalad.model.DAO.UserDAO;
+import com.example.samplesalad.model.user.UserService;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

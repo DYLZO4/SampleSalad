@@ -62,9 +62,11 @@ public class Sample {
         this.appliedEffects = new ArrayList<>();
     }
 
-    public Sample(int sampleID, String filePath, double pitch, double volume, double startTime, double endTime){
+    public Sample(int sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, double pitch, double volume, double startTime, double endTime){
         this.sampleID = sampleID;
         this.filePath = filePath;
+        this.sampleName = sampleName;
+        this.sampleGenre = sampleGenre;
         this.pitch = pitch;
         this.volume = volume;
         this.startTime = startTime;

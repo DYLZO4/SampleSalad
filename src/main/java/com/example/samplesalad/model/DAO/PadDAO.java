@@ -1,4 +1,8 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DatabaseConnection;
+import com.example.samplesalad.model.Pad;
+import com.example.samplesalad.model.Sample;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,10 +19,9 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
      * Constructor for the {@code PadDAO} class.
      * Initializes the database connection and creates the pads table if it does not exist.
      *
-     * @param connection the SQL database connection to be used for DAO operations
      */
-    public PadDAO(Connection connection) {
-        this.connection = connection;
+    public PadDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -133,7 +136,7 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the associated sample
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleId);
 
                 Pad pad = new Pad(sample);
@@ -167,7 +170,7 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the associated sample
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleId);
 
                 Pad pad = new Pad(sample);

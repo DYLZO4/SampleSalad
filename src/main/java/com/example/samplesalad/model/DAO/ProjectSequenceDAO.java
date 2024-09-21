@@ -1,4 +1,7 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.Project;
+import com.example.samplesalad.model.Sequencer;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,11 +19,8 @@ public class ProjectSequenceDAO {
     /**
      * Constructs a {@code ProjectSequenceDAO} object with the given database connection.
      *
-     * @param connection The database connection to use.
      */
-    public ProjectSequenceDAO(Connection connection) {
-        this.connection = connection;
-        createTable();
+    public ProjectSequenceDAO() {
     }
 
     /**

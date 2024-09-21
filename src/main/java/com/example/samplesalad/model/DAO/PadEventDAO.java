@@ -1,4 +1,8 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DatabaseConnection;
+import com.example.samplesalad.model.Pad;
+import com.example.samplesalad.model.PadEvent;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,10 +19,10 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
      * Constructor for the {@code PadEventDAO} class.
      * Initializes the database connection and creates the pad events table if it does not exist.
      *
-     * @param connection the SQL database connection to be used for DAO operations
+
      */
-    public PadEventDAO(Connection connection) {
-        this.connection = connection;
+    public PadEventDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -107,7 +111,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
                 double timeStamp = resultSet.getDouble("timeStamp");
 
                 // Retrieve the associated Pad object
-                PadDAO padDAO = new PadDAO(connection);
+                PadDAO padDAO = new PadDAO();
                 Pad pad = padDAO.get(padId);
 
                 // Create and return the PadEvent
@@ -139,7 +143,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
                 double timeStamp = resultSet.getDouble("timeStamp");
 
                 // Fetch the associated Pad
-                PadDAO padDAO = new PadDAO(connection);
+                PadDAO padDAO = new PadDAO();
                 Pad pad = padDAO.get(padId);
 
                 PadEvent event = new PadEvent(pad);
