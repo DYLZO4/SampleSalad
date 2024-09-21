@@ -175,6 +175,11 @@
                               <Font size="16.0" />
                            </font>
                         </JFXButton>
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#register" prefHeight="38.0" prefWidth="179.0" text="Sign up">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
                         <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openSettings" prefHeight="38.0" prefWidth="179.0" text="Setting">
                            <font>
                               <Font size="16.0" />

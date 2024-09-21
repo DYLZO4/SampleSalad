@@ -169,4 +169,7 @@ public class MainController implements Initializable {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void register(MouseEvent mouseEvent) {
+    }
 }
