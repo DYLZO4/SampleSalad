@@ -133,7 +133,7 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the associated sample
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleId);
 
                 Pad pad = new Pad(sample);
@@ -167,7 +167,7 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the associated sample
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleId);
 
                 Pad pad = new Pad(sample);

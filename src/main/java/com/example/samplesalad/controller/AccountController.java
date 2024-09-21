@@ -80,6 +80,7 @@ public class AccountController extends LoginController {
                     emailField.getText(),
                     phoneField.getText()
             );
+
             updatedUser.setId(currentUser.getId()); // Set the ID to ensure the correct user is updated
             userDAO.update(updatedUser);
             Logger.getLogger(AccountController.class.getName()).log(java.util.logging.Level.INFO, "User information updated successfully.");
