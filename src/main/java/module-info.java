@@ -3,6 +3,7 @@ module com.example.samplesalad {
     requires javafx.fxml;
     requires java.logging;
     requires java.sql;
+    requires mysql.connector.j;
 
 
     opens com.example.samplesalad to javafx.fxml;
