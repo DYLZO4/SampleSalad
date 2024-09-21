@@ -29,6 +29,26 @@ public class Sample {
      * @param sampleID the unique identifier for the sample
      * @param filePath the file path where the sample is located
      */
+    public Sample(int sampleID, String filePath) {
+        this.sampleID = sampleID;
+        this.filePath = filePath;
+        this.pitch = 1.0; // Default pitch (normal pitch)
+        this.volume = 1.0; // Default volume (100%)
+        this.startTime = 0.0;
+        this.endTime = 0.0; // 0.0 means the whole sample length
+        this.appliedEffects = new ArrayList<>();
+    }
+
+    /**
+     * Constructor to initialize a {@code Sample} object with the given sample ID, file path, sample name,
+     * sample artist and the selected genre of the sample
+     *
+     * @param sampleID the unique identifier for the sample
+     * @param filePath the file path where the sample is located
+     * @param sampleName the name of the sample chosen by the user
+     * @param sampleArtist the name of the artist who created  the sample
+     * @param sampleGenre the genre category which the sample falls into
+     */
     public Sample(int sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre) {
         this.sampleID = sampleID;
         this.filePath = filePath;
