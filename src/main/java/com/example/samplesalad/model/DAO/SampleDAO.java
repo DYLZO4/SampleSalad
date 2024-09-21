@@ -1,4 +1,7 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DatabaseConnection;
+import com.example.samplesalad.model.Sample;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,9 +17,8 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
     /**
      * Constructor that initializes the SampleDAO with a database connection.
      *
-     * @param connection the database connection to be used by the DAO
      */
-    public SampleDAO(Connection connection) {
+    public SampleDAO() {
         connection = DatabaseConnection.getInstance();
         createTable();
     }
@@ -30,6 +32,9 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
             String query = "CREATE TABLE IF NOT EXISTS samples ("
                     + "SampleID INT AUTO_INCREMENT PRIMARY KEY, "
                     + "filePath VARCHAR(255) NOT NULL, "
+                    + "sampleName VARCHAR(255), "
+                    + "sampleArtist VARCHAR(255), "
+                    + "sampleGenre VARCHAR(255), "
                     + "pitch DOUBLE, "
                     + "volume DOUBLE, "
                     + "startTime DOUBLE, "
@@ -48,13 +53,16 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void add(Sample sample) {
-        String query = "INSERT INTO Samples (filePath, pitch, volume, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, sample.getFilePath());
-            stmt.setDouble(2, sample.getPitch());
-            stmt.setDouble(3, sample.getVolume());
-            stmt.setDouble(4, sample.getStartTime());
-            stmt.setDouble(5, sample.getEndTime());
+            stmt.setString(2, sample.getSampleName());
+            stmt.setString(3, sample.getSampleArtist());
+            stmt.setString(4, sample.getSampleGenre());
+            stmt.setDouble(5, sample.getPitch());
+            stmt.setDouble(6, sample.getVolume());
+            stmt.setDouble(7, sample.getStartTime());
+            stmt.setDouble(8, sample.getEndTime());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -78,13 +86,17 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void update(Sample sample) {
-        String query = "UPDATE Samples SET filePath = ?, pitch = ?, volume = ?, startTime = ?, endTime = ? WHERE SampleID = ?";
+        String query = "UPDATE Samples SET filePath = ?, sampleName = ?, sampleArtist = ?, sampleGenre = ?, pitch = ?, volume = ?, startTime = ?, endTime = ? WHERE SampleID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, sample.getFilePath());
-            stmt.setDouble(2, sample.getPitch());
-            stmt.setDouble(3, sample.getVolume());
-            stmt.setDouble(4, sample.getStartTime());
-            stmt.setDouble(5, sample.getEndTime());
+            stmt.setString(2, sample.getSampleName());
+            stmt.setString(3, sample.getSampleArtist());
+            stmt.setString(4, sample.getSampleGenre());
+            stmt.setDouble(5, sample.getPitch());
+            stmt.setDouble(6, sample.getVolume());
+            stmt.setDouble(7, sample.getStartTime());
+            stmt.setDouble(8, sample.getEndTime());
+            stmt.setInt(9, sample.getSampleID());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -129,17 +141,20 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
     @Override
     public Sample get(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM samples WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM samples WHERE SampleID = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Integer sampleID = resultSet.getInt("sampleID");
+                Integer sampleID = resultSet.getInt("SampleID");
                 String filePath = resultSet.getString("filePath");
+                String sampleName = resultSet.getString("sampleName");
+                String sampleArtist = resultSet.getString("sampleArtist");
+                String sampleGenre = resultSet.getString("sampleGenre");
                 Double volume = resultSet.getDouble("volume");
                 Double pitch = resultSet.getDouble("pitch");
                 Double startTime = resultSet.getDouble("startTime");
                 Double endTime = resultSet.getDouble("endTime");
-                return new Sample(sampleID, filePath, pitch, volume, startTime, endTime);
+                return new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,24 +177,20 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
             while (resultSet.next()) {
                 Integer sampleID = resultSet.getInt("SampleID");
                 String filePath = resultSet.getString("filePath");
+                String sampleName = resultSet.getString("sampleName");
+                String sampleArtist = resultSet.getString("sampleArtist");
+                String sampleGenre = resultSet.getString("sampleGenre");
                 Double pitch = resultSet.getDouble("pitch");
                 Double volume = resultSet.getDouble("volume");
                 Double startTime = resultSet.getDouble("startTime");
                 Double endTime = resultSet.getDouble("endTime");
 
-                    // Handle default values for nullable columns if needed
-                    filePath = resultSet.wasNull() ? null : filePath;
-                    pitch = resultSet.wasNull() ? null : pitch;
-                    volume = resultSet.wasNull() ? null : volume;
-                    startTime = resultSet.wasNull() ? null : startTime;
-                    endTime = resultSet.wasNull() ? null : endTime;
-
-                    // Create a Sample object and add it to the list
-                    samples.add(new Sample(sampleID, filePath, pitch, volume, startTime, endTime));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                // Create a Sample object and add it to the list
+                samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime));
             }
-            return samples;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return samples;
     }
 }

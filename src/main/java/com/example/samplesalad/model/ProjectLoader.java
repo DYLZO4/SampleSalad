@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.DAO.*;
+
 import java.sql.Connection;
 import java.util.List;
 

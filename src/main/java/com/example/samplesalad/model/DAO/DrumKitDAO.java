@@ -1,4 +1,8 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DrumKit;
+import com.example.samplesalad.model.Pad;
+import com.example.samplesalad.model.Sample;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -221,7 +225,7 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the sample object for this pad
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleID);
 
                 Pad pad = new Pad(sample);

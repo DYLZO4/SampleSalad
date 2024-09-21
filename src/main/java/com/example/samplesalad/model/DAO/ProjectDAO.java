@@ -1,4 +1,7 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DatabaseConnection;
+import com.example.samplesalad.model.Project;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,10 +18,9 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
     /**
      * Constructor that initializes the ProjectDAO with a database connection.
      *
-     * @param connection the database connection to be used by the DAO
      */
-    public ProjectDAO(Connection connection) {
-        this.connection = connection;
+    public ProjectDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 

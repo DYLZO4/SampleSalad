@@ -1,6 +1,7 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.Sample;
+import com.example.samplesalad.model.DAO.SampleDAO;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -10,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.sql.Connection;
 import java.util.Optional;
 
 /**
@@ -17,6 +19,9 @@ import java.util.Optional;
  * to upload new music to use in the app.
  */
 public class fileUploadController {
+    private SampleDAO sampleDAO;
+    private Connection connection;
+
     public ChoiceBox <String>genreChoiceBox;
     public TextField sampleName;
     public TextField sampleArtist;
@@ -35,6 +40,7 @@ public class fileUploadController {
      * This allows users to add new genres when they select the "Add genre" option.
      */
     public void initialize(){
+        sampleDAO = new SampleDAO();
         genreChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, previousVal, newVal) -> {
             if ("Add genre".equals(newVal)){
                 addCustomGenre();
@@ -77,7 +83,8 @@ public class fileUploadController {
      * @param mouseEvent the event triggered by clicking the button for adding samples
      */
     public void addSampleToDB(MouseEvent mouseEvent) {
-        new Sample(1, filePath, sampleName.getText(), sampleArtist.getText(), genreChoiceBox.getValue());
+        Sample sample = new Sample(1, filePath, sampleName.getText(), sampleArtist.getText(), genreChoiceBox.getValue());
         ((Stage)(((Button)mouseEvent.getSource()).getScene().getWindow())).close();
+        sampleDAO.add(sample);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.User;
-import com.example.samplesalad.model.UserDAO;
+import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.DAO.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -80,6 +80,7 @@ public class AccountController extends LoginController {
                     emailField.getText(),
                     phoneField.getText()
             );
+
             updatedUser.setId(currentUser.getId()); // Set the ID to ensure the correct user is updated
             userDAO.update(updatedUser);
             Logger.getLogger(AccountController.class.getName()).log(java.util.logging.Level.INFO, "User information updated successfully.");

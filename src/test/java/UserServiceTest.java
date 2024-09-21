@@ -1,6 +1,6 @@
-import com.example.samplesalad.model.FakeUserDAO;
-import com.example.samplesalad.model.User;
-import com.example.samplesalad.model.UserService;
+import com.example.samplesalad.model.DAO.FakeUserDAO;
+import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
