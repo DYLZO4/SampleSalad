@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
       <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #e0dfdc;">
          <children>
@@ -171,6 +171,11 @@
                            </font>
                         </JFXButton>
                         <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="38.0" prefWidth="179.0" text="Sign in">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#register" prefHeight="38.0" prefWidth="179.0" text="Sign up">
                            <font>
                               <Font size="16.0" />
                            </font>

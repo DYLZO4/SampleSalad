@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SettingsController">
+<AnchorPane prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SettingsController">
    <children>
       <Accordion prefHeight="450.0" prefWidth="580.0">
         <panes>
@@ -13,9 +13,9 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="96.0" layoutY="8.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="2" wrapText="true" />
-                        <Button layoutX="198.0" layoutY="8.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="3" wrapText="true" />
-                        <Button layoutX="298.0" layoutY="8.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="4" wrapText="true" />
+                        <Button fx:id="btn11" layoutX="96.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#openPopup" prefHeight="84.0" prefWidth="84.0" text="2" wrapText="true" />
+                        <Button layoutX="198.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#openPopup" prefHeight="84.0" prefWidth="84.0" text="3" wrapText="true" />
+                        <Button layoutX="298.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#openPopup" prefHeight="84.0" prefWidth="84.0" text="4" wrapText="true" />
                         <Button layoutX="96.0" layoutY="99.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="W" wrapText="true" />
                         <Button layoutX="198.0" layoutY="99.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="E" wrapText="true" />
                         <Button layoutX="298.0" layoutY="99.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="84.0" text="R" wrapText="true" />

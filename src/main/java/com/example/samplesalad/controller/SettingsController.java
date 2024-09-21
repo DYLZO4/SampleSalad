@@ -3,6 +3,8 @@ package com.example.samplesalad.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.logging.Logger;
@@ -29,5 +31,17 @@ public class SettingsController implements IController {
         } catch (java.io.IOException ex) {
             Logger.getLogger(SettingsController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+    }
+
+    public void loadPopup(String page){
+
+    }
+
+    public void openPopup(MouseEvent mouseEvent) {
+
+    }
+
+    public void setKeyBind(KeyEvent keyEvent) {
+        //TODO: make functional to be used in popup
     }
 }

@@ -12,6 +12,9 @@ import java.util.List;
 public class Sample {
 
     private int sampleID;
+    private String sampleName;
+    private String sampleArtist;
+    private String sampleGenre;
     private String filePath;
     private double pitch;
     private double volume;
@@ -29,6 +32,29 @@ public class Sample {
     public Sample(int sampleID, String filePath) {
         this.sampleID = sampleID;
         this.filePath = filePath;
+        this.pitch = 1.0; // Default pitch (normal pitch)
+        this.volume = 1.0; // Default volume (100%)
+        this.startTime = 0.0;
+        this.endTime = 0.0; // 0.0 means the whole sample length
+        this.appliedEffects = new ArrayList<>();
+    }
+
+    /**
+     * Constructor to initialize a {@code Sample} object with the given sample ID, file path, sample name,
+     * sample artist and the selected genre of the sample
+     *
+     * @param sampleID the unique identifier for the sample
+     * @param filePath the file path where the sample is located
+     * @param sampleName the name of the sample chosen by the user
+     * @param sampleArtist the name of the artist who created  the sample
+     * @param sampleGenre the genre category which the sample falls into
+     */
+    public Sample(int sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre) {
+        this.sampleID = sampleID;
+        this.filePath = filePath;
+        this.sampleName = sampleName;
+        this.sampleArtist = sampleArtist;
+        this.sampleGenre = sampleGenre;
         this.pitch = 1.0; // Default pitch (normal pitch)
         this.volume = 1.0; // Default volume (100%)
         this.startTime = 0.0;
@@ -83,6 +109,41 @@ public class Sample {
         this.filePath = filePath;
     }
 
+    /**
+     * Gets the name of the sample
+     * @return string of the sample name
+     */
+    public String getSampleName() { return sampleName; }
+
+    /**
+     * Sets the name of the sample
+     * @param sampleName the name to set
+     */
+    public void setSampleName(String sampleName) { this.sampleName = sampleName; }
+
+    /**
+     * Gets the name of the artist associated with the sample
+     * @return artist name
+     */
+    public String getSampleArtist() { return sampleArtist; }
+
+    /**
+     * Sets the name of the artist associated with the sample
+     * @param sampleArtist new name of the sample's artist
+     */
+    public void setSampleArtist(String sampleArtist) { this.sampleArtist = sampleArtist; }
+
+    /**
+     * Gets the genre of the sample
+     * @return genre of sample
+     */
+    public String getSampleGenre() { return sampleGenre; }
+
+    /**
+     * Sets the genre of the sample
+     * @param sampleGenre genre of the sample
+     */
+    public void setSampleGenre(String sampleGenre) { this.sampleGenre = sampleGenre; }
     /**
      * Gets the pitch of the sample.
      *
