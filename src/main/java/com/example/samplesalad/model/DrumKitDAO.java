@@ -221,7 +221,7 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
                 String keybind = resultSet.getString("keybind");
 
                 // Fetch the sample object for this pad
-                SampleDAO sampleDAO = new SampleDAO(connection);
+                SampleDAO sampleDAO = new SampleDAO();
                 Sample sample = sampleDAO.get(sampleID);
 
                 Pad pad = new Pad(sample);
