@@ -1,4 +1,8 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
+
+import com.example.samplesalad.model.DatabaseConnection;
+import com.example.samplesalad.model.Pad;
+import com.example.samplesalad.model.Sample;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.samplesalad.model;
+package com.example.samplesalad.model.DAO;
 
 import java.util.List;
 
