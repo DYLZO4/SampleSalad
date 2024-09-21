@@ -27,7 +27,7 @@ public class UserService {
      * @param phone the phone number of the user
      */
     public void registerUser(String firstName, String lastName, String password, String email, String phone) {
-        User user = new User(firstName, lastName, password, email, phone);
+        User user = new User(firstName, lastName, HashUtil.hashPassword(password), email, phone);
         userDAO.add(user);
     }
 
