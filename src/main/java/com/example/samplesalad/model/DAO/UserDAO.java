@@ -135,7 +135,9 @@ public class UserDAO implements ISampleSaladDAO<User> {
                 String lastName = resultSet.getString("lastName");
                 String password = resultSet.getString("password"); // Password is hashed
                 String phone = resultSet.getString("phone");
-                return new User(firstName, lastName, password, phone, email);
+                User returnedUser = new User(firstName, lastName, password, phone, email);
+                returnedUser.setId(resultSet.getInt(1));
+                return returnedUser;
             }
         } catch (SQLException e) {
             e.printStackTrace();
