@@ -6,7 +6,7 @@ package com.example.samplesalad.model;
  * simulating the physical pads on an Akai MPC.
  */
 public class Pad {
-    private int padId;
+    private int padID;
     private Sample sample;
     private double volume;
     private String keybind;
@@ -38,12 +38,14 @@ public class Pad {
         return sample;
     }
 
+    public Double getVolume() { return volume; }
+
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
      */
     public void triggerPad() {
         // Logic for triggering the pad's sample
-        System.out.println("Pad " + padId + " has been triggered");
+        System.out.println("Pad " + padID + " has been triggered");
     }
 
     /**
@@ -51,7 +53,7 @@ public class Pad {
      */
     public void mutePad() {
         // Logic for muting the pad's sample
-        System.out.println("Pad " + padId + " is muted");
+        System.out.println("Pad " + padID + " is muted");
     }
 
     /**
@@ -59,7 +61,7 @@ public class Pad {
      */
     public void unmutePad() {
         // Logic for unmuting the pad's sample
-        System.out.println("Pad " + padId + " is unmuted");
+        System.out.println("Pad " + padID + " is unmuted");
     }
 
     /**
@@ -101,7 +103,7 @@ public class Pad {
      * @return true if the sample is playing, false otherwise
      */
     public boolean isPlaying() {
-        System.out.println("Pad " + padId + " is currently playing");
+        System.out.println("Pad " + padID + " is currently playing");
         return false; // This should be updated with actual logic to check playback
     }
 
@@ -111,8 +113,8 @@ public class Pad {
      * @return the pad ID
      */
     public int getPadId() {
-        System.out.println("Current pad: pad " + padId);
-        return padId;
+        System.out.println("Current pad: pad " + padID);
+        return padID;
     }
 
     /**
@@ -122,6 +124,6 @@ public class Pad {
      */
     public void setPadId(int padId) {
         System.out.println("Pad has been set as pad " + padId);
-        this.padId = padId;
+        this.padID = padId;
     }
 }
