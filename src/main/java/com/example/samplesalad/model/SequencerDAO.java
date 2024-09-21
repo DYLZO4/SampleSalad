@@ -14,10 +14,9 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
     /**
      * Constructs a SequencerDAO with a provided database connection.
      *
-     * @param connection the database connection
      */
-    public SequencerDAO(Connection connection) {
-        this.connection = connection;
+    public SequencerDAO() {
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -213,7 +212,7 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
             while (resultSet.next()) {
                 int patternId = resultSet.getInt("patternId");
 
-                PatternDAO patternDAO = new PatternDAO(connection);
+                PatternDAO patternDAO = new PatternDAO();
                 Pattern pattern = patternDAO.get(patternId);
                 if (pattern != null) {
                     patterns.add(pattern);

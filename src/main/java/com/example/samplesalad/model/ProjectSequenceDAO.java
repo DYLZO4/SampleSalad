@@ -16,11 +16,8 @@ public class ProjectSequenceDAO {
     /**
      * Constructs a {@code ProjectSequenceDAO} object with the given database connection.
      *
-     * @param connection The database connection to use.
      */
-    public ProjectSequenceDAO(Connection connection) {
-        this.connection = connection;
-        createTable();
+    public ProjectSequenceDAO() {
     }
 
     /**
