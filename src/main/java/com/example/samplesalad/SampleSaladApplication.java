@@ -9,7 +9,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
-
+//DEMO COMMENT
 /**
  * Main application class for launching the JavaFX application.
  * This class extends {@link Application} and sets up the primary stage with a custom style.
