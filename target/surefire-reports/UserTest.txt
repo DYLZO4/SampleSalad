@@ -1,16 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: UserTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.016 s <<< FAILURE! -- in UserTest
-UserTest.testPasswordHashing -- Time elapsed: 0.008 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: Hashed password should not be equal to the raw password. ==> expected: not equal but was: <password123>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertNotEquals.failEqual(AssertNotEquals.java:277)
-	at org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:263)
-	at org.junit.jupiter.api.Assertions.assertNotEquals(Assertions.java:2828)
-	at UserTest.testPasswordHashing(UserTest.java:54)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in UserTest

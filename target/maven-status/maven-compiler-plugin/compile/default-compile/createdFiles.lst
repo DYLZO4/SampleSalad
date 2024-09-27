@@ -31,7 +31,6 @@ com\example\samplesalad\model\DAO\MockUserDAO.class
 com\example\samplesalad\model\Pattern.class
 com\example\samplesalad\model\PadEvent.class
 com\example\samplesalad\controller\LibraryController.class
-com\example\samplesalad\controller\LibraryController$2.class
 com\example\samplesalad\model\DatabaseConnection.class
 com\example\samplesalad\model\MockDatabaseConnection.class
 com\example\samplesalad\controller\SignupController.class
