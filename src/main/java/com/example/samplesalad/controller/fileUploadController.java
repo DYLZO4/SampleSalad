@@ -25,6 +25,8 @@ public class fileUploadController {
     public ChoiceBox <String>genreChoiceBox;
     public TextField sampleName;
     public TextField sampleArtist;
+    public TextField startTime;
+    public TextField endTime;
 
     Stage stage;
     FileChooser.ExtensionFilter mp3 = new FileChooser.ExtensionFilter("mp3 Files", "*.mp3");
@@ -83,7 +85,7 @@ public class fileUploadController {
      * @param mouseEvent the event triggered by clicking the button for adding samples
      */
     public void addSampleToDB(MouseEvent mouseEvent) {
-        Sample sample = new Sample(1, filePath, sampleName.getText(), sampleArtist.getText(), genreChoiceBox.getValue());
+        Sample sample = new Sample(filePath, sampleName.getText(), sampleArtist.getText(), genreChoiceBox.getValue(), 0, 10);
         ((Stage)(((Button)mouseEvent.getSource()).getScene().getWindow())).close();
         sampleDAO.add(sample);
     }

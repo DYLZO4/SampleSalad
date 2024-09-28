@@ -79,7 +79,7 @@ public class ProjectLoader {
      * @param pattern The {@link Pattern} for which to load pad events.
      */
     private void loadPadEventsForPattern(Pattern pattern) {
-        PadEventDAO padEventDAO = new PadEventDAO(connection);
+        PadEventDAO padEventDAO = new PadEventDAO();
         List<PadEvent> padEvents = padEventDAO.getPadEventsByPatternId(pattern.getPatternID());
         for (PadEvent padEvent : padEvents) {
             pattern.addPadEvent(padEvent);
