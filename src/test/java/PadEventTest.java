@@ -16,7 +16,7 @@ class PadEventTest {
 
     @BeforeEach
     void setUp() {
-        mockSample = new Sample(1, "filepath");
+        mockSample  = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
         mockPad = new Pad(mockSample);
         padEvent = new PadEvent(mockPad);
     }

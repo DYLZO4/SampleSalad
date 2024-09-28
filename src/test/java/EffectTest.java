@@ -67,7 +67,7 @@ class EffectTest {
      */
     @Test
     void testApplyEffect() {
-        Sample sample = new Sample(1, "path/to/sample.wav");
+        Sample sample = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
         effect.apply(sample);
         // Ensure the method runs without throwing an exception
     }
