@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class Project {
     private int projectBPM; // The overall BPM for the project
     private List<Sequencer> sequences; // A project can have multiple sequences
     private String filePath; // Path for saving/loading the project
+    private User user;
 
     /**
      * Initializes the Project with a name and BPM.
@@ -125,4 +128,16 @@ public class Project {
     public void setProjectID(int newProjectID) {
         projectID = newProjectID;
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Project
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Project
+     * @param newUser The user to set as this Project user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

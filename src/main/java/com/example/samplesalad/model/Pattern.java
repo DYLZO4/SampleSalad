@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Pattern {
     private int patternID;
     private int length;
     private List<PadEvent> padEvents;
+    private User user;
 
     /**
      * Initialized with a given length.
@@ -65,5 +68,17 @@ public class Pattern {
     public void setPatternID(int patternID){ this.patternID = patternID;}
 
     public int getPatternID(){ return  patternID;}
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Pattern
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Pattern
+     * @param newUser The user to set as this Patterns user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }
 
