@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 /**
  * A triggerable object that holds and plays a sample,
  * with properties for sensitivity, volume, and key binding,
@@ -10,6 +12,7 @@ public class Pad {
     private Sample sample;
     private double volume;
     private String keybind;
+    private User user;
 
     /**
      * Initializes the pad with a specific sample.
@@ -126,4 +129,16 @@ public class Pad {
         System.out.println("Pad has been set as pad " + padId);
         this.padID = padId;
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Pad
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Pad
+     * @param newUser The user to set as this Pads user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

@@ -1,12 +1,15 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 /**
  * A record of a pad activity.
  */
 public class PadEvent {
-    private Pad pad; // The pad associated with this event
-    private int padId; // The ID of the triggered pad
-    private double timeStamp; // The time at which the pad was triggered
+    private Pad pad;
+    private int padId;
+    private double timeStamp;
+    private User user;
 
     /**
      * Initializes a PadEvent with the triggered pad.
@@ -44,4 +47,16 @@ public class PadEvent {
         System.out.println("Recording events for pad" +  padId);
         return padId;
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this PadEvent
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this PadEvent
+     * @param newUser The user to set as this PadEvents user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

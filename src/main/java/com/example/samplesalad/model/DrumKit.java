@@ -2,6 +2,7 @@ package com.example.samplesalad.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.samplesalad.model.user.User;
 
 /**
  * The {@code DrumKit} class represents a collection of pads, each of which can be assigned a {@link Sample}.
@@ -10,6 +11,7 @@ import java.util.List;
 public class DrumKit {
     private Integer kitID;
     private String kitName;
+    private User user;
     private List<Pad> pads; // A collection of pads in the drum kit
 
     /**
@@ -114,4 +116,16 @@ public class DrumKit {
     public List<Pad> getPads() {
         return pads;
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Drumkit
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Drumkit
+     * @param newUser The user to set as this Drumkits user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

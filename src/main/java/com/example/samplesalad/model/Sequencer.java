@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Sequencer {
     private int timeSignatureNumerator;
     private int timeSignatureDenominator;
     private boolean isPlaying;
+    private User user;
 
     /**
      * Initialised with the tempo and time signature numerator and denominator
@@ -163,4 +166,16 @@ public class Sequencer {
     }
 
     public int getSequencerID(){return sequencerID;}
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Sequencer
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Sequencer
+     * @param newUser The user to set as this Sequencers user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

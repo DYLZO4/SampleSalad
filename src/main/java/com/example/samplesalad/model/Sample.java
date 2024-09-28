@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class Sample {
     private Timestamp dateAdded;
     private double duration;
     private File audioFile;
+    private User user;
 
 
     /**
@@ -287,4 +290,16 @@ public class Sample {
         appliedEffects.remove(effect);
         System.out.println("Effect removed: " + effect.getEffectType());
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Sample
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Sample
+     * @param newUser The user to set as this Samples user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }
