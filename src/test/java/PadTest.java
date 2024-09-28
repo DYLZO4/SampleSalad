@@ -12,13 +12,13 @@ class PadTest {
 
     @BeforeEach
     void setUp() {
-        mockSample = new Sample(1, "filepath");
+        mockSample  = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
         pad = new Pad(mockSample);
     }
 
     @Test
     void testSetAndGetSample() {
-        Sample newSample = new Sample(2, "new/filepath");
+        Sample newSample = new Sample("path/to/sample2.wav", "Cat", "Meow", "Bark", 0, 1);
         pad.setSample(newSample);
         assertEquals(newSample, pad.getSample());
     }

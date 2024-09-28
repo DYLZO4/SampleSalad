@@ -7,4 +7,5 @@ EffectTest.class
 SampleTest.class
 UserServiceTest.class
 UserValidatorTest.class
+DrumKitTest.class
 PadEventTest.class
