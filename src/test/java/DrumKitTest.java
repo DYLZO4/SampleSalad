@@ -19,8 +19,8 @@ class DrumKitTest {
         drumKit = new DrumKit("Test Kit");
 
         // Create some sample objects
-        sample1 = new Sample(1, "path/to/kick.wav");
-        sample2 = new Sample(2, "path/to/snare.wav");
+        sample1 = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
+        sample2 = new Sample("path/to/sample2.wav", "Cat", "Meow", "Bark", 0, 1);
     }
 
     @Test

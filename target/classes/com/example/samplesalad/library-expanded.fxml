@@ -37,12 +37,12 @@
                <AnchorPane layoutX="56.0" layoutY="35.0" prefHeight="416.0" prefWidth="525.0">
                    <TextField id="searchBar" onAction="#onTextEntered" prefHeight="24.0" prefWidth="237.0" promptText="Search..." />
                    <ScrollPane hbarPolicy="NEVER" layoutX="2.0" layoutY="24.0" prefHeight="392.0" prefWidth="453.0" vbarPolicy="ALWAYS">
-                       <TableView prefHeight="391.0" prefWidth="450.0">
+                       <TableView fx:id="sampleTable" prefHeight="391.0" prefWidth="450.0">
                            <columns>
-                               <TableColumn editable="false" prefWidth="130.0" sortType="DESCENDING" text="Song Name" />
-                               <TableColumn prefWidth="98.0" text="Date Added" />
-                               <TableColumn prefWidth="98.0" text="Duration" />
-                               <TableColumn prefWidth="110.0" text="Category" />
+                               <TableColumn fx:id="songNameColumn" editable="false" prefWidth="130.0" sortType="DESCENDING" text="Song Name" />
+                               <TableColumn fx:id="dateAddedColumn" prefWidth="98.0" text="Date Added" />
+                               <TableColumn fx:id="durationColumn" prefWidth="98.0" text="Duration" />
+                               <TableColumn fx:id="categoryColumn" prefWidth="110.0" text="Category" />
                            </columns>
                        </TableView>
                    </ScrollPane>

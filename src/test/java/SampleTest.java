@@ -23,7 +23,7 @@ class SampleTest {
      */
     @BeforeEach
     void setUp() {
-        sample = new Sample(1, "path/to/sample.wav");
+        sample = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
     }
 
     /**

@@ -1,0 +1,4 @@
+--patch-module
+com.example.samplesalad=_
+--add-reads
+com.example.samplesalad=ALL-UNNAMED
