@@ -1,7 +1,7 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.DAO.UserDAO;
-import com.example.samplesalad.model.user.UserService;
+import com.example.samplesalad.model.service.UserService;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,8 +33,8 @@ public class LoginController implements IController {
     private AnchorPane contentPane;
 
     private UserDAO userDAO;
-
     private UserService userService;
+    private UserController userController;
 
     /**
      * Default constructor for {@code LoginController} class.
@@ -42,6 +42,7 @@ public class LoginController implements IController {
     public LoginController(){
         userDAO = new UserDAO();
         userService = new UserService(userDAO);
+        userController = new UserController(userService);
     }
 
     @FXML
@@ -59,7 +60,7 @@ public class LoginController implements IController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        if (userService.loginUser(email, password)) {
+        if (userController.login(email, password)) {
             loginStatusLabel.setText("Login successful!");
             loadPage("account", email); // Load account.fxml if login is successful
         } else {
@@ -89,7 +90,7 @@ public class LoginController implements IController {
             Parent root = loader.load();
             if (email != null) {
                 AccountController accountController = loader.getController();
-                accountController.setEmail(email);
+                accountController.loadUserInfo();
             }
             AnchorPane newContentPane = (AnchorPane) root.lookup("#contentPane");
             contentPane.getChildren().setAll(newContentPane.getChildren());
