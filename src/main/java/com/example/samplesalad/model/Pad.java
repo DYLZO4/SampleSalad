@@ -2,6 +2,11 @@ package com.example.samplesalad.model;
 
 import com.example.samplesalad.model.user.User;
 
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 /**
  * A triggerable object that holds and plays a sample,
  * with properties for sensitivity, volume, and key binding,
@@ -15,6 +20,7 @@ public class Pad {
     private int bpm;
     private String keybind;
     private User user;
+    private AudioClip audioClip;
 
     /**
      * Initializes the pad with a specific sample.
@@ -26,6 +32,7 @@ public class Pad {
         this.volume = 1;
         this.bpm = 1;
         this.pitch = 1;
+        this.audioClip = null;
     }
 
     /**
@@ -172,4 +179,12 @@ public class Pad {
         return pitch;
     }
 
+    public AudioClip getAudioClip() {
+        return audioClip;
+    }
+
+    public void setAudioClip(AudioClip audioClip) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        this.audioClip = audioClip;
+        this.audioClip.loadFile();
+    }
 }

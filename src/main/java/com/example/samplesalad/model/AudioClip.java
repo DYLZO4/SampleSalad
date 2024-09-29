@@ -1,6 +1,7 @@
 package com.example.samplesalad.model;
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -10,7 +11,7 @@ import java.net.URL;
  */
 public class AudioClip implements LineListener {
     private boolean isPlaybackCompleted;
-    private String file;
+    private String filePath;
     private AudioInputStream audioStream;
     private URL inputStream;
     private Clip audioClip;
@@ -20,7 +21,7 @@ public class AudioClip implements LineListener {
      * @param file the file path or name of the audio clip to be played.
      */
     public AudioClip(String file) {
-        this.file = file;
+        this.filePath = file;
     }
 
     /**
@@ -46,12 +47,15 @@ public class AudioClip implements LineListener {
      * @throws LineUnavailableException if the system cannot open the audio line.
      */
     public void loadFile() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        inputStream  = getClass().getResource("/"+file);
-        if (inputStream == null) {
-            System.err.println("File not found: " + file);
+
+
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.err.println("File not found: " + filePath);
             return;
         }
-        audioStream = AudioSystem.getAudioInputStream(inputStream);
+
+        audioStream = AudioSystem.getAudioInputStream(file);
         audioClip = AudioSystem.getClip();
 
         audioClip.addLineListener(this);
