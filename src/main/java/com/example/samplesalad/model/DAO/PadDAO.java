@@ -32,12 +32,13 @@ public class PadDAO implements ISampleSaladDAO<Pad> {
         try {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS pads ("
-                    + "padId INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "sampleId INT, "
+                    + "padID INT AUTO_INCREMENT PRIMARY KEY, "
+                    + "kitID INT, "
+                    + "sampleID INT, "
                     + "volume DOUBLE, "
-                    + "keybind VARCHAR(50), "
-                    + "FOREIGN KEY (sampleId) REFERENCES samples(sampleID)"
-                    + ")";
+                    + "keybind VARCHAR(255), "
+                    + "FOREIGN KEY (kitID) REFERENCES drumkits(kitID), "
+                    + "FOREIGN KEY (sampleID) REFERENCES samples(sampleID))";
             statement.execute(query);
         } catch (SQLException e) {
             e.printStackTrace();
