@@ -1,4 +1,4 @@
-package com.example.samplesalad.model.user;
+package com.example.samplesalad.model.service;
 
 import java.util.regex.Pattern;
 

@@ -1,7 +1,9 @@
 package com.example.samplesalad.controller;
 
+import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.Sample;
 import com.example.samplesalad.model.DAO.SampleDAO;
+import com.example.samplesalad.model.service.UserService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,11 +59,18 @@ public class LibraryController implements IController, Initializable {
 
     private final ObservableList<Sample> sampleData = FXCollections.observableArrayList(); // Corrected declaration
     private SampleDAO sampleDAO;
+    private UserDAO userDAO;
+    private UserService userService;
+    private UserController userController;
 
     /**
      * Default constructor for the {@code libraryController} class.
      */
-    public LibraryController(){}
+    public LibraryController(){
+        userDAO = new UserDAO();
+        userService = new UserService(userDAO);
+        userController = new UserController(userService);
+    }
 
     /**
      * Handles the event when text is entered into the search bar.
@@ -151,8 +160,10 @@ public class LibraryController implements IController, Initializable {
 }
 
     private void loadSampleData() {
-        List<Sample> samples = sampleDAO.getAll();
-        sampleData.addAll(samples);
-        sampleTable.setItems(sampleData);
+        if (userController.isUserLoggedIn()) {
+            List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
+            sampleData.addAll(samples);
+            sampleTable.setItems(sampleData);
+        }
     }
 }
