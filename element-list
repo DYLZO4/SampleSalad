@@ -3,4 +3,5 @@ com.example.samplesalad
 com.example.samplesalad.controller
 com.example.samplesalad.model
 com.example.samplesalad.model.DAO
+com.example.samplesalad.model.service
 com.example.samplesalad.model.user
