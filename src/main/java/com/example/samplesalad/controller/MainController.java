@@ -1,5 +1,6 @@
 package com.example.samplesalad.controller;
 
+import com.example.samplesalad.model.AudioClip;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.DrumKit;
@@ -23,6 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -55,14 +58,13 @@ public class MainController implements Initializable {
     private ChoiceBox<Sample> assignedSample; // Change to ChoiceBox<Sample>
 
     @FXML
-    private Spinner<Double>  Pitch;
+    private Spinner<Double> Pitch;
 
     @FXML
     private Slider Volume;
 
     @FXML
     private Spinner<Integer> BPM;
-
 
 
     private UserDAO userDAO;
@@ -73,14 +75,13 @@ public class MainController implements Initializable {
     private Pad selectedPad; // Store the currently selected Pad
 
 
-
     // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
 
     /**
      * Default constructor for the {@code HelloController} class.
      */
-    public MainController (){
+    public MainController() {
         userDAO = new UserDAO();
         sampleDAO = new SampleDAO();
         userService = new UserService(userDAO);
@@ -91,7 +92,7 @@ public class MainController implements Initializable {
      * Initializes the controller class. Sets up event handlers and transitions.
      * This method is called after the FXML file has been loaded.
      *
-     * @param url The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
+     * @param url            The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
      * @param resourceBundle The resources used to localize the root object, or {@code null} if the root object is not localized.
      */
     @Override
@@ -197,7 +198,7 @@ public class MainController implements Initializable {
             }
         });
 
-        if(userController.isUserLoggedIn()){
+        if (userController.isUserLoggedIn()) {
             List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
             for (Sample sample : samples) {
                 assignedSample.getItems().add(sample);
@@ -208,6 +209,7 @@ public class MainController implements Initializable {
                 public String toString(Sample sample) {
                     return sample != null ? sample.getSampleName() : null; // Display sample name
                 }
+
                 @Override
                 public Sample fromString(String string) {
                     // Not used in this case, but you might need it if you allow user input
@@ -225,7 +227,6 @@ public class MainController implements Initializable {
         }
 
 
-
     }
 
     private void handlePadClick(Button padButton) {
@@ -239,8 +240,22 @@ public class MainController implements Initializable {
                 Pitch.getValueFactory().setValue(selectedPad.getPitch());
                 //TODO: add volume
             }
+        } else if (playSwitch.isSelected()) {
+            Pad pad = getPadFromButton(padButton);
+
+                try {
+                    pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                    pad.getAudioClip().playAudio();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                    System.err.println("Error playing audio: " + e.getMessage());
+                    // Handle the error appropriately (e.g., display an error message to the user)
+                }
+
+
+
         }
     }
+
 
     private Pad getPadFromButton(Button padButton) {
         int rowIndex = GridPane.getRowIndex(padButton);
@@ -335,20 +350,20 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void applyPadChanges() {
+    private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (selectedPad != null) {
             // Get the updated properties from the edit pane UI elements
             Sample newSample = assignedSample.getValue();
-            double newVolume = Volume.getValue();
+            // newVolume = Volume.getValue();
             int newBPM = BPM.getValue();
             double newPitch = BPM.getValue();
 
             // Apply the changes to the selectedPad
             selectedPad.setSample(newSample);
-            selectedPad.setVolume(newVolume);
+            //selectedPad.setVolume(newVolume);
             selectedPad.setBPM(newBPM);
             selectedPad.setPitch(newPitch);
-
+            selectedPad.setAudioClip(new AudioClip(newSample.getFilePath()));
             // ... apply other properties as needed
         }
     }
