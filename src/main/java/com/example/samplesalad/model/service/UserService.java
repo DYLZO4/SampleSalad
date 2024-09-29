@@ -42,12 +42,14 @@ public class UserService {
      * @param password the password provided for authentication
      * @return {@code true} if the login is successful, {@code false} otherwise
      */
-    public boolean loginUser(String email, String password) {
+    public User authenticate(String email, String password) {
         User user = userDAO.getByEmail(email);
         if (user != null) {
             String hashedPassword = HashUtil.hashPassword(password);
-            return hashedPassword.equals(user.getHashedPassword());
+            if (hashedPassword.equals(user.getHashedPassword())){
+                return user;
+            }
         }
-        return false;
+        return null;
     }
 }

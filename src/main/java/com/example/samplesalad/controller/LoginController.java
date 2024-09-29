@@ -36,12 +36,15 @@ public class LoginController implements IController {
 
     private UserService userService;
 
+    private UserController userController;
+
     /**
      * Default constructor for {@code LoginController} class.
      */
     public LoginController(){
         userDAO = new UserDAO();
         userService = new UserService(userDAO);
+        userController = new UserController(userService);
     }
 
     @FXML
@@ -59,7 +62,7 @@ public class LoginController implements IController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        if (userService.loginUser(email, password)) {
+        if (userController.login(email, password)) {
             loginStatusLabel.setText("Login successful!");
             loadPage("account", email); // Load account.fxml if login is successful
         } else {
@@ -89,7 +92,7 @@ public class LoginController implements IController {
             Parent root = loader.load();
             if (email != null) {
                 AccountController accountController = loader.getController();
-                accountController.setEmail(email);
+                accountController.loadUserInfo();
             }
             AnchorPane newContentPane = (AnchorPane) root.lookup("#contentPane");
             contentPane.getChildren().setAll(newContentPane.getChildren());

@@ -1,5 +1,6 @@
 package com.example.samplesalad.controller;
 
+import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import com.example.samplesalad.model.DAO.UserDAO;
 import javafx.fxml.FXML;
@@ -30,7 +31,9 @@ public class AccountController extends LoginController {
 
     private UserDAO userDAO;
     private User currentUser;
-    private String email;
+    private UserService userService;
+
+    private UserController userController;
 
     /**
      * Initializes the controller and loads the user information.
@@ -38,29 +41,21 @@ public class AccountController extends LoginController {
     @FXML
     public void initialize() {
         userDAO = new UserDAO();
-        loadUserInfo();
-    }
-
-    /**
-     * Sets the email of the current user.
-     *
-     * @param email The email of the current user.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-        currentUser = userDAO.getByEmail(email);
+        userService = new UserService(userDAO);
+        userController = new UserController(userService);
         loadUserInfo();
     }
 
     /**
      * Loads the current user's information into the form fields.
      */
-    private void loadUserInfo() {
-        if (currentUser != null) {
-            fnameField.setText(currentUser.getFirstName());
-            lnameField.setText(currentUser.getLastName());
-            phoneField.setText(currentUser.getPhone());
-            emailField.setText(currentUser.getEmail());
+    public void loadUserInfo() {
+        User user = userController.getLoggedInUser();
+        if (user != null) {
+            fnameField.setText(user.getFirstName());
+            lnameField.setText(user.getLastName());
+            phoneField.setText(user.getPhone());
+            emailField.setText(user.getEmail());
             // Password field is not set for security reasons
         }
     }
