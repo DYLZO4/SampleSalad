@@ -11,6 +11,8 @@ public class Pad {
     private int padID;
     private Sample sample;
     private double volume;
+    private double pitch;
+    private int bpm;
     private String keybind;
     private User user;
 
@@ -21,6 +23,9 @@ public class Pad {
      */
     public Pad(Sample sample) {
         this.sample = sample;
+        this.volume = 1;
+        this.bpm = 1;
+        this.pitch = 1;
     }
 
     /**
@@ -41,7 +46,9 @@ public class Pad {
         return sample;
     }
 
-    public Double getVolume() { return volume; }
+    public Double getVolume() {
+        return volume;
+    }
 
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
@@ -132,13 +139,37 @@ public class Pad {
 
     /**
      * Retrieve the corresponding user
+     *
      * @return user The user of this Pad
      */
-    public User getUser(){ return user; }
+    public User getUser() {
+        return user;
+    }
 
     /**
      * Sets the user of this Pad
+     *
      * @param newUser The user to set as this Pads user
      */
-    public void setUser(User newUser) { user = newUser; }
+    public void setUser(User newUser) {
+        this.user = newUser;
+    }
+
+
+    public void setBPM(int BPM) {
+        this.bpm = BPM;
+    }
+
+    public int getBPM(){
+        return bpm;
+    }
+
+    public void setPitch(double pitch) {
+        this.pitch = pitch;
+    }
+
+    public double getPitch(){
+        return pitch;
+    }
+
 }
