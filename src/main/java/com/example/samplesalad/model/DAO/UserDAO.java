@@ -39,7 +39,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
         try {
             Statement statement = connection.createStatement();
             String query = "CREATE TABLE IF NOT EXISTS users ("
-                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
+                    + "UserId INTEGER PRIMARY KEY AUTO_INCREMENT,"
                     + "firstName VARCHAR(255) NOT NULL,"
                     + "lastName VARCHAR(255) NOT NULL,"
                     + "password VARCHAR(255) NOT NULL,"

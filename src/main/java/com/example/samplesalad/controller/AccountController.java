@@ -32,7 +32,6 @@ public class AccountController extends LoginController {
     private UserDAO userDAO;
     private User currentUser;
     private UserService userService;
-
     private UserController userController;
 
     /**
