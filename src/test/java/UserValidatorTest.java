@@ -1,4 +1,4 @@
-import com.example.samplesalad.model.user.UserValidator;
+import com.example.samplesalad.model.service.UserValidator;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
