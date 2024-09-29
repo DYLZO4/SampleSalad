@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -28,7 +29,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +41,8 @@ import java.util.logging.Logger;
  * Implements {@link Initializable} to initialize UI components after they are loaded.
  */
 public class MainController implements Initializable {
+
+    private Map<KeyCode, Pad> keyBindings = new HashMap<>();
 
     @FXML
     private ImageView exit, menu;
@@ -97,6 +102,23 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DrumKit drumKit = DrumKit.getInstance();
+        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
+        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
+        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
+        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
+        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
+        keyBindings.put(KeyCode.W, drumKit.getPad(5));
+        keyBindings.put(KeyCode.E, drumKit.getPad(6));
+        keyBindings.put(KeyCode.R, drumKit.getPad(7));
+        keyBindings.put(KeyCode.A, drumKit.getPad(8));
+        keyBindings.put(KeyCode.S, drumKit.getPad(9));
+        keyBindings.put(KeyCode.D, drumKit.getPad(10));
+        keyBindings.put(KeyCode.F, drumKit.getPad(11));
+        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
+        keyBindings.put(KeyCode.X, drumKit.getPad(13));
+        keyBindings.put(KeyCode.C, drumKit.getPad(14));
+        keyBindings.put(KeyCode.V, drumKit.getPad(15));
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -226,7 +248,26 @@ public class MainController implements Initializable {
             }
         }
 
+        gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
 
+
+    }
+
+    private void handleKeyPress(KeyCode keyCode) {
+        if (playSwitch.isSelected()) { // Only in play mode (optional)
+            Pad pad = keyBindings.get(keyCode);
+            if (pad != null) {
+                // Trigger the pad (e.g., play its audio clip)
+                if (pad.getAudioClip() != null) {
+                    try {
+                        pad.getAudioClip().loadFile();
+                        pad.getAudioClip().playAudio();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        // ... (error handling)
+                    }
+                }
+            }
+        }
     }
 
     private void handlePadClick(Button padButton) {
