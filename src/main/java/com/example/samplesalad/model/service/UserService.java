@@ -1,7 +1,8 @@
-package com.example.samplesalad.model.user;
+package com.example.samplesalad.model.service;
 
 import com.example.samplesalad.model.HashUtil;
 import com.example.samplesalad.model.DAO.UserDAO;
+import com.example.samplesalad.model.user.User;
 
 /**
  * The {@code UserService} class provides high-level services for managing users.
