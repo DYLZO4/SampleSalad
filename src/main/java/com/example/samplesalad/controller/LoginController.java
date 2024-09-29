@@ -33,9 +33,7 @@ public class LoginController implements IController {
     private AnchorPane contentPane;
 
     private UserDAO userDAO;
-
     private UserService userService;
-
     private UserController userController;
 
     /**

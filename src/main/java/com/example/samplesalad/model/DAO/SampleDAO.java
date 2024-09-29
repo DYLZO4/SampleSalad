@@ -1,7 +1,10 @@
 package com.example.samplesalad.model.DAO;
 
+import com.example.samplesalad.controller.UserController;
 import com.example.samplesalad.model.DatabaseConnection;
 import com.example.samplesalad.model.Sample;
+import com.example.samplesalad.model.service.UserService;
+import com.example.samplesalad.model.user.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,13 +16,18 @@ import java.util.List;
  */
 public class SampleDAO implements ISampleSaladDAO<Sample> {
     private Connection connection;
+    private UserDAO userDAO;
+    private UserService userService;
+    private UserController userController;
 
     /**
      * Constructor that initializes the SampleDAO with a database connection.
-     *
      */
     public SampleDAO() {
         connection = DatabaseConnection.getInstance();
+        userDAO = new UserDAO();
+        userService = new UserService(userDAO);
+        userController = new UserController(userService);
         createTable();
     }
 
@@ -39,8 +47,10 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                     + "volume DOUBLE, "
                     + "startTime DOUBLE, "
                     + "endTime DOUBLE, "
-                    + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
-                    + "duration DOUBLE"
+                    + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                    + "duration DOUBLE, "
+                    + "UserID INT, "  // Adding UserID field
+                    + "FOREIGN KEY (UserID) REFERENCES users(UserID)"  // Setting UserID as a foreign key
                     + ")";
             statement.execute(query);
         } catch (Exception e) {
@@ -55,7 +65,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void add(Sample sample) {
-        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, sample.getFilePath());
             stmt.setString(2, sample.getSampleName());
@@ -67,6 +77,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
             stmt.setDouble(8, sample.getEndTime());
             stmt.setTimestamp(9, new Timestamp(sample.getDateAdded().getTime()));
             stmt.setDouble(10, sample.getDuration());
+            stmt.setInt(11, userController.getLoggedInUser().getId());
             int affectedRows = stmt.executeUpdate();
 
             // Check if the insert was successful
@@ -195,6 +206,37 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
 
                 // Create a Sample object and add it to the list
                 samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return samples;
+    }
+
+
+    public List<Sample> getSamplesByUserId(User user) {
+        List<Sample> samples = new ArrayList<>();
+        String query = "SELECT * FROM Samples WHERE UserID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user.getId()); // Set the UserID parameter
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Integer sampleID = resultSet.getInt("SampleID");
+                    String filePath = resultSet.getString("filePath");
+                    String sampleName = resultSet.getString("sampleName");
+                    String sampleArtist = resultSet.getString("sampleArtist");
+                    String sampleGenre = resultSet.getString("sampleGenre");
+                    Double pitch = resultSet.getDouble("pitch");
+                    Double volume = resultSet.getDouble("volume");
+                    Double startTime = resultSet.getDouble("startTime");
+                    Double endTime = resultSet.getDouble("endTime");
+                    Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
+                    Double duration = resultSet.getDouble("duration");
+
+                    // Create a Sample object and add it to the list
+                    samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -36,6 +36,9 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane contentPane;
 
+    // Define a variable to track if an animation is currently running
+    private boolean isAnimating = false;
+
     /**
      * Default constructor for the {@code HelloController} class.
      */
@@ -50,56 +53,82 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
         });
 
+        // Initially set pane1 to be hidden and non-interactive
         pane1.setVisible(false);
-        pane1.setMouseTransparent(true); // Initially make pane1 non-interactive
+        pane1.setMouseTransparent(true);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), pane1);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.play();
+        // Create and play the fade-out transition for pane1
+        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
+        fadeOutTransition.setFromValue(1);
+        fadeOutTransition.setToValue(0);
+        fadeOutTransition.play();
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
-        translateTransition.setByX(-600);
-        translateTransition.play();
+        // Create and play the slide transition for pane2
+        TranslateTransition slideOutTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
+        slideOutTransition.setByX(-600);
+        slideOutTransition.play();
 
+        // Menu button click event to show pane1
         menu.setOnMouseClicked(event -> {
-            pane1.setVisible(true);
-            pane1.setMouseTransparent(false); // Make pane1 interactive
-            FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(0.5), pane1);
-            fadeTransition1.setFromValue(0);
-            fadeTransition1.setToValue(1);
-            fadeTransition1.play();
+            if (!isAnimating) { // Check if an animation is currently running
+                isAnimating = true; // Set the flag to true
 
-            TranslateTransition translateTransition1 = new TranslateTransition(Duration.seconds(0.5), pane2);
-            translateTransition1.setByX(+600);
-            translateTransition1.play();
+                // Ensure pane1 is visible and interactive
+                pane1.setVisible(true);
+                pane1.setMouseTransparent(false);
+
+                // Create and play the fade-in transition for pane1
+                FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.5), pane1);
+                fadeInTransition.setFromValue(0);
+                fadeInTransition.setToValue(1);
+
+                fadeInTransition.setOnFinished(event1 -> {
+                    isAnimating = false; // Reset the flag when the animation finishes
+                });
+                fadeInTransition.play();
+
+                // Create and play the slide transition for pane2
+                TranslateTransition slideInTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
+                slideInTransition.setByX(600);
+                slideInTransition.play();
+            }
         });
 
+        // Pane1 click event to hide it
         pane1.setOnMouseClicked(event -> {
-            FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(0.5), pane1);
-            fadeTransition1.setFromValue(1);
-            fadeTransition1.setToValue(0);
-            fadeTransition1.play();
+            if (!isAnimating) { // Check if an animation is currently running
+                isAnimating = true; // Set the flag to true
 
-            fadeTransition1.setOnFinished(event1 -> {
-                pane1.setVisible(false);
-                pane1.setMouseTransparent(true); // Make pane1 non-interactive
-            });
+                // Create and play the fade-out transition for pane1
+                FadeTransition fadeOutTransition1 = new FadeTransition(Duration.seconds(0.5), pane1);
+                fadeOutTransition1.setFromValue(1);
+                fadeOutTransition1.setToValue(0);
 
-            TranslateTransition translateTransition1 = new TranslateTransition(Duration.seconds(0.5), pane2);
-            translateTransition1.setByX(-600);
-            translateTransition1.play();
+                // Set an action to run after the fade-out transition finishes
+                fadeOutTransition1.setOnFinished(event1 -> {
+                    pane1.setVisible(false);
+                    pane1.setMouseTransparent(true); // Make pane1 non-interactive again
+                    isAnimating = false; // Reset the flag when the animation finishes
+                });
+                fadeOutTransition1.play();
+
+                // Create and play the slide transition for pane2
+                TranslateTransition slideOutTransition1 = new TranslateTransition(Duration.seconds(0.5), pane2);
+                slideOutTransition1.setByX(-600);
+                slideOutTransition1.play();
+            }
         });
     }
 
-    /**
-     * Handles the settings button click event. Loads settings page
-     * @param event The mouse event triggered by clicking the settings button
-     */
+        /**
+         * Handles the settings button click event. Loads settings page
+         * @param event The mouse event triggered by clicking the settings button
+         */
     @FXML
     private void openSettings(MouseEvent event){
         loadPage("settings");
