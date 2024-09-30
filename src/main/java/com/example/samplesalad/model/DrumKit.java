@@ -14,6 +14,8 @@ public class DrumKit {
     private User user;
     private List<Pad> pads; // A collection of pads in the drum kit
 
+    private static DrumKit instance;
+
     /**
      * Constructs a {@code DrumKit} with a specified name and number of pads.
      *
@@ -22,7 +24,18 @@ public class DrumKit {
     public DrumKit(String kitName) {
         this.kitName = kitName;
         this.pads = new ArrayList<>();
+        for (int i = 0; i < 16; i++) { // Assuming you want 16 pads
+            pads.add(new Pad(null)); // Or create Sample objects as needed
+        }
     }
+
+    public static DrumKit getInstance() {
+        if (instance == null) {
+            instance = new DrumKit("currentKit");
+        }
+        return instance;
+    }
+
 
     /**
      * Adds a pad to the drum kit with the given sample.

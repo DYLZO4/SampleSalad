@@ -1,19 +1,37 @@
 package com.example.samplesalad.controller;
 
+import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.DAO.SampleDAO;
+import com.example.samplesalad.model.DAO.UserDAO;
+import com.example.samplesalad.model.DrumKit;
+import com.example.samplesalad.model.Pad;
+import com.example.samplesalad.model.Sample;
+import com.example.samplesalad.model.service.UserService;
+import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,17 +42,43 @@ import java.util.logging.Logger;
  */
 public class MainController implements Initializable {
 
+    private Map<KeyCode, Pad> keyBindings = new HashMap<>();
+
     @FXML
     private ImageView exit, menu;
 
     @FXML
-    private AnchorPane pane1, pane2;
+    private AnchorPane pane1, pane2, contentPane, editPane;
 
     @FXML
     private BorderPane bp;
 
     @FXML
-    private AnchorPane contentPane;
+    private RadioButton playSwitch, editSwitch;
+
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private ChoiceBox<Sample> assignedSample; // Change to ChoiceBox<Sample>
+
+    @FXML
+    private Spinner<Double> Pitch;
+
+    @FXML
+    private Slider Volume;
+
+    @FXML
+    private Spinner<Integer> BPM;
+
+
+    private UserDAO userDAO;
+    private SampleDAO sampleDAO;
+    private UserService userService;
+    private UserController userController;
+
+    private Pad selectedPad; // Store the currently selected Pad
+
 
     // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
@@ -42,25 +86,56 @@ public class MainController implements Initializable {
     /**
      * Default constructor for the {@code HelloController} class.
      */
-    public MainController (){}
+    public MainController() {
+        userDAO = new UserDAO();
+        sampleDAO = new SampleDAO();
+        userService = new UserService(userDAO);
+        userController = new UserController(userService);
+    }
 
     /**
      * Initializes the controller class. Sets up event handlers and transitions.
      * This method is called after the FXML file has been loaded.
      *
-     * @param url The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
+     * @param url            The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
      * @param resourceBundle The resources used to localize the root object, or {@code null} if the root object is not localized.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        DrumKit drumKit = DrumKit.getInstance();
+        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
+        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
+        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
+        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
+        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
+        keyBindings.put(KeyCode.W, drumKit.getPad(5));
+        keyBindings.put(KeyCode.E, drumKit.getPad(6));
+        keyBindings.put(KeyCode.R, drumKit.getPad(7));
+        keyBindings.put(KeyCode.A, drumKit.getPad(8));
+        keyBindings.put(KeyCode.S, drumKit.getPad(9));
+        keyBindings.put(KeyCode.D, drumKit.getPad(10));
+        keyBindings.put(KeyCode.F, drumKit.getPad(11));
+        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
+        keyBindings.put(KeyCode.X, drumKit.getPad(13));
+        keyBindings.put(KeyCode.C, drumKit.getPad(14));
+        keyBindings.put(KeyCode.V, drumKit.getPad(15));
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
         });
 
+        // Set playSwitch as selected by default
+        playSwitch.setSelected(true);
+        editSwitch.setSelected(false);
+        editPane.setVisible(false); // Initially hide editPane
+
+
         // Initially set pane1 to be hidden and non-interactive
         pane1.setVisible(false);
         pane1.setMouseTransparent(true);
+
+        Pitch.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 127, 60)); // Example for pitch
+        BPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
 
         // Create and play the fade-out transition for pane1
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
@@ -123,9 +198,116 @@ public class MainController implements Initializable {
                 slideOutTransition1.play();
             }
         });
+
+        // Set up event handlers for radio buttons
+        playSwitch.setOnAction(event -> {
+            if (playSwitch.isSelected()) {
+                editSwitch.setSelected(false);
+                editPane.setVisible(false); // Hide editPane when Play is selected
+                playSwitch.setDisable(true);
+                editSwitch.setDisable(false);
+            }
+        });
+
+        editSwitch.setOnAction(event -> {
+            if (editSwitch.isSelected()) {
+                playSwitch.setSelected(false);
+                editPane.setVisible(true); // Show editPane when Edit is selected
+                playSwitch.setDisable(false);
+                editSwitch.setDisable(true);
+            } else {
+                editPane.setVisible(false); // Hide if deselected
+            }
+        });
+
+        if (userController.isUserLoggedIn()) {
+            List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
+            for (Sample sample : samples) {
+                assignedSample.getItems().add(sample);
+            }
+
+            assignedSample.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(Sample sample) {
+                    return sample != null ? sample.getSampleName() : null; // Display sample name
+                }
+
+                @Override
+                public Sample fromString(String string) {
+                    // Not used in this case, but you might need it if you allow user input
+                    return null;
+                }
+            });
+
+        }
+
+        for (Node node : gridPane.getChildren()) { // Assuming gridPane is your GridPane
+            if (node instanceof Button) {
+                Button padButton = (Button) node;
+                padButton.setOnAction(event -> handlePadClick(padButton));
+            }
+        }
+
+        gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+
+
     }
 
-        /**
+    private void handleKeyPress(KeyCode keyCode) {
+        if (playSwitch.isSelected()) { // Only in play mode (optional)
+            Pad pad = keyBindings.get(keyCode);
+            if (pad != null) {
+                // Trigger the pad (e.g., play its audio clip)
+                if (pad.getAudioClip() != null) {
+                    try {
+                        pad.getAudioClip().loadFile();
+                        pad.getAudioClip().playAudio();
+                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                        // ... (error handling)
+                    }
+                }
+            }
+        }
+    }
+
+    private void handlePadClick(Button padButton) {
+        if (editSwitch.isSelected()) {
+            selectedPad = getPadFromButton(padButton);
+
+            if (selectedPad != null) {
+                // Display the pad's properties in the edit pane UI elements
+                assignedSample.setValue(selectedPad.getSample());
+                BPM.getValueFactory().setValue(selectedPad.getBPM());
+                Pitch.getValueFactory().setValue(selectedPad.getPitch());
+                //TODO: add volume
+            }
+        } else if (playSwitch.isSelected()) {
+            Pad pad = getPadFromButton(padButton);
+
+                try {
+                    pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                    pad.getAudioClip().playAudio();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                    System.err.println("Error playing audio: " + e.getMessage());
+                    // Handle the error appropriately (e.g., display an error message to the user)
+                }
+
+
+
+        }
+    }
+
+
+    private Pad getPadFromButton(Button padButton) {
+        int rowIndex = GridPane.getRowIndex(padButton);
+        int columnIndex = GridPane.getColumnIndex(padButton);
+
+        // Assuming your DrumKit instance is accessible (e.g., through a Singleton)
+        DrumKit drumKit = DrumKit.getInstance();
+        return drumKit.getPad(rowIndex * gridPane.getColumnCount() + columnIndex);
+    }
+
+    /**
          * Handles the settings button click event. Loads settings page
          * @param event The mouse event triggered by clicking the settings button
          */
@@ -194,6 +376,11 @@ public class MainController implements Initializable {
             } else {
                 contentPane.getChildren().setAll(root);
             }
+
+            editPane.setVisible(false);
+            playSwitch.setSelected(true); // Set playSwitch as selected
+            editSwitch.setSelected(false);
+
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,5 +388,24 @@ public class MainController implements Initializable {
 
     public void register(MouseEvent mouseEvent) {
 
+    }
+
+    @FXML
+    private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if (selectedPad != null) {
+            // Get the updated properties from the edit pane UI elements
+            Sample newSample = assignedSample.getValue();
+            // newVolume = Volume.getValue();
+            int newBPM = BPM.getValue();
+            double newPitch = BPM.getValue();
+
+            // Apply the changes to the selectedPad
+            selectedPad.setSample(newSample);
+            //selectedPad.setVolume(newVolume);
+            selectedPad.setBPM(newBPM);
+            selectedPad.setPitch(newPitch);
+            selectedPad.setAudioClip(new AudioClip(newSample.getFilePath()));
+            // ... apply other properties as needed
+        }
     }
 }
