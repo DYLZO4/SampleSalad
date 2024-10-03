@@ -10,6 +10,9 @@ import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -71,6 +74,8 @@ public class MainController implements Initializable {
     @FXML
     private Spinner<Integer> BPM;
 
+    @FXML
+    private Button signInButton;
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
@@ -83,6 +88,9 @@ public class MainController implements Initializable {
     // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
 
+    private StringProperty buttonText;
+    private EventHandler<MouseEvent> buttonAction;
+
     /**
      * Default constructor for the {@code HelloController} class.
      */
@@ -91,6 +99,8 @@ public class MainController implements Initializable {
         sampleDAO = new SampleDAO();
         userService = new UserService(userDAO);
         userController = new UserController(userService);
+        buttonText = new SimpleStringProperty("Sign in");
+        buttonAction = this::login;
     }
 
     /**
@@ -220,7 +230,13 @@ public class MainController implements Initializable {
             }
         });
 
+        signInButton.textProperty().bind(buttonText);
+        signInButton.setOnMouseClicked(event -> buttonAction.handle(event));
+
         if (userController.isUserLoggedIn()) {
+            buttonText.set("Account");
+            buttonAction = this::account;
+
             List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
             for (Sample sample : samples) {
                 assignedSample.getItems().add(sample);
@@ -238,6 +254,7 @@ public class MainController implements Initializable {
                     return null;
                 }
             });
+
 
         }
 
