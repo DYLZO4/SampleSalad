@@ -13,7 +13,6 @@ public class AudioClip implements LineListener {
     private boolean isPlaybackCompleted;
     private String filePath;
     private AudioInputStream audioStream;
-    private URL inputStream;
     private Clip audioClip;
 
     /**
@@ -96,5 +95,35 @@ public class AudioClip implements LineListener {
      */
     public boolean isPlaybackCompleted() {
         return isPlaybackCompleted;
+    }
+
+    /**
+     * Slices a portion of the original audio file and saves in a new audio file.
+     * @param srcFileName the source file to slice from
+     * @param newFileName the destination file to save the sliced audio to
+     * @param startSecond the start second of the sliced audio
+     * @param endSecond the end second of the sliced audio
+     */
+    public static void copyAudio(String srcFileName, String newFileName, int startSecond, int endSecond) {
+        AudioInputStream inputStream = null;
+        AudioInputStream slicedStream = null;
+        try {
+            File file = new File(srcFileName);
+            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+            AudioFormat format = fileFormat.getFormat();
+            inputStream = AudioSystem.getAudioInputStream(file);
+            int bytesPerSecond = format.getFrameSize() * (int)format.getFrameRate();
+            inputStream.skip(startSecond * bytesPerSecond);
+            int secondsToSlice = endSecond - startSecond;
+            long framesOfAudioToCopy = secondsToSlice * (int)format.getFrameRate();
+            slicedStream = new AudioInputStream(inputStream, format, framesOfAudioToCopy);
+            File newFile = new File(newFileName);
+            AudioSystem.write(slicedStream, fileFormat.getType(), newFile);
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            if (inputStream != null) try { inputStream.close(); } catch (Exception e) { System.err.println(e); }
+            if (slicedStream != null) try { slicedStream.close(); } catch (Exception e) { System.err.println(e); }
+        }
     }
 }
