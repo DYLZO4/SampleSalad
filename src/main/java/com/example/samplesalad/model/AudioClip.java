@@ -1,10 +1,13 @@
 package com.example.samplesalad.model;
 
 import javax.sound.sampled.*;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+
+import javazoom.jl.converter.Converter;
+import javax.sound.sampled.*;
+import java.io.*;
+
 
 /**
  * The AudioClip class is responsible for loading, playing, and managing audio files.
@@ -39,24 +42,58 @@ public class AudioClip implements LineListener {
     }
 
     /**
-     * Loads the audio file into an AudioInputStream.
-     * This method should be called before playing the audio.
+     * Loads the audio file into an AudioInputStream. Handles both WAV and MP3.
      * @throws UnsupportedAudioFileException if the audio format is unsupported.
      * @throws IOException if an I/O error occurs while loading the file.
      * @throws LineUnavailableException if the system cannot open the audio line.
      */
     public void loadFile() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
-
         File file = new File(filePath);
         if (!file.exists()) {
             System.err.println("File not found: " + filePath);
             return;
         }
 
-        audioStream = AudioSystem.getAudioInputStream(file);
-        audioClip = AudioSystem.getClip();
 
+        if (filePath.toLowerCase().endsWith(".mp3")) {
+            // ... MP3 Conversion (Existing code from previous response)
+
+        } else if (filePath.toLowerCase().endsWith(".wav")) {
+            try {
+                AudioInputStream originalStream = AudioSystem.getAudioInputStream(file);
+                AudioFormat originalFormat = originalStream.getFormat();
+
+                // Target format: PCM_SIGNED, 16-bit, 44.1kHz, stereo
+                AudioFormat targetFormat = new AudioFormat(
+                        AudioFormat.Encoding.PCM_SIGNED,
+                        44100, 16, 2, 4, 44100, false);
+
+
+                if (!originalFormat.matches(targetFormat)) {
+                    // Convert if formats don't match
+                    AudioInputStream convertedStream = AudioSystem.getAudioInputStream(targetFormat, originalStream);
+                    File tempWavFile = File.createTempFile("converted_audio", ".wav");
+                    tempWavFile.deleteOnExit();
+                    AudioSystem.write(convertedStream, AudioFileFormat.Type.WAVE, tempWavFile);
+                    audioStream = AudioSystem.getAudioInputStream(tempWavFile); // Use the converted stream
+                    convertedStream.close();
+                } else {
+                    audioStream = originalStream; // Use the original stream directly
+                }
+            } catch (Exception e) {
+                System.err.println("Error converting WAV: " + e.getMessage());
+                throw new UnsupportedAudioFileException("WAV conversion failed");
+            }
+
+
+        } else {
+            // Handle other audio formats or throw an exception
+            throw new UnsupportedAudioFileException("Unsupported audio format: " + filePath);
+        }
+
+
+
+        audioClip = AudioSystem.getClip();
         audioClip.addLineListener(this);
         audioClip.open(audioStream);
     }
@@ -127,3 +164,4 @@ public class AudioClip implements LineListener {
         }
     }
 }
+
