@@ -2,14 +2,19 @@ package com.example.samplesalad.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.samplesalad.model.user.User;
 
 /**
  * The {@code DrumKit} class represents a collection of pads, each of which can be assigned a {@link Sample}.
  * It provides methods to add pads, load a kit with samples, save the kit, and manage individual pads.
  */
 public class DrumKit {
+    private Integer kitID;
     private String kitName;
+    private User user;
     private List<Pad> pads; // A collection of pads in the drum kit
+
+    private static DrumKit instance;
 
     /**
      * Constructs a {@code DrumKit} with a specified name and number of pads.
@@ -19,7 +24,18 @@ public class DrumKit {
     public DrumKit(String kitName) {
         this.kitName = kitName;
         this.pads = new ArrayList<>();
+        for (int i = 0; i < 16; i++) { // Assuming you want 16 pads
+            pads.add(new Pad(null)); // Or create Sample objects as needed
+        }
     }
+
+    public static DrumKit getInstance() {
+        if (instance == null) {
+            instance = new DrumKit("currentKit");
+        }
+        return instance;
+    }
+
 
     /**
      * Adds a pad to the drum kit with the given sample.
@@ -29,6 +45,12 @@ public class DrumKit {
     public void addPad(Sample sample) {
         Pad newPad = new Pad(sample); // Create a new Pad with the given sample
         pads.add(newPad); // Add the pad to the drum kit
+    }
+
+    public void setKitID(Integer kitID){this.kitID = kitID;}
+
+    public Integer getKitID(){
+        return this.kitID;
     }
 
     /**
@@ -107,4 +129,16 @@ public class DrumKit {
     public List<Pad> getPads() {
         return pads;
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Drumkit
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Drumkit
+     * @param newUser The user to set as this Drumkits user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

@@ -1,4 +1,5 @@
 package com.example.samplesalad.model;
+import com.example.samplesalad.model.user.User;
 
 /**
  * The {@code Metronome} class represents a simple metronome with basic start/stop
@@ -9,7 +10,7 @@ package com.example.samplesalad.model;
  * </p>
  */
 public class Metronome {
-
+    private User user;
     private int bpm;  // Beats per minute of the metronome
     public boolean isPlaying;  // Indicates whether the metronome is currently playing
 
@@ -84,4 +85,15 @@ public class Metronome {
         return isPlaying;
     }
 
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Metronome
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Metronome
+     * @param newUser The user to set as this Metronomes user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

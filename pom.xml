@@ -57,6 +57,16 @@
       <artifactId>maven-javadoc-plugin</artifactId>
       <version>3.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+    <dependency>
+      <groupId>javazoom</groupId>
+      <artifactId>jlayer</artifactId>
+      <version>1.0.1</version> <!-- Or the latest version -->
+    </dependency>
   </dependencies>
 
   <repositories>

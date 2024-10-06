@@ -1,15 +1,26 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 /**
  * A triggerable object that holds and plays a sample,
  * with properties for sensitivity, volume, and key binding,
  * simulating the physical pads on an Akai MPC.
  */
 public class Pad {
-    private int padId;
+    private int padID;
     private Sample sample;
     private double volume;
+    private double pitch;
+    private int bpm;
     private String keybind;
+    private User user;
+    private AudioClip audioClip;
 
     /**
      * Initializes the pad with a specific sample.
@@ -18,6 +29,10 @@ public class Pad {
      */
     public Pad(Sample sample) {
         this.sample = sample;
+        this.volume = 1;
+        this.bpm = 1;
+        this.pitch = 1;
+        this.audioClip = null;
     }
 
     /**
@@ -38,12 +53,16 @@ public class Pad {
         return sample;
     }
 
+    public Double getVolume() {
+        return volume;
+    }
+
     /**
      * Triggers the sample audio to play if it's assigned and not currently playing.
      */
     public void triggerPad() {
         // Logic for triggering the pad's sample
-        System.out.println("Pad " + padId + " has been triggered");
+        System.out.println("Pad " + padID + " has been triggered");
     }
 
     /**
@@ -51,7 +70,7 @@ public class Pad {
      */
     public void mutePad() {
         // Logic for muting the pad's sample
-        System.out.println("Pad " + padId + " is muted");
+        System.out.println("Pad " + padID + " is muted");
     }
 
     /**
@@ -59,7 +78,7 @@ public class Pad {
      */
     public void unmutePad() {
         // Logic for unmuting the pad's sample
-        System.out.println("Pad " + padId + " is unmuted");
+        System.out.println("Pad " + padID + " is unmuted");
     }
 
     /**
@@ -101,7 +120,7 @@ public class Pad {
      * @return true if the sample is playing, false otherwise
      */
     public boolean isPlaying() {
-        System.out.println("Pad " + padId + " is currently playing");
+        System.out.println("Pad " + padID + " is currently playing");
         return false; // This should be updated with actual logic to check playback
     }
 
@@ -111,8 +130,8 @@ public class Pad {
      * @return the pad ID
      */
     public int getPadId() {
-        System.out.println("Current pad: pad " + padId);
-        return padId;
+        System.out.println("Current pad: pad " + padID);
+        return padID;
     }
 
     /**
@@ -122,6 +141,50 @@ public class Pad {
      */
     public void setPadId(int padId) {
         System.out.println("Pad has been set as pad " + padId);
-        this.padId = padId;
+        this.padID = padId;
+    }
+
+    /**
+     * Retrieve the corresponding user
+     *
+     * @return user The user of this Pad
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * Sets the user of this Pad
+     *
+     * @param newUser The user to set as this Pads user
+     */
+    public void setUser(User newUser) {
+        this.user = newUser;
+    }
+
+
+    public void setBPM(int BPM) {
+        this.bpm = BPM;
+    }
+
+    public int getBPM(){
+        return bpm;
+    }
+
+    public void setPitch(double pitch) {
+        this.pitch = pitch;
+    }
+
+    public double getPitch(){
+        return pitch;
+    }
+
+    public AudioClip getAudioClip() {
+        return audioClip;
+    }
+
+    public void setAudioClip(AudioClip audioClip) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        this.audioClip = audioClip;
+        this.audioClip.loadFile();
     }
 }

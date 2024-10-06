@@ -1,5 +1,7 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +11,13 @@ import java.util.List;
  */
 public class Sequencer {
 
+    private int sequencerID;
     private List<Pattern> patterns;
     private int tempo;
     private int timeSignatureNumerator;
     private int timeSignatureDenominator;
     private boolean isPlaying;
+    private User user;
 
     /**
      * Initialised with the tempo and time signature numerator and denominator
@@ -28,6 +32,7 @@ public class Sequencer {
 
     /**
      * Will record a new pattern
+     *
      * @param pattern An instance of a pattern
      */
     public void recordPattern(Pattern pattern) {
@@ -70,6 +75,7 @@ public class Sequencer {
 
     /**
      * Returns the tempo of the sequence in beats per minute
+     *
      * @return tempo The tempo of the sequence in beats per minute
      */
     public int getTempo() {
@@ -78,6 +84,7 @@ public class Sequencer {
 
     /**
      * Sets the tempo of the sequence in beats per minute
+     *
      * @param bpm The desired tempo
      */
     public void setTempo(int bpm) {
@@ -87,7 +94,8 @@ public class Sequencer {
 
     /**
      * Sets the time signature of the sequence.
-     * @param numerator The numerator of the time signature.
+     *
+     * @param numerator   The numerator of the time signature.
      * @param denominator The denominator of the time signature.
      */
     public void setTimeSignature(int numerator, int denominator) {
@@ -98,6 +106,7 @@ public class Sequencer {
 
     /**
      * Returns the numerator of the time signature
+     *
      * @return timeSignatureNumerator The numerator of the time signature
      */
     public int getTimeSignatureNumerator() {
@@ -105,7 +114,8 @@ public class Sequencer {
     }
 
     /**
-     *  Returns the denominator of the time signature
+     * Returns the denominator of the time signature
+     *
      * @return timeSignatureDenominator The Denominator of the time signature
      */
     public int getTimeSignatureDenominator() {
@@ -114,6 +124,7 @@ public class Sequencer {
 
     /**
      * Adds a pattern to the sequence
+     *
      * @param pattern The pattern to add
      */
     public void addPattern(Pattern pattern) {
@@ -123,6 +134,7 @@ public class Sequencer {
 
     /**
      * Removes a pattern from the sequence
+     *
      * @param pattern The pattern to remove
      */
     public void removePattern(Pattern pattern) {
@@ -132,6 +144,7 @@ public class Sequencer {
 
     /**
      * Returns the list of patterns in the sequence
+     *
      * @return A list of patterns
      */
     public List<Pattern> getPatterns() {
@@ -140,9 +153,29 @@ public class Sequencer {
 
     /**
      * Checks if the sequence is currently playing
+     *
      * @return true if the sequence is playing, false otherwise
      */
     public boolean isPlaying() {
         return isPlaying;
     }
+
+
+    public void setSequencerID(int sequencerID) {
+        this.sequencerID = sequencerID;
+    }
+
+    public int getSequencerID(){return sequencerID;}
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Sequencer
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Sequencer
+     * @param newUser The user to set as this Sequencers user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

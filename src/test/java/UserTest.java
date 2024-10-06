@@ -1,4 +1,5 @@
-import com.example.samplesalad.model.User;
+import com.example.samplesalad.model.HashUtil;
+import com.example.samplesalad.model.user.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,7 @@ class UserTest {
         String password = "password123";
         String phone = "0450157926";
         String email = "dylanhessing@hotmail.com";
-        User user = new User(firstName, lastName, password, email, phone);
+        User user = new User(firstName, lastName, HashUtil.hashPassword(password), email, phone);
 
         assertNotEquals(password, user.getHashedPassword(), "Hashed password should not be equal to the raw password.");
     }

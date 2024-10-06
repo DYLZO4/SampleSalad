@@ -1,8 +1,16 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.user.User;
+
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sound.sampled.*;
+import java.io.IOException;
+
+
+
 
 /**
  * The {@code Sample} class represents an audio sample with various properties
@@ -12,29 +20,57 @@ import java.util.List;
 public class Sample {
 
     private int sampleID;
+    private String sampleName;
+    private String sampleArtist;
+    private String sampleGenre;
     private String filePath;
     private double pitch;
     private double volume;
     private double startTime;
     private double endTime;
     private List<Effect> appliedEffects;
+    private Timestamp dateAdded;
+    private double duration;
+    private File audioFile;
+    private User user;
+
 
     /**
-     * Constructor to initialize a {@code Sample} object with the given sample ID
-     * and file path.
-     *
-     * @param sampleID the unique identifier for the sample
-     * @param filePath the file path where the sample is located
+     * Constructor to initialize a {@code Sample} object with the given sample ID, file path, sample name,
+     * sample artist and the selected genre of the sample
+
      */
-    public Sample(int sampleID, String filePath) {
+     public Sample(String filePath, String sampleName, String sampleArtist, String sampleGenre, double startTime, double endTime) {
+        this.filePath = filePath;
+        this.sampleName = sampleName;
+        this.sampleArtist = sampleArtist;
+        this.sampleGenre = sampleGenre;
+        this.pitch = 1.0;
+        this.volume = 1.0;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.appliedEffects = new ArrayList<>();
+        this.dateAdded =new Timestamp(System.currentTimeMillis());
+        this.audioFile = new File(filePath);
+        this.duration = endTime-startTime;
+     }
+
+
+    public Sample(Integer sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double volume, Double startTime, Double endTime, Timestamp dateAdded, Double duration) {
         this.sampleID = sampleID;
         this.filePath = filePath;
-        this.pitch = 1.0; // Default pitch (normal pitch)
-        this.volume = 1.0; // Default volume (100%)
-        this.startTime = 0.0;
-        this.endTime = 0.0; // 0.0 means the whole sample length
+        this.sampleName = sampleName;
+        this.sampleGenre = sampleGenre;
+        this.sampleArtist = sampleArtist;
+        this.pitch = pitch;
+        this.volume = volume;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.appliedEffects = new ArrayList<>();
+        this.dateAdded = dateAdded;
+        this.duration = duration;
     }
+
 
     /**
      * Gets the unique identifier for the sample.
@@ -72,6 +108,41 @@ public class Sample {
         this.filePath = filePath;
     }
 
+    /**
+     * Gets the name of the sample
+     * @return string of the sample name
+     */
+    public String getSampleName() { return sampleName; }
+
+    /**
+     * Sets the name of the sample
+     * @param sampleName the name to set
+     */
+    public void setSampleName(String sampleName) { this.sampleName = sampleName; }
+
+    /**
+     * Gets the name of the artist associated with the sample
+     * @return artist name
+     */
+    public String getSampleArtist() { return sampleArtist; }
+
+    /**
+     * Sets the name of the artist associated with the sample
+     * @param sampleArtist new name of the sample's artist
+     */
+    public void setSampleArtist(String sampleArtist) { this.sampleArtist = sampleArtist; }
+
+    /**
+     * Gets the genre of the sample
+     * @return genre of sample
+     */
+    public String getSampleGenre() { return sampleGenre; }
+
+    /**
+     * Sets the genre of the sample
+     * @param sampleGenre genre of the sample
+     */
+    public void setSampleGenre(String sampleGenre) { this.sampleGenre = sampleGenre; }
     /**
      * Gets the pitch of the sample.
      *
@@ -144,6 +215,9 @@ public class Sample {
         this.endTime = endTime;
     }
 
+    public void setDuration(double duration){this.duration = duration;}
+    public double getDuration(){return duration;}
+
     /**
      * Gets the list of effects that have been applied to the sample.
      *
@@ -152,6 +226,25 @@ public class Sample {
     public List<Effect> getAppliedEffects() {
         return appliedEffects;
     }
+
+    /**
+     * Gets the date and time when the sample was added.
+     *
+     * @return the date and time the sample was added
+     */
+    public Timestamp getDateAdded() {
+        return dateAdded;
+    }
+
+    /**
+     * Sets the date and time when the sample was added.
+     *
+     * @param dateAdded the date and time to set
+     */
+    public void setDateAdded(Timestamp dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
 
     /**
      * Loads the sample from the specified file.
@@ -197,4 +290,16 @@ public class Sample {
         appliedEffects.remove(effect);
         System.out.println("Effect removed: " + effect.getEffectType());
     }
+
+    /**
+     * Retrieve the corresponding user
+     * @return user The user of this Sample
+     */
+    public User getUser(){ return user; }
+
+    /**
+     * Sets the user of this Sample
+     * @param newUser The user to set as this Samples user
+     */
+    public void setUser(User newUser) { user = newUser; }
 }

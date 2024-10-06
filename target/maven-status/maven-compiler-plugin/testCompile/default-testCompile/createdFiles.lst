@@ -1,0 +1,11 @@
+PadTest.class
+MetronomeTest.class
+SequencerTest.class
+UserTest.class
+PatternTest.class
+EffectTest.class
+SampleTest.class
+UserServiceTest.class
+UserValidatorTest.class
+DrumKitTest.class
+PadEventTest.class

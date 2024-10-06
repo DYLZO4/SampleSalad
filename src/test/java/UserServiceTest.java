@@ -1,6 +1,7 @@
-import com.example.samplesalad.model.FakeUserDAO;
-import com.example.samplesalad.model.User;
-import com.example.samplesalad.model.UserService;
+import com.example.samplesalad.model.DAO.FakeUserDAO;
+import com.example.samplesalad.model.HashUtil;
+import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +54,7 @@ class UserServiceTest {
     }
 
     /**
-     * Tests the {@link UserService#loginUser(String, String)} method with correct credentials.
+     * Tests the {@link UserService#authenticate(String, String)} method with correct credentials.
      * <p>
      * Verifies that login is successful when using the correct password.
      * </p>
@@ -69,13 +70,13 @@ class UserServiceTest {
 
         // Register the user
         userService.registerUser(firstName, lastName, password, email, phone);
-
+        User user = new User(firstName, lastName, password, email, phone);
         // Test login with correct credentials
-        assertTrue(userService.loginUser(email, password), "Login should succeed with correct password.");
+        assertEquals(userService.authenticate(email, password).getEmail(), user.getEmail());
     }
 
     /**
-     * Tests the {@link UserService#loginUser(String, String)} method with incorrect credentials.
+     * Tests the {@link UserService#authenticate(String, String)} method with incorrect credentials.
      * <p>
      * Verifies that login fails when using an incorrect password.
      * </p>
@@ -94,6 +95,6 @@ class UserServiceTest {
 
         // Test login with incorrect password
         String incorrectPassword = "wrongPassword";
-        assertFalse(userService.loginUser(email, incorrectPassword), "Login should fail with incorrect password.");
+        assertEquals(userService.authenticate(email, incorrectPassword), null);
     }
 }

@@ -12,13 +12,13 @@ class PadTest {
 
     @BeforeEach
     void setUp() {
-        mockSample = new Sample(1, "filepath");
+        mockSample  = new Sample("path/to/sample.wav", "Dog", "Woof", "Bark", 0, 1);
         pad = new Pad(mockSample);
     }
 
     @Test
     void testSetAndGetSample() {
-        Sample newSample = new Sample(2, "new/filepath");
+        Sample newSample = new Sample("path/to/sample2.wav", "Cat", "Meow", "Bark", 0, 1);
         pad.setSample(newSample);
         assertEquals(newSample, pad.getSample());
     }
@@ -27,21 +27,18 @@ class PadTest {
     void testTriggerPad() {
         pad.setPadId(1);
         pad.triggerPad();
-        // Check output in the console or create a real trigger method to assert changes
     }
 
     @Test
     void testMutePad() {
         pad.setPadId(1);
         pad.mutePad();
-        // Check if pad is muted through any changes in the object or console output
     }
 
     @Test
     void testUnmutePad() {
         pad.setPadId(1);
         pad.unmutePad();
-        // Verify the object state after unmuting or check console output
     }
 
     @Test

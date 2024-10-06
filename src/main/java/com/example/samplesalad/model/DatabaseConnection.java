@@ -22,15 +22,13 @@ public class DatabaseConnection {
      */
     private DatabaseConnection() {
         String url = "jdbc:mysql://127.0.0.1:3306/SampleSaladDB";
-
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            // Establish the database connection
-            instance = DriverManager.getConnection(url, "SampleSaladConnector", "SampleSaladPass");
-        } catch (Exception e) {
-            // Print any exceptions that occur during connection setup
-            System.out.println(e);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            instance = DriverManager.getConnection(url, "SampleSalad", "SampleSalad");
+        } catch (ClassNotFoundException e) {
+            System.err.println("MySQL JDBC driver not found: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Error connecting to database: " + e.getMessage());
         }
     }
 
