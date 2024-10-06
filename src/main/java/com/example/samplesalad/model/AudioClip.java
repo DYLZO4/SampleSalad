@@ -1,10 +1,13 @@
 package com.example.samplesalad.model;
 
 import javax.sound.sampled.*;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+
+import javazoom.jl.converter.Converter;
+import javax.sound.sampled.*;
+import java.io.*;
+
 
 /**
  * The AudioClip class is responsible for loading, playing, and managing audio files.
@@ -39,28 +42,68 @@ public class AudioClip implements LineListener {
     }
 
     /**
-     * Loads the audio file into an AudioInputStream.
-     * This method should be called before playing the audio.
+     * Loads the audio file into an AudioInputStream. Handles both WAV and MP3.
      * @throws UnsupportedAudioFileException if the audio format is unsupported.
      * @throws IOException if an I/O error occurs while loading the file.
      * @throws LineUnavailableException if the system cannot open the audio line.
      */
     public void loadFile() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
-
         File file = new File(filePath);
         if (!file.exists()) {
             System.err.println("File not found: " + filePath);
             return;
         }
 
-        audioStream = AudioSystem.getAudioInputStream(file);
-        audioClip = AudioSystem.getClip();
+        if (filePath.toLowerCase().endsWith(".mp3")) {
+            // Handle MP3 files using JLayer conversion to WAV (unchanged)
+            try {
+                File tempWavFile = File.createTempFile("temp_audio", ".wav");
+                tempWavFile.deleteOnExit();
 
+                Converter converter = new Converter();
+                converter.convert(filePath, tempWavFile.getAbsolutePath());
+
+                audioStream = AudioSystem.getAudioInputStream(tempWavFile);
+            } catch (Exception e) {
+                System.err.println("Error converting MP3: " + e.getMessage());
+                throw new UnsupportedAudioFileException("MP3 conversion failed");
+            }
+        } else if (filePath.toLowerCase().endsWith(".wav")) {
+            try {
+                AudioInputStream originalStream = AudioSystem.getAudioInputStream(file);
+                AudioFormat originalFormat = originalStream.getFormat();
+
+                AudioFormat targetFormat = new AudioFormat(
+                        AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
+
+                if (!originalFormat.matches(targetFormat)) {
+                    try {
+                        audioStream = AudioSystem.getAudioInputStream(targetFormat, originalStream); // Direct conversion
+                    } catch (IllegalArgumentException e1) {
+                        // If direct conversion fails, try two-stage conversion:
+                        System.out.println("Direct conversion failed, attempting two-stage conversion...");
+                        try (AudioInputStream pcmStream = AudioSystem.getAudioInputStream(AudioFormat.Encoding.PCM_SIGNED, originalStream)) {
+                            audioStream = AudioSystem.getAudioInputStream(targetFormat, pcmStream);
+                        }
+                    }
+                } else {
+                    audioStream = originalStream; // Formats match, no conversion needed
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error converting WAV: " + e.getMessage());
+                throw new UnsupportedAudioFileException("WAV conversion failed: "+ e.getMessage());
+            }
+
+        } else {
+            throw new UnsupportedAudioFileException("Unsupported audio format: " + filePath);
+        }
+
+
+        audioClip = AudioSystem.getClip();
         audioClip.addLineListener(this);
         audioClip.open(audioStream);
     }
-
     /**
      * Plays the loaded audio file.
      * If the file is not loaded, it throws an IllegalStateException.
