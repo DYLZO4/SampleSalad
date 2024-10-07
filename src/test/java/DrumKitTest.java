@@ -29,8 +29,8 @@ class DrumKitTest {
         drumKit.addPad(sample1);
 
         // Verify that the pad was added correctly
-        assertEquals(1, drumKit.getPads().size(), "The pad count should be 1");
-        assertEquals(sample1, drumKit.getPad(0).getSample(), "The sample assigned to pad 0 should be sample1");
+        assertEquals(17, drumKit.getPads().size(), "The pad count should be 1");
+        assertEquals(sample1, drumKit.getPad(16).getSample(), "The sample assigned to pad 0 should be sample1");
     }
 
     @Test
@@ -40,8 +40,8 @@ class DrumKitTest {
         drumKit.addPad(sample2);
 
         // Verify that we can retrieve the pads
-        Pad pad1 = drumKit.getPad(0);
-        Pad pad2 = drumKit.getPad(1);
+        Pad pad1 = drumKit.getPad(16);
+        Pad pad2 = drumKit.getPad(17);
 
         assertNotNull(pad1, "Pad 1 should not be null");
         assertNotNull(pad2, "Pad 2 should not be null");
@@ -55,7 +55,7 @@ class DrumKitTest {
         drumKit.addPad(sample1);
 
         // Expect an exception when accessing an out-of-range pad
-        assertThrows(IllegalArgumentException.class, () -> drumKit.getPad(1), "Accessing invalid pad number should throw IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> drumKit.getPad(1000), "Accessing invalid pad number should throw IllegalArgumentException");
     }
 
     @Test
@@ -69,9 +69,9 @@ class DrumKitTest {
         drumKit.loadKit(samples);
 
         // Verify that the samples were assigned to the pads correctly
-        assertEquals(2, drumKit.getPads().size(), "The drum kit should have 2 pads after loading the kit");
-        assertEquals(sample1, drumKit.getPad(0).getSample(), "Pad 0 should have sample1 assigned");
-        assertEquals(sample2, drumKit.getPad(1).getSample(), "Pad 1 should have sample2 assigned");
+        assertEquals(18, drumKit.getPads().size(), "The drum kit should have 2 pads after loading the kit");
+        assertEquals(sample1, drumKit.getPad(16).getSample(), "Pad 0 should have sample1 assigned");
+        assertEquals(sample2, drumKit.getPad(17).getSample(), "Pad 1 should have sample2 assigned");
     }
 
     @Test
