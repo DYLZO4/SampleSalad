@@ -74,6 +74,15 @@ public class MainController implements Initializable {
     @FXML
     private Button signInButton;
 
+    @FXML
+    private ImageView playLoop;
+
+    @FXML
+    private ImageView stopLoop;
+
+    @FXML
+    private ImageView recordLoop;
+
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
     private UserService userService;
@@ -81,6 +90,7 @@ public class MainController implements Initializable {
     private Pattern pattern;
     private Pad selectedPad; // Store the currently selected Pad
     private boolean isRecording = false;
+    private Pattern currentPattern;
 
     // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
@@ -205,6 +215,27 @@ public class MainController implements Initializable {
                 slideOutTransition1.play();
             }
         });
+
+        recordLoop.setOnMouseClicked(event -> {
+            if (!isRecording) {
+                startRecordPattern();
+                isRecording = true;
+                // Change the image to stop icon (you'll need to add a stop image)
+                recordLoop.setImage(new javafx.scene.image.Image(getClass().getResource("/images/pause.png").toExternalForm()));
+
+            } else {
+                stopRecordPattern();
+                isRecording = false;
+                // Change the image back to record icon
+                recordLoop.setImage(new javafx.scene.image.Image(getClass().getResource("/images/record.png").toExternalForm()));
+            }
+        });
+
+        playLoop.setOnMouseClicked(event -> {
+            playPattern();
+        });
+
+
 
         // Set up event handlers for radio buttons
         playSwitch.setOnAction(event -> {
@@ -436,6 +467,45 @@ public class MainController implements Initializable {
             selectedPad.setPitch(newPitch);
             selectedPad.setAudioClip(new AudioClip(newSample.getFilePath()));
             // ... apply other properties as needed
+        }
+    }
+
+    private void startRecordPattern() {
+        // Create a new pattern (you'll need to determine the length)
+        currentPattern = new Pattern(16); // Example length
+        System.out.println("Recording started");
+
+        //  Add logic here to capture pad events (e.g., button presses with timestamps)
+
+
+    }
+
+
+    private void stopRecordPattern() {
+        if(currentPattern != null) {
+            System.out.println("Recording stopped. Pattern length: " + currentPattern.getLength());
+            for (PadEvent event : currentPattern.getPadEvents()) {
+                System.out.println("Pad: " + event.getPadID() + ", Timestamp: " + event.getTimeStamp());
+            }
+        } else {
+            System.out.println("No pattern to stop.");
+        }
+    }
+
+
+
+    private void playPattern() {
+        if (currentPattern != null) {
+            System.out.println("Playing pattern...");
+            //  Implement logic to play the pattern (e.g., trigger sounds based on PadEvents)
+            for(PadEvent event : currentPattern.getPadEvents()){
+                // Play the sound associated with event.getPadId() at event.getTimestamp()
+                System.out.println("Playing Pad: " + event.getPadID() + " at Timestamp" + event.getTimeStamp());
+                // Use a media player or audio API here
+            }
+
+        } else {
+            System.out.println("No pattern to play.");
         }
     }
 }

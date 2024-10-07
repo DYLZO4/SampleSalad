@@ -150,7 +150,7 @@
                   </GridPane>
                   <JFXButton layoutX="300.0" layoutY="90.0" text="">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <ImageView fx:id="playLoop" fitHeight="20.0" fitWidth="20.0">
                            <image>
                               <Image url="@images/play.png" />
                            </image>
@@ -159,7 +159,7 @@
                   </JFXButton>
                   <JFXButton layoutX="350.0" layoutY="90.0" text="">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <ImageView fx:id="stopLoop" fitHeight="20.0" fitWidth="20.0">
                            <image>
                               <Image url="@images/pause.png" />
                            </image>
@@ -168,7 +168,7 @@
                   </JFXButton>
                   <JFXButton layoutX="400.0" layoutY="90.0" text="">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <ImageView fx:id="recordLoop" fitHeight="20.0" fitWidth="20.0">
                            <image>
                               <Image url="@images/record.png" />
                            </image>
@@ -186,7 +186,7 @@
                   <Spinner fx:id="BPM" layoutX="64.0" layoutY="44.0" />
                   <Button layoutX="114.0" layoutY="275.0" onAction="#applyPadChanges" text="Apply Changes" />
                   <Spinner fx:id="Pitch" layoutX="64.0" layoutY="105.0" />
-                  <Slider fx:id="volume" min="0" max="1" value="0.5" layoutX="69.0" layoutY="80.0" />
+                  <Slider fx:id="volume" layoutX="69.0" layoutY="80.0" max="1" min="0" value="0.5" />
                </children>
             </AnchorPane>
          </children>
