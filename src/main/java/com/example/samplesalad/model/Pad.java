@@ -2,7 +2,6 @@ package com.example.samplesalad.model;
 
 import com.example.samplesalad.model.user.User;
 
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class Pad {
     public void setVolume(double volume) {
         this.volume = volume;
         if (sample != null) {
-            sample.setVolume(volume);
+            sample.setBPM(volume);
             System.out.println("Volume was changed to " + volume);
         }
     }

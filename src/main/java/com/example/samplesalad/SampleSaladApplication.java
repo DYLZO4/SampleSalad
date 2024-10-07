@@ -1,5 +1,8 @@
 package com.example.samplesalad;
 
+import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.service.BPMDetector;
+import com.example.samplesalad.model.service.DurationDetector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -38,12 +44,12 @@ public class SampleSaladApplication extends Application {
         root.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
+
         });
         root.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });
-
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }

@@ -6,6 +6,11 @@ module com.example.samplesalad {
     requires mysql.connector.j;
     requires java.desktop;
     requires jlayer;
+    requires TarsosDSP.core;
+    requires TarsosDSP.jvm;
+    requires soundtouch.jni.core;
+    requires com.sun.jna;
+
 
     opens com.example.samplesalad to javafx.fxml;
     exports com.example.samplesalad;

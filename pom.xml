@@ -45,8 +45,6 @@
           <version>RELEASE</version>
           <scope>compile</scope>
       </dependency>
-
-
     <dependency>
       <groupId>com.jfoenix</groupId>
       <artifactId>jfoenix</artifactId>
@@ -65,7 +63,34 @@
     <dependency>
       <groupId>javazoom</groupId>
       <artifactId>jlayer</artifactId>
-      <version>1.0.1</version> <!-- Or the latest version -->
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tianscar.soundtouch</groupId>
+      <artifactId>soundtouch-jni-core</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>be.tarsos.dsp</groupId>
+      <artifactId>core</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>be.tarsos.dsp</groupId>
+      <artifactId>jvm</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tianscar.soundtouch</groupId>
+      <artifactId>soundtouch-jni-core</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
@@ -74,6 +99,12 @@
       <id>jfoenix-repo</id>
       <url>https://maven.jfoenix.com</url>
     </repository>
+    <repository>
+      <id>be.0110.repo-releases</id>
+      <name>0110.be repository</name>
+      <url>https://mvn.0110.be/releases</url>
+    </repository>
+
   </repositories>
 
   <build>

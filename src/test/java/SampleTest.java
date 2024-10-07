@@ -76,15 +76,15 @@ class SampleTest {
     }
 
     /**
-     * Tests the {@link Sample#setVolume(double)} method.
+     * Tests the {@link Sample#setBPM(double)} method.
      * <p>
      * Verifies that the volume is set correctly and retrieved.
      * </p>
      */
     @Test
     void testSetVolume() {
-        sample.setVolume(0.75);
-        assertEquals(0.75, sample.getVolume(), "Volume should be set to 0.75");
+        sample.setBPM(0.75);
+        assertEquals(0.75, sample.getBPM(), "Volume should be set to 0.75");
     }
 
     /**

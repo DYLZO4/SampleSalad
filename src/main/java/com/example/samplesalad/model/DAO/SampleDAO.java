@@ -44,9 +44,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                     + "sampleArtist VARCHAR(255), "
                     + "sampleGenre VARCHAR(255), "
                     + "pitch DOUBLE, "
-                    + "volume DOUBLE, "
-                    + "startTime DOUBLE, "
-                    + "endTime DOUBLE, "
+                    + "BPM DOUBLE, "
                     + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
                     + "duration DOUBLE, "
                     + "UserID INT, "  // Adding UserID field
@@ -65,19 +63,17 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void add(Sample sample) {
-        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, sample.getFilePath());
             stmt.setString(2, sample.getSampleName());
             stmt.setString(3, sample.getSampleArtist());
             stmt.setString(4, sample.getSampleGenre());
             stmt.setDouble(5, sample.getPitch());
-            stmt.setDouble(6, sample.getVolume());
-            stmt.setDouble(7, sample.getStartTime());
-            stmt.setDouble(8, sample.getEndTime());
-            stmt.setTimestamp(9, new Timestamp(sample.getDateAdded().getTime()));
-            stmt.setDouble(10, sample.getDuration());
-            stmt.setInt(11, userController.getLoggedInUser().getId());
+            stmt.setDouble(6, sample.getBPM());
+            stmt.setTimestamp(7, new Timestamp(sample.getDateAdded().getTime()));
+            stmt.setDouble(8, sample.getDuration());
+            stmt.setInt(9, userController.getLoggedInUser().getId());
             int affectedRows = stmt.executeUpdate();
 
             // Check if the insert was successful
@@ -100,18 +96,16 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void update(Sample sample) {
-        String query = "UPDATE Samples SET filePath = ?, sampleName = ?, sampleArtist = ?, sampleGenre = ?, pitch = ?, volume = ?, startTime = ?, endTime = ?, dateAdded = ? WHERE SampleID = ?";
+        String query = "UPDATE Samples SET filePath = ?, sampleName = ?, sampleArtist = ?, sampleGenre = ?, pitch = ?, BPM = ?, , dateAdded = ? WHERE SampleID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, sample.getFilePath());
             stmt.setString(2, sample.getSampleName());
             stmt.setString(3, sample.getSampleArtist());
             stmt.setString(4, sample.getSampleGenre());
             stmt.setDouble(5, sample.getPitch());
-            stmt.setDouble(6, sample.getVolume());
-            stmt.setDouble(7, sample.getStartTime());
-            stmt.setDouble(8, sample.getEndTime());
-            stmt.setTimestamp(9, new Timestamp(sample.getDateAdded().getTime()));
-            stmt.setInt(10, sample.getSampleID());
+            stmt.setDouble(6, sample.getBPM());
+            stmt.setTimestamp(7, new Timestamp(sample.getDateAdded().getTime()));
+            stmt.setInt(8, sample.getSampleID());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -165,13 +159,11 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                 String sampleName = resultSet.getString("sampleName");
                 String sampleArtist = resultSet.getString("sampleArtist");
                 String sampleGenre = resultSet.getString("sampleGenre");
-                Double volume = resultSet.getDouble("volume");
+                Double BPM = resultSet.getDouble("BPM");
                 Double pitch = resultSet.getDouble("pitch");
-                Double startTime = resultSet.getDouble("startTime");
-                Double endTime = resultSet.getDouble("endTime");
                 Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
                 Double duration = resultSet.getDouble("duration");
-                return new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration);
+                return new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,14 +190,12 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                 String sampleArtist = resultSet.getString("sampleArtist");
                 String sampleGenre = resultSet.getString("sampleGenre");
                 Double pitch = resultSet.getDouble("pitch");
-                Double volume = resultSet.getDouble("volume");
-                Double startTime = resultSet.getDouble("startTime");
-                Double endTime = resultSet.getDouble("endTime");
+                Double BPM = resultSet.getDouble("BPM");
                 Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
                 Double duration = resultSet.getDouble("duration");
 
                 // Create a Sample object and add it to the list
-                samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration));
+                samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -228,14 +218,12 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                     String sampleArtist = resultSet.getString("sampleArtist");
                     String sampleGenre = resultSet.getString("sampleGenre");
                     Double pitch = resultSet.getDouble("pitch");
-                    Double volume = resultSet.getDouble("volume");
-                    Double startTime = resultSet.getDouble("startTime");
-                    Double endTime = resultSet.getDouble("endTime");
+                    Double BPM = resultSet.getDouble("BPM");
                     Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
                     Double duration = resultSet.getDouble("duration");
 
                     // Create a Sample object and add it to the list
-                    samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, volume, startTime, endTime, dateAdded, duration));
+                    samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration));
                 }
             }
         } catch (SQLException e) {
