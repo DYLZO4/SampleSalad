@@ -1,4 +1,5 @@
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\HashUtil.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\service\DurationDetector.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\PadEvent.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\LoginController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\MainController.java
@@ -27,6 +28,7 @@ C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\user\User.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\MockUserDAO.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\IController.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\SoundTouchSpeedChanger.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\ISampleSaladDAO.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\SampleDAO.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\ProjectLoader.java
@@ -39,4 +41,6 @@ C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\LibraryController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\Pad.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\PageLoader.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\service\BPMDetector.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\SoundTouchLibrary.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\Project.java

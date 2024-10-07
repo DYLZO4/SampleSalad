@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: DrumKitTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.079 s <<< FAILURE! -- in DrumKitTest
-DrumKitTest.testGetPad_invalidPadNumber -- Time elapsed: 0.009 s <<< FAILURE!
+Tests run: 6, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.145 s <<< FAILURE! -- in DrumKitTest
+DrumKitTest.testGetPad_invalidPadNumber -- Time elapsed: 0.017 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: Accessing invalid pad number should throw IllegalArgumentException ==> Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
@@ -25,8 +25,8 @@ org.opentest4j.AssertionFailedError: The drum kit should have 2 pads after loadi
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-DrumKitTest.testGetPad_validPadNumber -- Time elapsed: 0.002 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: Pad 1 should have sample1 assigned ==> expected: <com.example.samplesalad.model.Sample@7bf3a5d8> but was: <null>
+DrumKitTest.testGetPad_validPadNumber -- Time elapsed: 0.015 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Pad 1 should have sample1 assigned ==> expected: <com.example.samplesalad.model.Sample@4ea5b703> but was: <null>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
 	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
@@ -37,7 +37,7 @@ org.opentest4j.AssertionFailedError: Pad 1 should have sample1 assigned ==> expe
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-DrumKitTest.testAddPad -- Time elapsed: 0.003 s <<< FAILURE!
+DrumKitTest.testAddPad -- Time elapsed: 0.009 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: The pad count should be 1 ==> expected: <1> but was: <17>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
