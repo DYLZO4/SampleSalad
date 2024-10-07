@@ -1,11 +1,8 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.*;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
-import com.example.samplesalad.model.DrumKit;
-import com.example.samplesalad.model.Pad;
-import com.example.samplesalad.model.Sample;
 import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
@@ -81,9 +78,9 @@ public class MainController implements Initializable {
     private SampleDAO sampleDAO;
     private UserService userService;
     private UserController userController;
-
+    private Pattern pattern;
     private Pad selectedPad; // Store the currently selected Pad
-
+    private boolean isRecording = false;
 
     // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
@@ -269,6 +266,16 @@ public class MainController implements Initializable {
 
 
     }
+    private void startRecording() {
+        isRecording = true;
+        pattern.startRecordPattern();
+    }
+
+    private void triggerPadEvent(Pad pad) {
+        PadEvent padevent = new PadEvent(pad);
+        pattern.addPadEvent(padevent);
+        pattern.addTimeStamp(padevent.getTimeStamp() - pattern.getStartTime());
+    }
 
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode (optional)
@@ -279,6 +286,9 @@ public class MainController implements Initializable {
                     try {
                         pad.getAudioClip().loadFile();
                         pad.getAudioClip().playAudio();
+                        if (isRecording == true) {
+                            triggerPadEvent(pad);
+                        }
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                         // ... (error handling)
                     }
@@ -304,6 +314,9 @@ public class MainController implements Initializable {
                 try {
                     pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
                     pad.getAudioClip().playAudio();
+                    if (isRecording == true) {
+                        triggerPadEvent(pad);
+                    }
                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                     System.err.println("Error playing audio: " + e.getMessage());
                     // Handle the error appropriately (e.g., display an error message to the user)

@@ -59,4 +59,8 @@ public class PadEvent {
      * @param newUser The user to set as this PadEvents user
      */
     public void setUser(User newUser) { user = newUser; }
+
+    public Pad getPad() {
+        return pad;
+    }
 }
