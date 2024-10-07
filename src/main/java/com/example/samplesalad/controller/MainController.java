@@ -12,12 +12,14 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -25,6 +27,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -44,6 +49,12 @@ import java.util.logging.Logger;
  * Implements {@link Initializable} to initialize UI components after they are loaded.
  */
 public class MainController implements Initializable {
+
+    public Text warningMessage;
+
+    public static void main(String[] args) {
+
+    }
 
     private Map<KeyCode, Pad> keyBindings = new HashMap<>();
 
@@ -129,6 +140,7 @@ public class MainController implements Initializable {
         keyBindings.put(KeyCode.X, drumKit.getPad(13));
         keyBindings.put(KeyCode.C, drumKit.getPad(14));
         keyBindings.put(KeyCode.V, drumKit.getPad(15));
+
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -225,6 +237,7 @@ public class MainController implements Initializable {
                 editPane.setVisible(true); // Show editPane when Edit is selected
                 playSwitch.setDisable(false);
                 editSwitch.setDisable(true);
+                warningMessage.setVisible(false);
             } else {
                 editPane.setVisible(false); // Hide if deselected
             }
@@ -255,7 +268,6 @@ public class MainController implements Initializable {
                 }
             });
 
-
         }
 
         for (Node node : gridPane.getChildren()) { // Assuming gridPane is your GridPane
@@ -266,8 +278,6 @@ public class MainController implements Initializable {
         }
 
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
-
-
     }
 
     private void handleKeyPress(KeyCode keyCode) {
@@ -308,9 +318,6 @@ public class MainController implements Initializable {
                     System.err.println("Error playing audio: " + e.getMessage());
                     // Handle the error appropriately (e.g., display an error message to the user)
                 }
-
-
-
         }
     }
 
@@ -403,15 +410,12 @@ public class MainController implements Initializable {
         }
     }
 
-    public void register(MouseEvent mouseEvent) {
-
-    }
-
     @FXML
     private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (selectedPad != null) {
             // Get the updated properties from the edit pane UI elements
             Sample newSample = assignedSample.getValue();
+            // TODO: apply split audio changes here
             // newVolume = Volume.getValue();
             int newBPM = BPM.getValue();
             double newPitch = BPM.getValue();
@@ -424,5 +428,42 @@ public class MainController implements Initializable {
             selectedPad.setAudioClip(new AudioClip(newSample.getFilePath()));
             // ... apply other properties as needed
         }
+    }
+
+    public void editSampleSplit(ActionEvent actionEvent) throws IOException {
+        if(assignedSample.getValue() == null){
+            warningMessage.setVisible(true);
+        } else {
+            URL popupURL = getClass().getResource("/com/example/samplesalad/range-slider.fxml");
+            if (popupURL == null) {
+                Logger.getLogger(LibraryController.class.getName()).log(Level.SEVERE, "FXML file not found: range-slider.fxml");
+                return;
+            }
+            Logger.getLogger(LibraryController.class.getName()).log(Level.INFO, "Loading FXML file: " + popupURL.toString());
+            FXMLLoader popupLoader = new FXMLLoader(popupURL);
+
+            Scene scene = popupLoader.load();
+            RangeSliderController controller = popupLoader.getController();
+            controller.setMainController(this);
+            if (assignedSample.getValue() != null){
+                controller.setCurrentSample(assignedSample.getValue());
+            } else {
+                // TODO: tell user to choose a sample or upload samples through the library
+            }
+
+            if (selectedPad != null){
+                controller.setCurrentPad(selectedPad);
+            }
+
+            Stage popup = new Stage();
+            popup.setTitle("Edit split from audio");
+            popup.setScene(scene);
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.showAndWait();
+        }
+    }
+
+    public void setAssignedSampleValue(Sample sample){
+        assignedSample.setValue(sample);
     }
 }

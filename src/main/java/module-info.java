@@ -15,4 +15,4 @@ module com.example.samplesalad {
     exports com.example.samplesalad.model.user;
     exports com.example.samplesalad.model.DAO;
     exports com.example.samplesalad.model.service;
-}how to pull changes from main gi
+}

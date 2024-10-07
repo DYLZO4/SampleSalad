@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Scene xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.RangeSliderController">
+    <AnchorPane prefHeight="287.0" prefWidth="538.0">
+    <Label fx:id="lowerValueLabel" layoutX="37.0" layoutY="50.0" prefHeight="16.0" prefWidth="201.0" />
+    <Label fx:id="upperValueLabel" layoutX="334.0" layoutY="50.0" prefHeight="16.0" prefWidth="169.0" />
+    <Canvas fx:id="rangeCanvas" height="60" layoutX="26.0" layoutY="93.0" width="487.0" />
+      <Button layoutX="428.0" layoutY="238.0" mnemonicParsing="false" onMouseClicked="#onConfirmButtonClicked" text="Confirm" />
+      <TextField fx:id="newFileName" layoutX="37.0" layoutY="180.0" prefHeight="24.0" prefWidth="218.0" promptText="Sample clip name" />
+    </AnchorPane>
+</Scene>
