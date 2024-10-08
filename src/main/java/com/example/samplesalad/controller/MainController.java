@@ -231,6 +231,7 @@ public class MainController implements Initializable {
         });
 
         playButton.setOnMouseClicked(mouseEvent -> {
+            if (!pattern.getIsPlaying()){
             try {
                 pattern.startPattern();
                 pattern.playPattern();
@@ -242,6 +243,7 @@ public class MainController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            } else{ pattern.stopPattern();}
         });
 
         recordButton.setOnMouseClicked(mouseEvent -> {

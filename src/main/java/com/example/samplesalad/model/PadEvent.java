@@ -8,7 +8,7 @@ import com.example.samplesalad.model.user.User;
 public class PadEvent {
     private Pad pad;
     private int padId;
-    private double timeStamp;
+    private long timeStamp;
     private User user;
 
     /**
@@ -26,7 +26,7 @@ public class PadEvent {
      * (Temporarily retrieve current time)
      */
     public void triggerEvent() {
-        this.timeStamp = (double) System.currentTimeMillis();
+        this.timeStamp = System.currentTimeMillis();
         System.out.println("Event recorded at: " +  timeStamp);
     }
 
@@ -34,7 +34,7 @@ public class PadEvent {
      * Retrieves the timestamp at which the pad was triggered.
      * @return The timestamp in seconds since the epoch (UNIX time).
      */
-    public double getTimeStamp() {
+    public long getTimeStamp() {
         System.out.println("Current time: " +  timeStamp);
         return timeStamp;
     }

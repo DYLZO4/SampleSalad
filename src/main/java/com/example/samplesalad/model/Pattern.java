@@ -36,6 +36,7 @@ public class Pattern {
     public Pattern(int length) {
         this.length = length;
         this.padEvents = new ArrayList<>();
+        this.isPlaying = false;
     }
 
     /**
@@ -144,39 +145,45 @@ public class Pattern {
             return;
         }
 
-        while (isPlaying) { // Loop while isPlaying is true
-            long previousTime = startTime;
-
-            for (PadEvent event : padEvents) {
-                if (!isPlaying) {
-                    break; // Stop playback if isPlaying is set to false
-                }
-
-                long delay = (long) event.getTimeStamp() - previousTime;
-                try {
-                    TimeUnit.MILLISECONDS.sleep(delay); // Sleep for the calculated delay
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                event.getPad().getAudioClip().loadFile();
-                event.getPad().getAudioClip().playAudio();
-                previousTime = (long) event.getTimeStamp();
-            }
-
-            // Optional: After completing one loop, wait for a short time before starting again
-            // This helps avoid instant replay if the endTime and startTime are very close
+        // Run playback in a separate thread
+        new Thread(() -> {
             try {
-                long waitBetweenLoops = endTime - previousTime; // Time between pattern end and next start
-                if (waitBetweenLoops > 0) {
-                    TimeUnit.MILLISECONDS.sleep(waitBetweenLoops);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+                while (isPlaying) { // Continue looping as long as isPlaying is true
+                    long previousTime = startTime;
 
-        System.out.println("Pattern playback stopped.");
+                    for (PadEvent event : padEvents) {
+                        if (!isPlaying) {
+                            break; // Stop playback if isPlaying is set to false
+                        }
+
+                        long delay = event.getTimeStamp() - previousTime;
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(delay); // Sleep for the calculated delay
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            event.getPad().getAudioClip().loadFile();
+                            event.getPad().getAudioClip().playAudio();
+                        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                            e.printStackTrace(); // Handle any audio-related exceptions
+                        }
+
+                        previousTime = event.getTimeStamp();
+                    }
+                }
+
+                System.out.println("Pattern playback stopped.");
+            } catch (Exception e) {
+                e.printStackTrace(); // Handle any other unexpected exceptions
+            }
+        }).start();
     }
 
+
+
+    public boolean getIsPlaying() {
+        return isPlaying;
+    }
 }
