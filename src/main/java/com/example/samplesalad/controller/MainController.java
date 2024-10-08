@@ -280,6 +280,11 @@ public class MainController implements Initializable {
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
     }
 
+    /**
+     * This is called when a user presses a key on their keyboard or other device.
+     * Plays sound and relevant effects associated with the assigned pad.
+     * @param keyCode The key/button pressed by the user
+     */
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode (optional)
             Pad pad = keyBindings.get(keyCode);
@@ -297,6 +302,11 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * This is called when the user clicks the pad with their mouse.
+     * Plays sound associated with the pad and the relevant effects added to it.
+     * @param padButton The button which was clicked
+     */
     private void handlePadClick(Button padButton) {
         if (editSwitch.isSelected()) {
             selectedPad = getPadFromButton(padButton);
@@ -311,22 +321,25 @@ public class MainController implements Initializable {
         } else if (playSwitch.isSelected()) {
             Pad pad = getPadFromButton(padButton);
 
-                try {
-                    pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
-                    pad.getAudioClip().playAudio();
-                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                    System.err.println("Error playing audio: " + e.getMessage());
-                    // Handle the error appropriately (e.g., display an error message to the user)
-                }
+            try {
+                pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                pad.getAudioClip().playAudio();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Error playing audio: " + e.getMessage());
+                // Handle the error appropriately (e.g., display an error message to the user)
+            }
         }
     }
 
-
+    /**
+     * Returns the {@code Pad} object based on which pad button the user has selected
+     * @param padButton The button which the user has selected
+     * @return {@code Pad} associated with the button
+     */
     private Pad getPadFromButton(Button padButton) {
         int rowIndex = GridPane.getRowIndex(padButton);
         int columnIndex = GridPane.getColumnIndex(padButton);
 
-        // Assuming your DrumKit instance is accessible (e.g., through a Singleton)
         DrumKit drumKit = DrumKit.getInstance();
         return drumKit.getPad(rowIndex * gridPane.getColumnCount() + columnIndex);
     }
@@ -410,6 +423,12 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Changes the settings applied to a particular pad after using the edit page.
+     * @throws UnsupportedAudioFileException if the audio format is unsupported.
+     * @throws LineUnavailableException if the system cannot open an audio line.
+     * @throws IOException if an I/O error occurs
+     */
     @FXML
     private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (selectedPad != null) {
@@ -430,6 +449,13 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Opens the relevant popup when a user clicks the Edit Sample Length button.
+     * If no sample is selected, displays a warning message to select a sample before clicking the button.
+     * Provides new RangeSliderController with the current sample, the current pad and the current main controller.
+     * @param actionEvent The action event triggered by clicking the Edit Sample Length button
+     * @throws IOException if an I/O error occurs while opening the popup
+     */
     public void editSampleSplit(ActionEvent actionEvent) throws IOException {
         if(assignedSample.getValue() == null){
             warningMessage.setVisible(true);
@@ -447,8 +473,6 @@ public class MainController implements Initializable {
             controller.setMainController(this);
             if (assignedSample.getValue() != null){
                 controller.setCurrentSample(assignedSample.getValue());
-            } else {
-                // TODO: tell user to choose a sample or upload samples through the library
             }
 
             if (selectedPad != null){
@@ -463,6 +487,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Sets the value for the assigned sample for the currently selected pad
+     * @param sample The new value for the {@code assignedSample} variable
+     */
     public void setAssignedSampleValue(Sample sample){
         assignedSample.setValue(sample);
     }
