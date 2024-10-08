@@ -5,6 +5,7 @@
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
@@ -13,10 +14,10 @@
    <root>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="410.0">
          <children>
-            <Button layoutX="173.0" layoutY="213.0" mnemonicParsing="false" onMouseClicked="#addSampleToDB" text="Add music" />
+            <Button layoutX="162.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#addSampleToDB" text="Add music" />
             <TextField fx:id="sampleName" layoutX="45.0" layoutY="65.0" promptText="Song Title" />
             <TextField fx:id="sampleArtist" layoutX="45.0" layoutY="96.0" promptText="Artist" />
-            <ChoiceBox fx:id="genreChoiceBox" layoutX="45.0" layoutY="179.0" prefHeight="24.0" prefWidth="171.0" AnchorPane.topAnchor="179.0">
+            <ChoiceBox fx:id="genreChoiceBox" layoutX="45.0" layoutY="188.0" prefHeight="24.0" prefWidth="171.0" AnchorPane.topAnchor="188.0">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="Classical" />
@@ -26,9 +27,11 @@
                </items>
             </ChoiceBox>
             <Button layoutX="238.0" layoutY="65.0" mnemonicParsing="false" onMouseClicked="#openFileExplorer" prefHeight="114.0" prefWidth="126.0" />
-            <Text layoutX="45.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select categories" />
-            <TextField layoutX="45.0" layoutY="130.0" prefHeight="26.0" prefWidth="74.0" promptText="Start" />
-            <TextField layoutX="125.0" layoutY="130.0" prefHeight="26.0" prefWidth="72.0" promptText="End" />
+            <Text layoutX="45.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select categories" />
+            <Spinner fx:id="BPM" layoutX="45.0" layoutY="145.0" prefHeight="26.0" prefWidth="68.0" />
+            <Button fx:id="Tap" layoutX="123.0" layoutY="145.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Tap" />
+            <Text layoutX="45.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select BPM" />
+            <Button fx:id="Preview" layoutX="273.0" layoutY="188.0" mnemonicParsing="false" text="Preview" />
          </children>
       </AnchorPane>
    </root>

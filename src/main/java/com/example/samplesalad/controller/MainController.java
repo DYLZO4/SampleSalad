@@ -1,11 +1,8 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.*;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
-import com.example.samplesalad.model.DrumKit;
-import com.example.samplesalad.model.Pad;
-import com.example.samplesalad.model.Sample;
 import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
@@ -13,6 +10,8 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,7 +85,7 @@ public class MainController implements Initializable {
     private Spinner<Integer> BPM;
 
     @FXML
-    private Button signInButton;
+    private Button signInButton, playButton, recordButton;
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
@@ -94,13 +93,13 @@ public class MainController implements Initializable {
     private UserController userController;
 
     private Pad selectedPad; // Store the currently selected Pad
+    private boolean isRecording = false;
 
-
-    // Define a variable to track if an animation is currently running
     private boolean isAnimating = false;
 
     private StringProperty buttonText;
     private EventHandler<MouseEvent> buttonAction;
+    private Pattern pattern;
 
     /**
      * Default constructor for the {@code HelloController} class.
@@ -112,6 +111,7 @@ public class MainController implements Initializable {
         userController = new UserController(userService);
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
+        pattern = new Pattern(16);
     }
 
     /**
@@ -243,6 +243,31 @@ public class MainController implements Initializable {
             }
         });
 
+        playButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                pattern.startPattern();
+                pattern.playPattern();
+
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        recordButton.setOnMouseClicked(mouseEvent -> {
+            pattern.startRecordPattern();
+            if(!isRecording){
+                isRecording = true;
+                pattern.startRecordPattern();
+            } else {
+                isRecording=false;
+                pattern.endRecordPattern();
+            }
+        });
+
         signInButton.textProperty().bind(buttonText);
         signInButton.setOnMouseClicked(event -> buttonAction.handle(event));
 
@@ -263,14 +288,35 @@ public class MainController implements Initializable {
 
                 @Override
                 public Sample fromString(String string) {
-                    // Not used in this case, but you might need it if you allow user input
                     return null;
                 }
             });
 
         }
+        //listener on sample selection to fetch properties
+        assignedSample.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sample>() {
+            @Override
+            public void changed(ObservableValue<? extends Sample> observable, Sample oldValue, Sample newValue) {
+                if (newValue != null) {
+                    // Update the BPM Spinner with the new sample's BPM
+                    BPM.getValueFactory().setValue((int)newValue.getBPM());
+                    Pitch.getValueFactory().setValue(newValue.getPitch());
+                    //TODO: volume stuff
+                    try {
+                        selectedPad.setAudioClip(new AudioClip(newValue.getFilePath()));
 
-        for (Node node : gridPane.getChildren()) { // Assuming gridPane is your GridPane
+                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+
+            }
+
+
+        });
+
+        for (Node node : gridPane.getChildren()) {
             if (node instanceof Button) {
                 Button padButton = (Button) node;
                 padButton.setOnAction(event -> handlePadClick(padButton));
@@ -286,19 +332,9 @@ public class MainController implements Initializable {
      * @param keyCode The key/button pressed by the user
      */
     private void handleKeyPress(KeyCode keyCode) {
-        if (playSwitch.isSelected()) { // Only in play mode (optional)
+        if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
-            if (pad != null) {
-                // Trigger the pad (e.g., play its audio clip)
-                if (pad.getAudioClip() != null) {
-                    try {
-                        pad.getAudioClip().loadFile();
-                        pad.getAudioClip().playAudio();
-                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                        // ... (error handling)
-                    }
-                }
-            }
+            playAudio(pad);
         }
     }
 
