@@ -12,6 +12,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -250,15 +252,36 @@ public class MainController implements Initializable {
 
                 @Override
                 public Sample fromString(String string) {
-                    // Not used in this case, but you might need it if you allow user input
                     return null;
                 }
             });
 
 
         }
+        //listener on sample selection to fetch properties
+        assignedSample.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sample>() {
+            @Override
+            public void changed(ObservableValue<? extends Sample> observable, Sample oldValue, Sample newValue) {
+                if (newValue != null) {
+                    // Update the BPM Spinner with the new sample's BPM
+                    BPM.getValueFactory().setValue((int)newValue.getBPM());
+                    Pitch.getValueFactory().setValue(newValue.getPitch());
+                    //TODO: volume stuff
+                    try {
+                        selectedPad.setAudioClip(new AudioClip(newValue.getFilePath()));
 
-        for (Node node : gridPane.getChildren()) { // Assuming gridPane is your GridPane
+                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+
+            }
+
+
+        });
+
+        for (Node node : gridPane.getChildren()) {
             if (node instanceof Button) {
                 Button padButton = (Button) node;
                 padButton.setOnAction(event -> handlePadClick(padButton));
@@ -271,10 +294,9 @@ public class MainController implements Initializable {
     }
 
     private void handleKeyPress(KeyCode keyCode) {
-        if (playSwitch.isSelected()) { // Only in play mode (optional)
+        if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
             if (pad != null) {
-                // Trigger the pad (e.g., play its audio clip)
                 if (pad.getAudioClip() != null) {
                     try {
                         pad.getAudioClip().loadFile();

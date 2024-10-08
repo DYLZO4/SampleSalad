@@ -6,10 +6,6 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.sampled.*;
-import java.io.IOException;
-
-
 
 
 /**
@@ -25,7 +21,7 @@ public class Sample {
     private String sampleGenre;
     private String filePath;
     private double pitch;
-    private double volume;
+    private double BPM;
     private double startTime;
     private double endTime;
     private List<Effect> appliedEffects;
@@ -40,32 +36,28 @@ public class Sample {
      * sample artist and the selected genre of the sample
 
      */
-     public Sample(String filePath, String sampleName, String sampleArtist, String sampleGenre, double startTime, double endTime) {
+     public Sample(String filePath, String sampleName, String sampleArtist, String sampleGenre, int BPM, double duration) {
         this.filePath = filePath;
         this.sampleName = sampleName;
         this.sampleArtist = sampleArtist;
         this.sampleGenre = sampleGenre;
         this.pitch = 1.0;
-        this.volume = 1.0;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.BPM = BPM;
         this.appliedEffects = new ArrayList<>();
         this.dateAdded =new Timestamp(System.currentTimeMillis());
         this.audioFile = new File(filePath);
-        this.duration = endTime-startTime;
+        this.duration = duration;
      }
 
 
-    public Sample(Integer sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double volume, Double startTime, Double endTime, Timestamp dateAdded, Double duration) {
+    public Sample(Integer sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double bpm, Timestamp dateAdded, Double duration) {
         this.sampleID = sampleID;
         this.filePath = filePath;
         this.sampleName = sampleName;
         this.sampleGenre = sampleGenre;
         this.sampleArtist = sampleArtist;
         this.pitch = pitch;
-        this.volume = volume;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.BPM = bpm;
         this.appliedEffects = new ArrayList<>();
         this.dateAdded = dateAdded;
         this.duration = duration;
@@ -166,54 +158,19 @@ public class Sample {
      *
      * @return the volume of the sample
      */
-    public double getVolume() {
-        return volume;
+    public double getBPM() {
+        return BPM;
     }
 
     /**
      * Sets the volume of the sample.
      *
-     * @param volume the volume to set (1.0 for 100% volume)
+     * @param BPM the volume to set (1.0 for 100% volume)
      */
-    public void setVolume(double volume) {
-        this.volume = volume;
+    public void setBPM(double BPM) {
+        this.BPM = BPM;
     }
 
-    /**
-     * Gets the start time of the sample playback.
-     *
-     * @return the start time of the sample in seconds
-     */
-    public double getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * Sets the start time of the sample playback.
-     *
-     * @param startTime the start time in seconds
-     */
-    public void setStartTime(double startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * Gets the end time of the sample playback.
-     *
-     * @return the end time of the sample in seconds
-     */
-    public double getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * Sets the end time of the sample playback.
-     *
-     * @param endTime the end time in seconds
-     */
-    public void setEndTime(double endTime) {
-        this.endTime = endTime;
-    }
 
     public void setDuration(double duration){this.duration = duration;}
     public double getDuration(){return duration;}
@@ -260,7 +217,7 @@ public class Sample {
      * Plays the sample, applying the current pitch and volume settings.
      */
     public void playSample() {
-        System.out.println("Playing sample from " + filePath + " with pitch " + pitch + " and volume " + volume);
+        System.out.println("Playing sample from " + filePath + " with pitch " + pitch + " and volume " + BPM);
     }
 
     /**

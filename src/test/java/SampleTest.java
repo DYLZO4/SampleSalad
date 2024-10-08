@@ -76,40 +76,17 @@ class SampleTest {
     }
 
     /**
-     * Tests the {@link Sample#setVolume(double)} method.
+     * Tests the {@link Sample#setBPM(double)} method.
      * <p>
      * Verifies that the volume is set correctly and retrieved.
      * </p>
      */
     @Test
     void testSetVolume() {
-        sample.setVolume(0.75);
-        assertEquals(0.75, sample.getVolume(), "Volume should be set to 0.75");
+        sample.setBPM(0.75);
+        assertEquals(0.75, sample.getBPM(), "Volume should be set to 0.75");
     }
 
-    /**
-     * Tests the {@link Sample#setStartTime(double)} method.
-     * <p>
-     * Verifies that the start time is set correctly and retrieved.
-     * </p>
-     */
-    @Test
-    void testSetStartTime() {
-        sample.setStartTime(2.5);
-        assertEquals(2.5, sample.getStartTime(), "Start time should be set to 2.5");
-    }
-
-    /**
-     * Tests the {@link Sample#setEndTime(double)} method.
-     * <p>
-     * Verifies that the end time is set correctly and retrieved.
-     * </p>
-     */
-    @Test
-    void testSetEndTime() {
-        sample.setEndTime(5.0);
-        assertEquals(5.0, sample.getEndTime(), "End time should be set to 5.0");
-    }
 
     /**
      * Tests the {@link Sample#applyEffect(Effect)} method.
