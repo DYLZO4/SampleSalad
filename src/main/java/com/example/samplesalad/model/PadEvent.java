@@ -18,7 +18,7 @@ public class PadEvent {
     public PadEvent(Pad newPad) {
         this.pad = newPad;
         this.padId = pad.getPadId();
-        this.timeStamp = System.currentTimeMillis() / 1000.0;
+        this.timeStamp = System.currentTimeMillis();
     }
 
     /**
@@ -26,7 +26,7 @@ public class PadEvent {
      * (Temporarily retrieve current time)
      */
     public void triggerEvent() {
-        this.timeStamp = (double) System.currentTimeMillis() / 1000.0;
+        this.timeStamp = (double) System.currentTimeMillis();
         System.out.println("Event recorded at: " +  timeStamp);
     }
 
@@ -59,4 +59,8 @@ public class PadEvent {
      * @param newUser The user to set as this PadEvents user
      */
     public void setUser(User newUser) { user = newUser; }
+
+    public Pad getPad() {
+        return pad;
+    }
 }
