@@ -9,6 +9,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -17,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -24,6 +26,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -43,6 +48,12 @@ import java.util.logging.Logger;
  * Implements {@link Initializable} to initialize UI components after they are loaded.
  */
 public class MainController implements Initializable {
+
+    public Text warningMessage;
+
+    public static void main(String[] args) {
+
+    }
 
     private Map<KeyCode, Pad> keyBindings = new HashMap<>();
 
@@ -129,6 +140,7 @@ public class MainController implements Initializable {
         keyBindings.put(KeyCode.X, drumKit.getPad(13));
         keyBindings.put(KeyCode.C, drumKit.getPad(14));
         keyBindings.put(KeyCode.V, drumKit.getPad(15));
+
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -225,6 +237,7 @@ public class MainController implements Initializable {
                 editPane.setVisible(true); // Show editPane when Edit is selected
                 playSwitch.setDisable(false);
                 editSwitch.setDisable(true);
+                warningMessage.setVisible(false);
             } else {
                 editPane.setVisible(false); // Hide if deselected
             }
@@ -279,7 +292,6 @@ public class MainController implements Initializable {
                 }
             });
 
-
         }
         //listener on sample selection to fetch properties
         assignedSample.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sample>() {
@@ -312,17 +324,31 @@ public class MainController implements Initializable {
         }
 
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
-
-
     }
 
+    /**
+     * This is called when a user presses a key on their keyboard or other device.
+     * Plays sound and relevant effects associated with the assigned pad.
+     * @param keyCode The key/button pressed by the user
+     */
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
-            playAudio(pad);
+            try {
+                pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                pad.getAudioClip().playAudio();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Error playing audio: " + e.getMessage());
+                // Handle the error appropriately (e.g., display an error message to the user)
+            }
         }
     }
 
+    /**
+     * This is called when the user clicks the pad with their mouse.
+     * Plays sound associated with the pad and the relevant effects added to it.
+     * @param padButton The button which was clicked
+     */
     private void handlePadClick(Button padButton) {
         if (editSwitch.isSelected()) {
             selectedPad = getPadFromButton(padButton);
@@ -336,16 +362,26 @@ public class MainController implements Initializable {
             }
         } else if (playSwitch.isSelected()) {
             Pad pad = getPadFromButton(padButton);
-            playAudio(pad);
+
+            try {
+                pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                pad.getAudioClip().playAudio();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Error playing audio: " + e.getMessage());
+                // Handle the error appropriately (e.g., display an error message to the user)
+            }
         }
     }
 
-
+    /**
+     * Returns the {@code Pad} object based on which pad button the user has selected
+     * @param padButton The button which the user has selected
+     * @return {@code Pad} associated with the button
+     */
     private Pad getPadFromButton(Button padButton) {
         int rowIndex = GridPane.getRowIndex(padButton);
         int columnIndex = GridPane.getColumnIndex(padButton);
 
-        // Assuming your DrumKit instance is accessible (e.g., through a Singleton)
         DrumKit drumKit = DrumKit.getInstance();
         return drumKit.getPad(rowIndex * gridPane.getColumnCount() + columnIndex);
     }
@@ -429,15 +465,18 @@ public class MainController implements Initializable {
         }
     }
 
-    public void register(MouseEvent mouseEvent) {
-
-    }
-
+    /**
+     * Changes the settings applied to a particular pad after using the edit page.
+     * @throws UnsupportedAudioFileException if the audio format is unsupported.
+     * @throws LineUnavailableException if the system cannot open an audio line.
+     * @throws IOException if an I/O error occurs
+     */
     @FXML
     private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (selectedPad != null) {
             // Get the updated properties from the edit pane UI elements
             Sample newSample = assignedSample.getValue();
+            // TODO: apply split audio changes here
             // newVolume = Volume.getValue();
             int newBPM = BPM.getValue();
             double newPitch = BPM.getValue();
@@ -452,20 +491,49 @@ public class MainController implements Initializable {
         }
     }
 
-    private void playAudio(Pad pad){
-            if (pad != null) {
-                if (pad.getAudioClip() != null) {
-                    try {
-                        pad.getAudioClip().loadFile();
-                        pad.getAudioClip().playAudio();
-                        if (isRecording){
-                            pattern.addPadEvent(new PadEvent(pad));
-                            System.out.println(pattern.getPadEvents());
-                        }
-                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                        // ... (error handling)
-                    }
-                }
+    /**
+     * Opens the relevant popup when a user clicks the Edit Sample Length button.
+     * If no sample is selected, displays a warning message to select a sample before clicking the button.
+     * Provides new RangeSliderController with the current sample, the current pad and the current main controller.
+     * @param actionEvent The action event triggered by clicking the Edit Sample Length button
+     * @throws IOException if an I/O error occurs while opening the popup
+     */
+    public void editSampleSplit(ActionEvent actionEvent) throws IOException {
+        if(assignedSample.getValue() == null){
+            warningMessage.setVisible(true);
+        } else {
+            URL popupURL = getClass().getResource("/com/example/samplesalad/range-slider.fxml");
+            if (popupURL == null) {
+                Logger.getLogger(LibraryController.class.getName()).log(Level.SEVERE, "FXML file not found: range-slider.fxml");
+                return;
             }
+            Logger.getLogger(LibraryController.class.getName()).log(Level.INFO, "Loading FXML file: " + popupURL.toString());
+            FXMLLoader popupLoader = new FXMLLoader(popupURL);
+
+            Scene scene = popupLoader.load();
+            RangeSliderController controller = popupLoader.getController();
+            controller.setMainController(this);
+            if (assignedSample.getValue() != null){
+                controller.setCurrentSample(assignedSample.getValue());
+            }
+
+            if (selectedPad != null){
+                controller.setCurrentPad(selectedPad);
+            }
+
+            Stage popup = new Stage();
+            popup.setTitle("Edit split from audio");
+            popup.setScene(scene);
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.showAndWait();
+        }
+    }
+
+    /**
+     * Sets the value for the assigned sample for the currently selected pad
+     * @param sample The new value for the {@code assignedSample} variable
+     */
+    public void setAssignedSampleValue(Sample sample){
+        assignedSample.setValue(sample);
     }
 }
