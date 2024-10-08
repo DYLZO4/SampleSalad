@@ -334,7 +334,13 @@ public class MainController implements Initializable {
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
-            playAudio(pad);
+            try {
+                pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
+                pad.getAudioClip().playAudio();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Error playing audio: " + e.getMessage());
+                // Handle the error appropriately (e.g., display an error message to the user)
+            }
         }
     }
 
