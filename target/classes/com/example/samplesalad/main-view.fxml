@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
-      <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #e0dfdc;">
+      <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #555555;">
          <children>
             <AnchorPane prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
@@ -118,22 +118,22 @@
                <children>
                   <GridPane fx:id="gridPane" alignment="CENTER" hgap="10.0" layoutX="180.0" layoutY="120.0" prefHeight="320.0" prefWidth="320.0" vgap="10.0">
                      <children>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="grid-button row0-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="grid-button row0-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="grid-button row0-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="grid-button row0-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="grid-button row1-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="grid-button row1-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="grid-button row1-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="grid-button row1-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="grid-button row2-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="grid-button row2-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="grid-button row2-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="2" styleClass="grid-button row2-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="grid-button row3-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-button row3-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="grid-button row3-glow"/>
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="grid-button row3-glow"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="grid-button row0-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="grid-button row0-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="grid-button row0-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="grid-button row0-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="grid-button row1-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="grid-button row1-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="grid-button row1-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="grid-button row1-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="grid-button row2-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="grid-button row2-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="grid-button row2-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="2" styleClass="grid-button row2-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="grid-button row3-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-button row3-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="grid-button row3-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
+                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="grid-button row3-glow" style="-fx-background-color: #2b2c2c; -fx-text-fill: #ffffff;"/>
                      </children>
                      <columnConstraints>
                         <ColumnConstraints />

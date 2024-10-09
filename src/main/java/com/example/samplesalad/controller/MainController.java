@@ -324,18 +324,39 @@ public class MainController implements Initializable {
                 Button padButton = getButtonFromPad(pad); // Get the corresponding button for the pad
                 if (padButton != null) {
                     playAudio(pad);
-
-                    // Apply the glow effect using the CSS class
-                    String glowClass = getGlowClassForPad(pad);
-                    padButton.getStyleClass().add(glowClass); // Add the glow class
-
-                    // Remove the glow class after a short duration
-                    PauseTransition pause = new PauseTransition(Duration.seconds(0.3));
-                    pause.setOnFinished(event -> padButton.getStyleClass().remove(glowClass)); // Remove the glow effect
-                    pause.play();
+                    applyGlowEffect(padButton, pad); // Apply the glow effect
                 }
             }
         }
+    }
+
+    private void handlePadClick(Button padButton) {
+        if (editSwitch.isSelected()) {
+            selectedPad = getPadFromButton(padButton);
+
+            if (selectedPad != null) {
+                // Display the pad's properties in the edit pane UI elements
+                assignedSample.setValue(selectedPad.getSample());
+                BPM.getValueFactory().setValue(selectedPad.getBPM());
+                Pitch.getValueFactory().setValue(selectedPad.getPitch());
+                //TODO: add volume
+            }
+        } else if (playSwitch.isSelected()) {
+            Pad pad = getPadFromButton(padButton);
+            playAudio(pad);
+            applyGlowEffect(padButton, pad); // Apply the glow effect on click
+        }
+    }
+
+    private void applyGlowEffect(Button padButton, Pad pad) {
+        // Apply the glow effect using the CSS class
+        String glowClass = getGlowClassForPad(pad);
+        padButton.getStyleClass().add(glowClass); // Add the glow class
+
+        // Remove the glow class after a short duration
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.3));
+        pause.setOnFinished(event -> padButton.getStyleClass().remove(glowClass)); // Remove the glow effect
+        pause.play();
     }
 
     private String getGlowClassForPad(Pad pad) {
@@ -359,22 +380,6 @@ public class MainController implements Initializable {
         return ""; // Return no glow if the padButton is not found or rowIndex is null
     }
 
-    private void handlePadClick(Button padButton) {
-        if (editSwitch.isSelected()) {
-            selectedPad = getPadFromButton(padButton);
-
-            if (selectedPad != null) {
-                // Display the pad's properties in the edit pane UI elements
-                assignedSample.setValue(selectedPad.getSample());
-                BPM.getValueFactory().setValue(selectedPad.getBPM());
-                Pitch.getValueFactory().setValue(selectedPad.getPitch());
-                //TODO: add volume
-            }
-        } else if (playSwitch.isSelected()) {
-            Pad pad = getPadFromButton(padButton);
-            playAudio(pad);
-        }
-    }
 
     private Button getButtonFromPad(Pad pad) {
         for (Node node : gridPane.getChildren()) {
