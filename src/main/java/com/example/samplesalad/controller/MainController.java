@@ -137,11 +137,6 @@ public class MainController implements Initializable {
             System.exit(0);
         });
 
-        int userId = loggedInUser.getId();
-        String jsonBindings = keyBindingDAO.loadKeyBindings(userId);
-        keyBindings = convertJsonToKeyBindings(jsonBindings);
-        System.out.println("Key bindings: " + keyBindings);
-
         // Set playSwitch as selected by default
         playSwitch.setSelected(true);
         editSwitch.setSelected(false);
@@ -273,6 +268,11 @@ public class MainController implements Initializable {
         if (userController.isUserLoggedIn()) {
             buttonText.set("Account");
             buttonAction = this::account;
+
+            int userId = loggedInUser.getId();
+            String jsonBindings = keyBindingDAO.loadKeyBindings(userId);
+            keyBindings = convertJsonToKeyBindings(jsonBindings);
+            System.out.println("Key bindings: " + keyBindings);
 
             List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
             for (Sample sample : samples) {
