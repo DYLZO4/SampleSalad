@@ -10,6 +10,7 @@ module com.example.samplesalad {
     requires TarsosDSP.jvm;
     requires soundtouch.jni.core;
     requires com.sun.jna;
+    requires com.google.gson;
 
 
     opens com.example.samplesalad to javafx.fxml;
