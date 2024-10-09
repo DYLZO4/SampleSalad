@@ -58,7 +58,13 @@ public class SampleSaladApplication extends Application {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });
-        primaryStage.setScene(new Scene(root, 800, 500));
+        Scene scene = new Scene(root, 800, 500);
+
+        // Load the CSS file
+        System.out.println(getClass().getResource("CSS/style.css"));
+        scene.getStylesheets().add(getClass().getResource("CSS/style.css").toExternalForm());
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
