@@ -167,6 +167,8 @@
                   <Slider layoutX="280.0" layoutY="70.0" prefHeight="30.0" prefWidth="200.0" />
                   <RadioButton fx:id="playSwitch" layoutX="161.0" layoutY="77.0" mnemonicParsing="false" text="Play" />
                   <RadioButton fx:id="editSwitch" layoutX="162.0" layoutY="95.0" mnemonicParsing="false" text="Edit" />
+                  <Button fx:id="metroStart" layoutX="508.0" layoutY="87.0" mnemonicParsing="false" text="Start" />
+                  <Spinner fx:id="metroBPM" layoutX="494.0" layoutY="50.0" prefHeight="26.0" prefWidth="68.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="editPane" layoutX="162.0" layoutY="171.0" prefHeight="315.0" prefWidth="228.0">

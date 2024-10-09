@@ -115,7 +115,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
                 Pad pad = padDAO.get(padId);
 
                 // Create and return the PadEvent
-                PadEvent padEvent = new PadEvent(pad);
+                PadEvent padEvent = new PadEvent(pad, 10);
                 padEvent.triggerEvent(); // Record the current event time
                 return padEvent;
             }
@@ -146,7 +146,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
                 PadDAO padDAO = new PadDAO();
                 Pad pad = padDAO.get(padId);
 
-                PadEvent event = new PadEvent(pad);
+                PadEvent event = new PadEvent(pad, 10);
                 event.triggerEvent(); // Sets the timestamp (if needed)
                 padEvents.add(event);
             }

@@ -1,90 +1,58 @@
 package com.example.samplesalad.model;
 
+import com.example.samplesalad.model.PadEvent;
 import com.example.samplesalad.model.user.User;
 import javafx.application.Platform;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Stores a collection of pad events, representing a musical pattern that can be looped or played in sequence,
- * with each event occurring at specific timestamps.
- */
 public class Pattern {
     private long startTime;
-    private long endTime;
     private int patternID;
     private int length;
+    private int BPM;
     private List<PadEvent> padEvents;
-    private List<Double> timestamps = new ArrayList<>(Arrays.asList(0.0));
-    ;
+    private Timer recordingTimer;
     private User user;
-    private Boolean isPlaying;
+    private boolean isPlaying;
+    private final ReentrantLock audioLock = new ReentrantLock(); // Keep if AudioClip isn't thread-safe
+    private boolean isRecording;
+    private List<PadEvent> currentRecordingEvents;
+    private ScheduledExecutorService scheduler;
 
-    /**
-     * Initialized with a given length.
-     *
-     * @param length The length of the pattern.
-     */
-    public Pattern(int length) {
+    public Pattern(int length, int BPM) {
         this.length = length;
+        this.BPM = BPM;
         this.padEvents = new ArrayList<>();
         this.isPlaying = false;
+        this.isRecording = false;
+        this.scheduler = Executors.newScheduledThreadPool(1);
     }
 
-    /**
-     * Adds a PadEvent instance to the pattern.
-     *
-     * @param event The PadEvent to be added.
-     */
     public void addPadEvent(PadEvent event) {
-//        double timestamp;
-//        if(padEvents.isEmpty()) {
-//            timestamp = 0;
-//        }
-//        timestamp = event.getTimeStamp() ;
-        padEvents.add(event);
+        if (isRecording) {
+            currentRecordingEvents.add(event);
+        } else {
+            padEvents.add(event);
+        }
     }
 
-    /**
-     * Removes a PadEvent instance from the pattern.
-     *
-     * @param event The PadEvent to be removed.
-     */
     public void removePadEvent(PadEvent event) {
         padEvents.remove(event);
     }
 
-    /**
-     * Returns the list of PadEvents in the pattern.
-     *
-     * @return A List of PadEvent objects.
-     */
     public List<PadEvent> getPadEvents() {
         return padEvents;
     }
 
-    /**
-     * Returns the length of the pattern.
-     *
-     * @return The length of the pattern.
-     */
     public int getLength() {
         return length;
     }
 
-    /**
-     * Sets the length of the pattern.
-     *
-     * @param length The new length of the pattern.
-     */
     public void setLength(int length) {
         this.length = length;
     }
@@ -97,93 +65,128 @@ public class Pattern {
         return patternID;
     }
 
-    /**
-     * Retrieve the corresponding user
-     *
-     * @return user The user of this Pattern
-     */
     public User getUser() {
         return user;
     }
 
-    /**
-     * Sets the user of this Pattern
-     *
-     * @param newUser The user to set as this Patterns user
-     */
     public void setUser(User newUser) {
         user = newUser;
     }
 
     public void startRecordPattern() {
-        startTime = System.currentTimeMillis();
+        if (!isRecording) {
+            isRecording = true;
+            startTime = System.currentTimeMillis();
+            currentRecordingEvents = new ArrayList<>();
+
+            long recordingDuration = calculateRecordingDuration();
+            recordingTimer = new Timer();
+            recordingTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> endRecordPattern());
+                }
+            }, recordingDuration);
+
+            System.out.println("Recording Started");
+        }
     }
 
     public void endRecordPattern() {
-        endTime = System.currentTimeMillis();
+        if (recordingTimer != null) {
+            recordingTimer.cancel();
+            recordingTimer = null;
+            isRecording = false;
+
+            padEvents.addAll(currentRecordingEvents);
+            padEvents.sort(Comparator.comparingLong(PadEvent::getTimeStamp));
+            currentRecordingEvents = null;
+
+            System.out.println("Recording Ended");
+            // Consider removing auto-play here if not desired behavior
+            playPattern();
+            startPattern();
+        }
     }
 
     public long getStartTime() {
         return startTime;
     }
 
-    public void addTimeStamp(double newTimeStamp) {
-        timestamps.add(newTimeStamp);
-    }
-
-    public void stopPattern() {
-        isPlaying = false;
-    }
-
-    public void startPattern(){
+    public void startPattern() {
         isPlaying = true;
     }
 
-    public void playPattern() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+
+    public void playPattern() {
         if (padEvents.isEmpty()) {
             System.out.println("No events recorded.");
             return;
         }
 
-        // Run playback in a separate thread
-        new Thread(() -> {
-            try {
-                while (isPlaying) { // Continue looping as long as isPlaying is true
-                    long previousTime = startTime;
+        long loopStartTime = System.currentTimeMillis();
 
-                    for (PadEvent event : padEvents) {
-                        if (!isPlaying) {
-                            break; // Stop playback if isPlaying is set to false
-                        }
+        for (PadEvent event : padEvents) {
+            long eventTime = event.getTimeStamp();
+            long delayFromLoopStart = eventTime; //- loopStartTime;  // Correct delay calculation
 
-                        long delay = event.getTimeStamp() - previousTime;
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(delay); // Sleep for the calculated delay
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            event.getPad().getAudioClip().loadFile();
-                            event.getPad().getAudioClip().playAudio();
-                        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-                            e.printStackTrace(); // Handle any audio-related exceptions
-                        }
-
-                        previousTime = event.getTimeStamp();
+            scheduler.schedule(() -> {
+                try {
+                    audioLock.lock();
+                    try {
+                        event.getPad().getAudioClip().loadFile();
+                        event.getPad().getAudioClip().playAudio();
+                    } finally {
+                        audioLock.unlock();
                     }
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                    e.printStackTrace();
                 }
+            }, delayFromLoopStart, TimeUnit.MILLISECONDS);
+        }
 
-                System.out.println("Pattern playback stopped.");
-            } catch (Exception e) {
-                e.printStackTrace(); // Handle any other unexpected exceptions
+        long loopDuration = calculateRecordingDuration();
+        scheduler.schedule(() -> {
+            if (isPlaying) {
+                playPattern();
             }
-        }).start();
+        }, loopDuration, TimeUnit.MILLISECONDS);
     }
 
 
+    public void stopPattern() {
+        isPlaying = false;
+        scheduler.shutdownNow();
+        try {
+            if(!scheduler.awaitTermination(500, TimeUnit.MILLISECONDS)){
+                System.out.println("Scheduler did not terminate");
+            }
+
+        } catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        scheduler = Executors.newScheduledThreadPool(1);
+
+
+    }
+
+
+
+    private long calculateRecordingDuration() {
+        return (long) (length * (60000.0 / BPM) * 4); // Correct calculation, assuming beats of 4
+    }
 
     public boolean getIsPlaying() {
         return isPlaying;
     }
+
+    public boolean isRecording() {
+        return isRecording;
+    }
+
+
+    public void setBPM(int bpm) {
+        this.BPM = bpm;
+    }
+
 }

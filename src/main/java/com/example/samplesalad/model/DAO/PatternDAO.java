@@ -174,7 +174,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 int length = resultSet.getInt("length");
 
                 List<PadEvent> padEvents = getPadEvents(patternId);
-                Pattern pattern = new Pattern(length);
+                Pattern pattern = new Pattern(length, 120);
                 padEvents.forEach(pattern::addPadEvent);
 
                 return pattern;
@@ -207,7 +207,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 PadDAO padDAO = new PadDAO();
                 Pad pad = padDAO.get(padId);
 
-                PadEvent event = new PadEvent(pad);
+                PadEvent event = new PadEvent(pad, 10);
                 event.triggerEvent(); // Sets the timestamp
                 padEvents.add(event);
             }
@@ -261,7 +261,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
                 int length = resultSet.getInt("length");
 
                 List<PadEvent> padEvents = getPadEvents(patternId);
-                Pattern pattern = new Pattern(length);
+                Pattern pattern = new Pattern(length, 120);
                 padEvents.forEach(pattern::addPadEvent);
                 patterns.add(pattern);
             }

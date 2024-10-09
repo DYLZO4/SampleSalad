@@ -7,6 +7,7 @@ import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,10 +73,10 @@ public class MainController implements Initializable {
     private Slider Volume;
 
     @FXML
-    private Spinner<Integer> BPM;
+    private Spinner<Integer> BPM,metroBPM;
 
     @FXML
-    private Button signInButton, playButton, recordButton;
+    private Button signInButton, playButton, recordButton, metroStart;
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
@@ -82,13 +84,20 @@ public class MainController implements Initializable {
     private UserController userController;
 
     private Pad selectedPad; // Store the currently selected Pad
-    private boolean isRecording = false;
+
+
 
     private boolean isAnimating = false;
 
     private StringProperty buttonText;
     private EventHandler<MouseEvent> buttonAction;
     private Pattern pattern;
+
+    private Metronome metronome;
+
+    private int preRecordBeats = 4; // Number of metronome beats before recording
+
+
 
     /**
      * Default constructor for the {@code HelloController} class.
@@ -100,7 +109,8 @@ public class MainController implements Initializable {
         userController = new UserController(userService);
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
-        pattern = new Pattern(16);
+        pattern = new Pattern(4, 120);
+        metronome = new Metronome();
     }
 
     /**
@@ -146,6 +156,7 @@ public class MainController implements Initializable {
 
         Pitch.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 127, 60)); // Example for pitch
         BPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
+        metroBPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
 
         // Create and play the fade-out transition for pane1
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
@@ -232,28 +243,27 @@ public class MainController implements Initializable {
 
         playButton.setOnMouseClicked(mouseEvent -> {
             if (!pattern.getIsPlaying()){
-            try {
                 pattern.startPattern();
                 pattern.playPattern();
 
-            } catch (UnsupportedAudioFileException e) {
-                throw new RuntimeException(e);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             } else{ pattern.stopPattern();}
         });
 
+        metroStart.setOnMouseClicked(mouseEvent -> {
+            if (!metronome.isPlaying){
+
+                metronome.startMetronome(metroBPM.getValueFactory().getValue());
+
+            } else{ metronome.stop();}
+        });
+
+
         recordButton.setOnMouseClicked(mouseEvent -> {
-            pattern.startRecordPattern();
-            if(!isRecording){
-                isRecording = true;
-                pattern.startRecordPattern();
+            if (!pattern.isRecording()) {
+                startRecordingWithMetronomeDelay();
             } else {
-                isRecording=false;
                 pattern.endRecordPattern();
+                metronome.stop(); // Stop the metronome when recording stops
             }
         });
 
@@ -314,6 +324,30 @@ public class MainController implements Initializable {
         }
 
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
+
+
+    }
+
+    private void startRecordingWithMetronomeDelay() {
+        int bpm = metroBPM.getValueFactory().getValue(); // Get BPM from your UI
+        long delay = ((60000 / bpm) * preRecordBeats); // Calculate delay for pre-record beats
+        pattern.setBPM(bpm);
+        new Thread(() -> {
+            try {
+
+                metronome.startMetronome(bpm); // Start the metronome immediately
+
+                Thread.sleep(delay); // Wait for the pre-record beats
+
+                Platform.runLater(() -> { // Ensure pattern recording starts on JavaFX Application Thread
+                    pattern.startRecordPattern();
+                    pattern.playPattern();
+                });
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
 
     }
@@ -460,8 +494,8 @@ public class MainController implements Initializable {
                     try {
                         pad.getAudioClip().loadFile();
                         pad.getAudioClip().playAudio();
-                        if (isRecording){
-                            pattern.addPadEvent(new PadEvent(pad));
+                        if (pattern.isRecording()){
+                            pattern.addPadEvent(new PadEvent(pad, pattern.getStartTime()));
                             System.out.println(pattern.getPadEvents());
                         }
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

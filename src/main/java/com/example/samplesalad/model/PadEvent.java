@@ -2,6 +2,8 @@ package com.example.samplesalad.model;
 
 import com.example.samplesalad.model.user.User;
 
+import java.sql.Timestamp;
+
 /**
  * A record of a pad activity.
  */
@@ -15,10 +17,10 @@ public class PadEvent {
      * Initializes a PadEvent with the triggered pad.
      * @param newPad The pad that was triggered.
      */
-    public PadEvent(Pad newPad) {
+    public PadEvent(Pad newPad, long patternStart) {
         this.pad = newPad;
         this.padId = pad.getPadId();
-        this.timeStamp = System.currentTimeMillis();
+        this.timeStamp = System.currentTimeMillis() - patternStart;
     }
 
     /**
@@ -38,6 +40,8 @@ public class PadEvent {
         System.out.println("Current time: " +  timeStamp);
         return timeStamp;
     }
+
+
 
     /**
      * Retrieves the pad ID associated with this event.
