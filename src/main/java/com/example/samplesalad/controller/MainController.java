@@ -6,6 +6,7 @@ import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -319,8 +320,43 @@ public class MainController implements Initializable {
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
-            playAudio(pad);
+            if (pad != null) {
+                Button padButton = getButtonFromPad(pad); // Get the corresponding button for the pad
+                if (padButton != null) {
+                    playAudio(pad);
+
+                    // Apply the glow effect using the CSS class
+                    String glowClass = getGlowClassForPad(pad);
+                    padButton.getStyleClass().add(glowClass); // Add the glow class
+
+                    // Remove the glow class after a short duration
+                    PauseTransition pause = new PauseTransition(Duration.seconds(0.3));
+                    pause.setOnFinished(event -> padButton.getStyleClass().remove(glowClass)); // Remove the glow effect
+                    pause.play();
+                }
+            }
         }
+    }
+
+    private String getGlowClassForPad(Pad pad) {
+        // Get the button associated with the pad
+        Button padButton = getButtonFromPad(pad);
+        if (padButton != null) {
+            // Retrieve the row index of the button in the grid
+            Integer rowIndex = GridPane.getRowIndex(padButton);
+
+            // Return the glow class based on the row index
+            if (rowIndex != null) {
+                return switch (rowIndex) {
+                    case 0 -> "row0-glow";
+                    case 1 -> "row1-glow";
+                    case 2 -> "row2-glow";
+                    case 3 -> "row3-glow";
+                    default -> ""; // No glow for rows beyond the defined range
+                };
+            }
+        }
+        return ""; // Return no glow if the padButton is not found or rowIndex is null
     }
 
     private void handlePadClick(Button padButton) {
@@ -340,6 +376,18 @@ public class MainController implements Initializable {
         }
     }
 
+    private Button getButtonFromPad(Pad pad) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Button) {
+                Button padButton = (Button) node;
+                Pad mappedPad = getPadFromButton(padButton);
+                if (mappedPad != null && mappedPad.equals(pad)) {
+                    return padButton; // Return the button associated with the given pad
+                }
+            }
+        }
+        return null; // If no matching button found
+    }
 
     private Pad getPadFromButton(Button padButton) {
         int rowIndex = GridPane.getRowIndex(padButton);
