@@ -1,6 +1,7 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.DAO.KeyBindingDAO;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.DrumKit;
@@ -27,10 +28,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +82,7 @@ public class MainController implements Initializable {
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
+    private KeyBindingDAO keyBindingDAO;
     private UserService userService;
     private UserController userController;
 
@@ -91,6 +95,8 @@ public class MainController implements Initializable {
     private StringProperty buttonText;
     private EventHandler<MouseEvent> buttonAction;
 
+    private Gson gson = new Gson();
+
     /**
      * Default constructor for the {@code HelloController} class.
      */
@@ -99,6 +105,7 @@ public class MainController implements Initializable {
         sampleDAO = new SampleDAO();
         userService = new UserService(userDAO);
         userController = new UserController(userService);
+        keyBindingDAO = new KeyBindingDAO();
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
     }
@@ -112,23 +119,7 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        DrumKit drumKit = DrumKit.getInstance();
-        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
-        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
-        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
-        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
-        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
-        keyBindings.put(KeyCode.W, drumKit.getPad(5));
-        keyBindings.put(KeyCode.E, drumKit.getPad(6));
-        keyBindings.put(KeyCode.R, drumKit.getPad(7));
-        keyBindings.put(KeyCode.A, drumKit.getPad(8));
-        keyBindings.put(KeyCode.S, drumKit.getPad(9));
-        keyBindings.put(KeyCode.D, drumKit.getPad(10));
-        keyBindings.put(KeyCode.F, drumKit.getPad(11));
-        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
-        keyBindings.put(KeyCode.X, drumKit.getPad(13));
-        keyBindings.put(KeyCode.C, drumKit.getPad(14));
-        keyBindings.put(KeyCode.V, drumKit.getPad(15));
+        User loggedInUser = userController.getLoggedInUser();
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -255,7 +246,10 @@ public class MainController implements Initializable {
                 }
             });
 
-
+            int userId = loggedInUser.getId();
+            String jsonBindings = keyBindingDAO.loadKeyBindings(userId);
+            keyBindings = convertJsonToKeyBindings(jsonBindings);
+            System.out.println("Key bindings: " + keyBindings);
         }
 
         for (Node node : gridPane.getChildren()) { // Assuming gridPane is your GridPane
@@ -270,7 +264,22 @@ public class MainController implements Initializable {
 
     }
 
+    private Map<KeyCode, Pad> convertJsonToKeyBindings(String jsonBindings) {
+        Map<KeyCode, Pad> keyBindings = new HashMap<>();
+        if (jsonBindings != null && !jsonBindings.isEmpty()) {
+            Type type = new TypeToken<Map<String, Integer>>() {}.getType();
+            Map<String, Integer> bindingsMap = gson.fromJson(jsonBindings, type);
+            for (Map.Entry<String, Integer> entry : bindingsMap.entrySet()) {
+                KeyCode keyCode = KeyCode.valueOf(entry.getKey());
+                int padIndex = entry.getValue();
+                DrumKit drumKit = DrumKit.getInstance();
+                keyBindings.put(keyCode, drumKit.getPad(padIndex));
+            }
+        }
+        return keyBindings;
+    }
     private void handleKeyPress(KeyCode keyCode) {
+        System.out.println("Key pressed: " + keyCode);
         if (playSwitch.isSelected()) { // Only in play mode (optional)
             Pad pad = keyBindings.get(keyCode);
             if (pad != null) {
@@ -330,7 +339,14 @@ public class MainController implements Initializable {
          */
     @FXML
     private void openSettings(MouseEvent event){
-        loadPage("settings");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/settings.fxml"));
+            Parent root = loader.load();
+            SettingsController settingsController = loader.getController();
+            contentPane.getChildren().setAll(root);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

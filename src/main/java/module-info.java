@@ -6,6 +6,7 @@ module com.example.samplesalad {
     requires mysql.connector.j;
     requires java.desktop;
     requires jlayer;
+    requires com.google.gson;
 
     opens com.example.samplesalad to javafx.fxml;
     exports com.example.samplesalad;

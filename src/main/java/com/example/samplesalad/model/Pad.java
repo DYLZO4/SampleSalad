@@ -130,7 +130,7 @@ public class Pad {
      * @return the pad ID
      */
     public int getPadId() {
-        System.out.println("Current pad: pad " + padID);
+//        System.out.println("Current pad: pad " + padID);
         return padID;
     }
 
