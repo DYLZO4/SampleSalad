@@ -1,0 +1,24 @@
+/* styles.css */
+.row0-glow {
+    -fx-effect: dropshadow(gaussian, #C879FF, 10, 0, 0, 0);
+}
+
+.row1-glow {
+    -fx-effect: dropshadow(gaussian, #FFB7FF, 10, 0, 0, 0);
+}
+
+.row2-glow {
+    -fx-effect: dropshadow(gaussian, #3BF4FB, 10, 0, 0, 0);
+}
+
+.row3-glow {
+    -fx-effect: dropshadow(gaussian, #CAFF8A, 10, 0, 0, 0);
+}
+
+/* Base button styles */
+.grid-button {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px;
+}
