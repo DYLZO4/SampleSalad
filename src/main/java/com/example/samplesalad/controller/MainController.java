@@ -1,13 +1,17 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.*;
+import com.example.samplesalad.model.DAO.KeyBindingDAO;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -31,11 +35,13 @@ import javafx.util.StringConverter;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,10 +78,10 @@ public class MainController implements Initializable {
     private Slider Volume;
 
     @FXML
-    private Spinner<Integer> BPM;
+    private Spinner<Integer> BPM,metroBPM, patternLength;
 
     @FXML
-    private Button signInButton, playButton, recordButton;
+    private Button signInButton, playButton, recordButton, metroStart;
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
@@ -83,7 +89,9 @@ public class MainController implements Initializable {
     private UserController userController;
 
     private Pad selectedPad; // Store the currently selected Pad
-    private boolean isRecording = false;
+    private KeyBindingDAO keyBindingDAO;
+
+
 
     private boolean isAnimating = false;
 
@@ -91,17 +99,26 @@ public class MainController implements Initializable {
     private EventHandler<MouseEvent> buttonAction;
     private Pattern pattern;
 
+    private Metronome metronome;
+    private Gson gson = new Gson();
+
+    private int preRecordBeats = 4; // Number of metronome beats before recording
+
+
+
     /**
      * Default constructor for the {@code HelloController} class.
      */
     public MainController() {
         userDAO = new UserDAO();
         sampleDAO = new SampleDAO();
+        keyBindingDAO = new KeyBindingDAO();
         userService = new UserService(userDAO);
         userController = new UserController(userService);
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
-        pattern = new Pattern(16);
+        pattern = new Pattern(1, 120);
+        metronome = new Metronome();
     }
 
     /**
@@ -114,22 +131,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         DrumKit drumKit = DrumKit.getInstance();
-        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
-        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
-        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
-        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
-        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
-        keyBindings.put(KeyCode.W, drumKit.getPad(5));
-        keyBindings.put(KeyCode.E, drumKit.getPad(6));
-        keyBindings.put(KeyCode.R, drumKit.getPad(7));
-        keyBindings.put(KeyCode.A, drumKit.getPad(8));
-        keyBindings.put(KeyCode.S, drumKit.getPad(9));
-        keyBindings.put(KeyCode.D, drumKit.getPad(10));
-        keyBindings.put(KeyCode.F, drumKit.getPad(11));
-        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
-        keyBindings.put(KeyCode.X, drumKit.getPad(13));
-        keyBindings.put(KeyCode.C, drumKit.getPad(14));
-        keyBindings.put(KeyCode.V, drumKit.getPad(15));
+        User loggedInUser = userController.getLoggedInUser();
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -147,7 +149,8 @@ public class MainController implements Initializable {
 
         Pitch.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 127, 60)); // Example for pitch
         BPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
-
+        metroBPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
+        patternLength.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,4 , 1));
         // Create and play the fade-out transition for pane1
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
         fadeOutTransition.setFromValue(1);
@@ -232,36 +235,45 @@ public class MainController implements Initializable {
         });
 
         playButton.setOnMouseClicked(mouseEvent -> {
-            try {
+            if (!pattern.getIsPlaying()){
                 pattern.startPattern();
                 pattern.playPattern();
 
-            } catch (UnsupportedAudioFileException e) {
-                throw new RuntimeException(e);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } else{ pattern.stopPattern();}
         });
 
+        metroStart.setOnMouseClicked(mouseEvent -> {
+            if (!metronome.isPlaying){
+                pattern.setPatternLength(patternLength.getValueFactory().getValue());
+                metronome.startMetronome(metroBPM.getValueFactory().getValue());
+
+            } else{ metronome.stop();}
+        });
+
+
         recordButton.setOnMouseClicked(mouseEvent -> {
-            pattern.startRecordPattern();
-            if(!isRecording){
-                isRecording = true;
-                pattern.startRecordPattern();
+            if (!pattern.isRecording()) {
+                pattern.setLength(patternLength.getValueFactory().getValue());
+                startRecordingWithMetronomeDelay();
             } else {
-                isRecording=false;
                 pattern.endRecordPattern();
+                metronome.stop(); // Stop the metronome when recording stops
             }
         });
 
         signInButton.textProperty().bind(buttonText);
         signInButton.setOnMouseClicked(event -> buttonAction.handle(event));
 
+
+
         if (userController.isUserLoggedIn()) {
             buttonText.set("Account");
             buttonAction = this::account;
+
+            int userId = loggedInUser.getId();
+            String jsonBindings = keyBindingDAO.loadKeyBindings(userId);
+            keyBindings = convertJsonToKeyBindings(jsonBindings);
+            System.out.println("Key bindings: " + keyBindings);
 
             List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
             for (Sample sample : samples) {
@@ -316,6 +328,46 @@ public class MainController implements Initializable {
 
 
     }
+
+    private void startRecordingWithMetronomeDelay() {
+        int bpm = metroBPM.getValueFactory().getValue(); // Get BPM from your UI
+        long delay = ((60000 / bpm) * preRecordBeats); // Calculate delay for pre-record beats
+        pattern.setBPM(bpm);
+        new Thread(() -> {
+            try {
+
+                metronome.startMetronome(bpm); // Start the metronome immediately
+
+                Thread.sleep(delay); // Wait for the pre-record beats
+
+                Platform.runLater(() -> { // Ensure pattern recording starts on JavaFX Application Thread
+                    pattern.startRecordPattern();
+                    pattern.playPattern();
+                });
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+
+    }
+
+    private Map<KeyCode, Pad> convertJsonToKeyBindings(String jsonBindings) {
+        Map<KeyCode, Pad> keyBindings = new HashMap<>();
+        if (jsonBindings != null && !jsonBindings.isEmpty()) {
+            Type type = new TypeToken<Map<String, Integer>>() {}.getType();
+            Map<String, Integer> bindingsMap = gson.fromJson(jsonBindings, type);
+            for (Map.Entry<String, Integer> entry : bindingsMap.entrySet()) {
+                KeyCode keyCode = KeyCode.valueOf(entry.getKey());
+                int padIndex = entry.getValue();
+                DrumKit drumKit = DrumKit.getInstance();
+                keyBindings.put(keyCode, drumKit.getPad(padIndex));
+            }
+        }
+        return keyBindings;
+    }
+
 
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
@@ -409,7 +461,14 @@ public class MainController implements Initializable {
          */
     @FXML
     private void openSettings(MouseEvent event){
-        loadPage("settings");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/settings.fxml"));
+            Parent root = loader.load();
+            SettingsController settingsController = loader.getController();
+            contentPane.getChildren().setAll(root);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -511,8 +570,8 @@ public class MainController implements Initializable {
                     try {
                         pad.getAudioClip().loadFile();
                         pad.getAudioClip().playAudio();
-                        if (isRecording){
-                            pattern.addPadEvent(new PadEvent(pad));
+                        if (pattern.isRecording()){
+                            pattern.addPadEvent(new PadEvent(pad, pattern.getStartTime()));
                             System.out.println(pattern.getPadEvents());
                         }
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

@@ -2,10 +2,13 @@ package com.example.samplesalad.model.DAO;
 
 import com.example.samplesalad.model.DatabaseConnection;
 import com.example.samplesalad.model.user.User;
+import javafx.scene.input.KeyCode;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The {@code UserDAO} class provides data access methods for interacting with user records in a database.
@@ -197,5 +200,35 @@ public class UserDAO implements ISampleSaladDAO<User> {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public void saveKeyBindings(int userId, Map<KeyCode, Integer> keyBindings) {
+        String sql = "REPLACE INTO key_bindings (user_id, key_code, pad_index) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            for (Map.Entry<KeyCode, Integer> entry : keyBindings.entrySet()) {
+                pstmt.setInt(1, userId);
+                pstmt.setString(2, entry.getKey().getName());
+                pstmt.setInt(3, entry.getValue());
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Map<KeyCode, Integer> loadKeyBindings(int userId) {
+        String sql = "SELECT key_code, pad_index FROM key_bindings WHERE user_id = ?";
+        Map<KeyCode, Integer> keyBindings = new HashMap<>();
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                keyBindings.put(KeyCode.getKeyCode(rs.getString("key_code")), rs.getInt("pad_index"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return keyBindings;
     }
 }
