@@ -16,15 +16,15 @@ class PatternTest {
 
     @BeforeEach
     void setUp() {
-        pattern = new Pattern(16);
+        pattern = new Pattern(16, 120);
 
         Pad pad1 = new Pad(null);
         pad1.setPadId(1);
-        event1 = new PadEvent(pad1);
+        event1 = new PadEvent(pad1, 0);
 
         Pad pad2 = new Pad(null);
         pad2.setPadId(2);
-        event2 = new PadEvent(pad2);
+        event2 = new PadEvent(pad2, 0);
     }
 
     @Test
