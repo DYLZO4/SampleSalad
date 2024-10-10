@@ -104,6 +104,25 @@ public class AudioClip implements LineListener {
         audioClip.addLineListener(this);
         audioClip.open(audioStream);
     }
+
+    public void loadResource() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        // Load the file from the resources folder
+        InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(filePath);
+
+        if (resourceStream == null) {
+            System.err.println("Resource not found: " + filePath);
+            return;
+        }
+
+        // Load the audio stream directly
+        try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(resourceStream)) {
+            audioClip = AudioSystem.getClip();
+            audioClip.addLineListener(this);
+            audioClip.open(audioStream);
+        }
+    }
+
+
     /**
      * Plays the loaded audio file.
      * If the file is not loaded, it throws an IllegalStateException.

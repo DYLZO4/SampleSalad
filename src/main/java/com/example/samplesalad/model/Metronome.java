@@ -27,7 +27,7 @@ public class Metronome {
      * Constructs a {@code Metronome} with the specified BPM and playing state.
      */
     public Metronome() {
-        this.metronomeAudioClip = new AudioClip("C:\\Users\\dylan\\Downloads\\metronome.wav"); // Update path as needed.
+        this.metronomeAudioClip = new AudioClip("metronome.wav"); // Update path as needed.
         this.isPlaying = false;
         this.metronomeScheduler = Executors.newScheduledThreadPool(10); // Create the scheduler
     }
@@ -60,7 +60,7 @@ public class Metronome {
     public void playMetronomeSound() {
         try {
             // Load the metronome sound file and play it
-            metronomeAudioClip.loadFile(); // Assuming you have an AudioClip for the metronome sound
+            metronomeAudioClip.loadResource(); // Assuming you have an AudioClip for the metronome sound
             metronomeAudioClip.playAudio();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
