@@ -78,7 +78,7 @@ public class MainController implements Initializable {
     private Slider Volume;
 
     @FXML
-    private Spinner<Integer> BPM,metroBPM;
+    private Spinner<Integer> BPM,metroBPM, patternLength;
 
     @FXML
     private Button signInButton, playButton, recordButton, metroStart;
@@ -117,7 +117,7 @@ public class MainController implements Initializable {
         userController = new UserController(userService);
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
-        pattern = new Pattern(4, 120);
+        pattern = new Pattern(1, 120);
         metronome = new Metronome();
     }
 
@@ -150,7 +150,7 @@ public class MainController implements Initializable {
         Pitch.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 127, 60)); // Example for pitch
         BPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
         metroBPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
-
+        patternLength.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,4 , 1));
         // Create and play the fade-out transition for pane1
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
         fadeOutTransition.setFromValue(1);
@@ -244,7 +244,7 @@ public class MainController implements Initializable {
 
         metroStart.setOnMouseClicked(mouseEvent -> {
             if (!metronome.isPlaying){
-
+                pattern.setPatternLength(patternLength.getValueFactory().getValue());
                 metronome.startMetronome(metroBPM.getValueFactory().getValue());
 
             } else{ metronome.stop();}
@@ -253,6 +253,7 @@ public class MainController implements Initializable {
 
         recordButton.setOnMouseClicked(mouseEvent -> {
             if (!pattern.isRecording()) {
+                pattern.setLength(patternLength.getValueFactory().getValue());
                 startRecordingWithMetronomeDelay();
             } else {
                 pattern.endRecordPattern();

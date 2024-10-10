@@ -189,4 +189,7 @@ public class Pattern {
         this.BPM = bpm;
     }
 
+    public void setPatternLength(Integer value) {
+        this.length = value;
+    }
 }
