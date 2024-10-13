@@ -25,7 +25,7 @@ public class KeyBindingDAO {
      * Initializes the connection and creates the key_bindings table if it doesn't exist.
      */
     public KeyBindingDAO() {
-        this.connection = DatabaseConnection.getInstance();
+//        this.connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -33,16 +33,16 @@ public class KeyBindingDAO {
      * Creates the key_bindings table in the database if it does not exist.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS key_bindings ("
-                    + "user_id INT, "
-                    + "bindings JSON, "
-                    + "FOREIGN KEY (user_id) REFERENCES users(UserID))";
-            statement.execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS key_bindings ("
+//                    + "user_id INT, "
+//                    + "bindings JSON, "
+//                    + "FOREIGN KEY (user_id) REFERENCES users(UserID))";
+//            statement.execute(query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public String loadKeyBindings(int userId) {

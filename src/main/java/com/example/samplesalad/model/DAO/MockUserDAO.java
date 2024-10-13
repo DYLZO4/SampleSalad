@@ -24,7 +24,7 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
      * Initializes the database connection and creates the users table if it doesn't exist.
      */
     public MockUserDAO() {
-        connection = MockDatabaseConnection.getInstance();
+//        connection = MockDatabaseConnection.getInstance();
         createTable();
     }
 
@@ -33,20 +33,20 @@ public class MockUserDAO implements ISampleSaladDAO<User> {
      * The table includes columns for user id, first name, last name, password, phone, and email.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS users ("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "firstName VARCHAR NOT NULL,"
-                    + "lastName VARCHAR NOT NULL,"
-                    + "password VARCHAR NOT NULL,"
-                    + "phone VARCHAR NOT NULL,"
-                    + "email VARCHAR NOT NULL"
-                    + ")";
-            statement.execute(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS users ("
+//                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+//                    + "firstName VARCHAR NOT NULL,"
+//                    + "lastName VARCHAR NOT NULL,"
+//                    + "password VARCHAR NOT NULL,"
+//                    + "phone VARCHAR NOT NULL,"
+//                    + "email VARCHAR NOT NULL"
+//                    + ")";
+//            statement.execute(query);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**

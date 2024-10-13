@@ -21,7 +21,7 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
 
      */
     public PatternDAO() {
-        connection = DatabaseConnection.getInstance();
+//        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -30,25 +30,25 @@ public class PatternDAO implements ISampleSaladDAO<Pattern> {
      * This includes the `patterns` table and the `pattern_events` table.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS patterns ("
-                    + "patternId INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "length INT)";
-            statement.execute(query);
-
-            String eventsTableQuery = "CREATE TABLE IF NOT EXISTS pattern_events ("
-                    + "eventId INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "patternId INT, "
-                    + "padId INT, "
-                    + "timeStamp DOUBLE, "
-                    + "FOREIGN KEY (patternId) REFERENCES patterns(patternId), "
-                    + "FOREIGN KEY (padId) REFERENCES pads(padId))";
-            statement.execute(eventsTableQuery);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS patterns ("
+//                    + "patternId INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "length INT)";
+//            statement.execute(query);
+//
+//            String eventsTableQuery = "CREATE TABLE IF NOT EXISTS pattern_events ("
+//                    + "eventId INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "patternId INT, "
+//                    + "padId INT, "
+//                    + "timeStamp DOUBLE, "
+//                    + "FOREIGN KEY (patternId) REFERENCES patterns(patternId), "
+//                    + "FOREIGN KEY (padId) REFERENCES pads(padId))";
+//            statement.execute(eventsTableQuery);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**

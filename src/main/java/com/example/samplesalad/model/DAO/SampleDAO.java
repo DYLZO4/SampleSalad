@@ -24,7 +24,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      * Constructor that initializes the SampleDAO with a database connection.
      */
     public SampleDAO() {
-        connection = DatabaseConnection.getInstance();
+//        connection = DatabaseConnection.getInstance();
         userDAO = new UserDAO();
         userService = new UserService(userDAO);
         userController = new UserController(userService);
@@ -36,21 +36,21 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     private void createTable() {
         try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS samples ("
-                    + "SampleID INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "filePath VARCHAR(255) NOT NULL, "
-                    + "sampleName VARCHAR(255), "
-                    + "sampleArtist VARCHAR(255), "
-                    + "sampleGenre VARCHAR(255), "
-                    + "pitch DOUBLE, "
-                    + "BPM DOUBLE, "
-                    + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-                    + "duration DOUBLE, "
-                    + "UserID INT, "  // Adding UserID field
-                    + "FOREIGN KEY (UserID) REFERENCES users(UserID)"  // Setting UserID as a foreign key
-                    + ")";
-            statement.execute(query);
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS samples ("
+//                    + "SampleID INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "filePath VARCHAR(255) NOT NULL, "
+//                    + "sampleName VARCHAR(255), "
+//                    + "sampleArtist VARCHAR(255), "
+//                    + "sampleGenre VARCHAR(255), "
+//                    + "pitch DOUBLE, "
+//                    + "BPM DOUBLE, "
+//                    + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+//                    + "duration DOUBLE, "
+//                    + "UserID INT, "  // Adding UserID field
+//                    + "FOREIGN KEY (UserID) REFERENCES users(UserID)"  // Setting UserID as a foreign key
+//                    + ")";
+//            statement.execute(query);
         } catch (Exception e) {
             e.printStackTrace();
         }

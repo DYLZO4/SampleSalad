@@ -16,9 +16,158 @@
 }
 
 /* Base button styles */
-.grid-button {
-    -fx-background-color: #333; /* Dark background for contrast */
-    -fx-text-fill: white;
+
+.button {
+    -fx-background-color: #314554; /* Dark background for contrast */
+    -fx-text-fill: #FAE1DF;
     -fx-font-size: 16px;
     -fx-padding: 10px;
+}
+
+.sidebarButton {
+    -fx-background-color: #162937; /* Dark background for contrast */
+    -fx-text-fill: #FAE1DF;
+}
+
+.button:pressed {
+    -fx-background-color: #546A7B;
+
+}
+
+.buttonWait {
+    -fx-background-color: #546A7B;
+
+}
+
+.JFXButton {
+    -fx-background-color: transparent;
+}
+
+.spinner {
+    -fx-background-color: #162937;
+}
+
+.spinner .text-field {
+    -fx-background-color: #314554;
+    -fx-text-fill: #FAE1DF;
+    -fx-font-size: 14px;
+}
+
+.spinner .decrement-arrow-button,
+.spinner .increment-arrow-button {
+    -fx-background-color: #0D1F2D;
+    -fx-text-fill: #FAE1DF;
+}
+
+.spinner .increment-arrow-button:hover:pressed,
+.spinner .decrement-arrow-button:hover:pressed,
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    fx-background-color: #FAE1DF;
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+}
+
+.slider .track {
+    -fx-background-color: #314554; /* Track color */
+}
+
+.slider .thumb {
+    -fx-background-color: #9EA3B0; /* Thumb color */
+}
+
+.text-field,
+.password-field{
+    -fx-background-color: #546A7B;
+    -fx-text-color: #0D1F2D;
+}
+
+.text-field:focused,
+.password-field:focused{
+    -fx-background-color: #B5B3BC;
+    -fx-border-color: #314554;
+}
+
+/*
+.accordion,
+.accordion-header,
+.accordion-item {
+    -fx-background-color: #1F3241;
+}
+*/
+
+.titled-pane {
+    -fx-background-color: #1F3241;
+    -fx-text-fill:#FAE1DF;
+    -fx-font-size: 18px;
+}
+
+.titled-pane .content{
+    -fx-background-color: #1F3241;
+}
+
+.titled-pane .title {
+    -fx-background-color: #162937;
+    -fx-text-fill:#FAE1DF;
+}
+
+.titled-pane .arrow-button .arrow {
+    -fx-background-color: #B5B3BC;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #162937;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #1F3241;
+    -fx-background-radius: 10;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #314554;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #314554;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #0D1F2D;
+}
+
+/* Change button color on hover */
+.scroll-bar .increment-button:hover,
+.scroll-bar .decrement-button:hover {
+    -fx-background-color: #0D1F2D;
+}
+
+
+
+.table-view .column-header,
+.table-view .column-header-background .filler{
+    -fx-background-color:  #1F3241;
+}
+.table-view .column-header .label{
+   -fx-text-fill: #FAE1DF;
+   -fx-font-weight: bold;
+   -fx-alignment: CENTER_LEFT;
+}
+.table-view .cell{
+   -fx-cell-size: 35;
+  -fx-alignment: center-left;
+  -fx-background-color: #546A7B;
+  -fx-border-color: #546A7B;
+  -fx-text-fill: #FAE1DF;
+  -fx-alignment: CENTER_LEFT;
+
+}
+
+.table-view{
+    -fx-background-color: #314554;
+    -fx-text-color:  #FAE1DF;
+}
+.table-row-cell:selected {
+   -fx-background-color: #314554;
+   -fx-text-color:  #FAE1DF;
 }

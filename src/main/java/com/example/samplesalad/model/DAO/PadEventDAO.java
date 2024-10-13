@@ -22,7 +22,7 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
 
      */
     public PadEventDAO() {
-        connection = DatabaseConnection.getInstance();
+//        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -30,17 +30,17 @@ public class PadEventDAO implements ISampleSaladDAO<PadEvent> {
      * Creates the padevents table in the database if it does not exist.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS padevents ("
-                    + "eventID INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "padID INT, "
-                    + "timeStamp DOUBLE, "
-                    + "FOREIGN KEY (padID) REFERENCES pads(padID))";
-            statement.execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS padevents ("
+//                    + "eventID INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "padID INT, "
+//                    + "timeStamp DOUBLE, "
+//                    + "FOREIGN KEY (padID) REFERENCES pads(padID))";
+//            statement.execute(query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**

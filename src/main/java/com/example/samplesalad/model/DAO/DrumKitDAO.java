@@ -24,7 +24,7 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
      * @param connection the SQL database connection to be used for the DAO operations
      */
     public DrumKitDAO(Connection connection) {
-        this.connection = connection;
+//        this.connection = connection;
         createTable();
     }
 
@@ -32,25 +32,25 @@ public class DrumKitDAO implements ISampleSaladDAO<DrumKit> {
      * Creates the drumkits and pads tables in the database if they do not exist.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS drumkits ("
-                    + "kitID INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "kitName VARCHAR(255) NOT NULL)";
-            statement.execute(query);
-
-            String padTableQuery = "CREATE TABLE IF NOT EXISTS pads ("
-                    + "padID INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "kitID INT, "
-                    + "sampleID INT, "
-                    + "volume DOUBLE, "
-                    + "keybind VARCHAR(255), "
-                    + "FOREIGN KEY (kitID) REFERENCES drumkits(kitID), "
-                    + "FOREIGN KEY (sampleID) REFERENCES samples(sampleID))";
-            statement.execute(padTableQuery);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//            String query = "CREATE TABLE IF NOT EXISTS drumkits ("
+//                    + "kitID INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "kitName VARCHAR(255) NOT NULL)";
+//            statement.execute(query);
+//
+//            String padTableQuery = "CREATE TABLE IF NOT EXISTS pads ("
+//                    + "padID INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "kitID INT, "
+//                    + "sampleID INT, "
+//                    + "volume DOUBLE, "
+//                    + "keybind VARCHAR(255), "
+//                    + "FOREIGN KEY (kitID) REFERENCES drumkits(kitID), "
+//                    + "FOREIGN KEY (sampleID) REFERENCES samples(sampleID))";
+//            statement.execute(padTableQuery);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**

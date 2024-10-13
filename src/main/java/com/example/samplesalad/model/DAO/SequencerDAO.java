@@ -28,29 +28,29 @@ public class SequencerDAO implements ISampleSaladDAO<Sequencer> {
      * Creates the necessary tables for sequencers and their associated patterns.
      */
     private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-
-            // Create a table for sequencers
-            String query = "CREATE TABLE IF NOT EXISTS sequencers ("
-                    + "sequencerId INT AUTO_INCREMENT PRIMARY KEY, "
-                    + "tempo INT, "
-                    + "timeSignatureNumerator INT, "
-                    + "timeSignatureDenominator INT, "
-                    + "isPlaying BOOLEAN)";
-            statement.execute(query);
-
-            // Create a table for patterns associated with a sequencer
-            String patternsQuery = "CREATE TABLE IF NOT EXISTS sequencer_patterns ("
-                    + "sequencerId INT, "
-                    + "patternId INT, "
-                    + "FOREIGN KEY (sequencerId) REFERENCES sequencers(sequencerId), "
-                    + "FOREIGN KEY (patternId) REFERENCES patterns(patternId))";
-            statement.execute(patternsQuery);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Statement statement = connection.createStatement();
+//
+//            // Create a table for sequencers
+//            String query = "CREATE TABLE IF NOT EXISTS sequencers ("
+//                    + "sequencerId INT AUTO_INCREMENT PRIMARY KEY, "
+//                    + "tempo INT, "
+//                    + "timeSignatureNumerator INT, "
+//                    + "timeSignatureDenominator INT, "
+//                    + "isPlaying BOOLEAN)";
+//            statement.execute(query);
+//
+//            // Create a table for patterns associated with a sequencer
+//            String patternsQuery = "CREATE TABLE IF NOT EXISTS sequencer_patterns ("
+//                    + "sequencerId INT, "
+//                    + "patternId INT, "
+//                    + "FOREIGN KEY (sequencerId) REFERENCES sequencers(sequencerId), "
+//                    + "FOREIGN KEY (patternId) REFERENCES patterns(patternId))";
+//            statement.execute(patternsQuery);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
