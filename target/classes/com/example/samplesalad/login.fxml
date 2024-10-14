@@ -8,17 +8,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="contentPane" prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.LoginController">
+<AnchorPane fx:id="contentPane" prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.LoginController" stylesheets="@CSS/style.css">
    <children>
       <ImageView fitHeight="71.0" fitWidth="137.0" layoutX="255.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/logo.png" />
          </image>
       </ImageView>
-      <TextField fx:id="emailField" layoutX="215.0" layoutY="196.0" promptText="Email" />
-      <PasswordField fx:id="passwordField" layoutX="215.0" layoutY="235.0" promptText="Password" />
+      <TextField fx:id="emailField" layoutX="215.0" layoutY="196.0" promptText="Email" styleClass="text-field"/>
+      <PasswordField fx:id="passwordField" layoutX="215.0" layoutY="235.0" promptText="Password" styleClass="password-field"/>
       <Button fx:id="loginButton" layoutX="308.0" layoutY="272.0" onMouseClicked="#handleLogin" prefHeight="26.0" prefWidth="57.0" text="Login" />
       <Button fx:id="signUpButton" layoutX="215.0" layoutY="272.0" onMouseClicked="#register" text="Sign up" />
-      <Label fx:id="loginStatusLabel" layoutX="215.0" layoutY="310.0" text="" />
+      <Label fx:id="loginStatusLabel" layoutX="215.0" layoutY="310.0"/>
    </children>
 </AnchorPane>
