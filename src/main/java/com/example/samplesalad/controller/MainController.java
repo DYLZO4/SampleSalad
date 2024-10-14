@@ -176,57 +176,6 @@ public class MainController implements Initializable {
         slideInTransition.setByX(1);
         slideInTransition.play();
 
-        // Menu button click event to show pane1
-//        menu.setOnMouseClicked(event -> {
-//            if (!isAnimating) { // Check if an animation is currently running
-//                isAnimating = true; // Set the flag to true
-//
-//                // Ensure pane1 is visible and interactive
-//                pane1.setVisible(true);
-//                pane1.setMouseTransparent(false);
-//
-//                // Create and play the fade-in transition for pane1
-//                FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.5), pane1);
-//                fadeInTransition.setFromValue(0);
-//                fadeInTransition.setToValue(1);
-//
-//                fadeInTransition.setOnFinished(event1 -> {
-//                    isAnimating = false; // Reset the flag when the animation finishes
-//                });
-//                fadeInTransition.play();
-//
-//                // Create and play the slide transition for pane2
-//                TranslateTransition slideInTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
-//                slideInTransition.setByX(600);
-//                slideInTransition.play();
-//            }
-//        });
-
-        // Pane1 click event to hide it
-//        pane1.setOnMouseClicked(event -> {
-//            if (!isAnimating) { // Check if an animation is currently running
-//                isAnimating = true; // Set the flag to true
-//
-//                // Create and play the fade-out transition for pane1
-//                FadeTransition fadeOutTransition1 = new FadeTransition(Duration.seconds(0.5), pane1);
-//                fadeOutTransition1.setFromValue(1);
-//                fadeOutTransition1.setToValue(0);
-//
-//                // Set an action to run after the fade-out transition finishes
-//                fadeOutTransition1.setOnFinished(event1 -> {
-//                    pane1.setVisible(false);
-//                    pane1.setMouseTransparent(true); // Make pane1 non-interactive again
-//                    isAnimating = false; // Reset the flag when the animation finishes
-//                });
-//                fadeOutTransition1.play();
-//
-//                // Create and play the slide transition for pane2
-//                TranslateTransition slideOutTransition1 = new TranslateTransition(Duration.seconds(0.5), pane2);
-//                slideOutTransition1.setByX(-600);
-//                slideOutTransition1.play();
-//            }
-//        });
-
         // Set up event handlers for radio buttons
         playSwitch.setOnAction(event -> {
             if (playSwitch.isSelected()) {

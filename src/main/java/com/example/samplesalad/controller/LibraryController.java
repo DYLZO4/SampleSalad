@@ -154,8 +154,6 @@ public class LibraryController implements IController, Initializable {
             return cell;
         });
 
-
-
         loadSampleData();
 }
 

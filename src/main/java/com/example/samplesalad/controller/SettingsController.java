@@ -39,10 +39,6 @@ public class SettingsController implements IController, Initializable {
     @FXML
     private AnchorPane contentPane;
 
-    @FXML
-    private Button padNumber0, padNumber1, padNumber2, padNumber3, padNumber4, padNumber5, padNumber6, padNumber7,
-            padNumber8, padNumber9, padNumber10, padNumber11, padNumber12, padNumber13, padNumber14, padNumber15;
-
     private KeyBindingDAO keyBindingDAO;
     private UserService userService;
     private UserController userController;
