@@ -20,7 +20,7 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
      *
      */
     public ProjectDAO() {
-//        connection = DatabaseConnection.getInstance();
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -28,16 +28,16 @@ public class ProjectDAO implements ISampleSaladDAO<Project> {
      * Creates the table for storing projects if it doesn't already exist in the database.
      */
     private void createTable() {
-//        try (Statement statement = connection.createStatement()) {
-//            String query = "CREATE TABLE IF NOT EXISTS projects ("
-//                    + "projectId INT PRIMARY KEY AUTO_INCREMENT, "
-//                    + "projectName VARCHAR(255), "
-//                    + "projectBPM INT, "
-//                    + "filePath VARCHAR(255))";
-//            statement.execute(query);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        try (Statement statement = connection.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS projects ("
+                    + "projectId INT PRIMARY KEY AUTO_INCREMENT, "
+                    + "projectName VARCHAR(255), "
+                    + "projectBPM INT, "
+                    + "filePath VARCHAR(255))";
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

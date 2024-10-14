@@ -29,21 +29,21 @@ public class ProjectSequenceDAO {
      * foreign keys to reference the `projects` and `sequencers` tables.
      */
     private void createTable() {
-//        try {
-//            Statement statement = connection.createStatement();
-//
-//            // Create a table for projectSequencers, ensuring valid foreign keys
-//            String query = "CREATE TABLE IF NOT EXISTS projectSequencers ("
-//                    + "projectId INT, "
-//                    + "sequencerId INT, "
-//                    + "FOREIGN KEY (projectId) REFERENCES projects(projectId), "
-//                    + "FOREIGN KEY (sequencerId) REFERENCES sequencers(sequencerId))";
-//            statement.execute(query);
-//            statement.close();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace(); // Handle exceptions appropriately in your application
-//        }
+        try {
+            Statement statement = connection.createStatement();
+
+            // Create a table for projectSequencers, ensuring valid foreign keys
+            String query = "CREATE TABLE IF NOT EXISTS projectSequencers ("
+                    + "projectId INT, "
+                    + "sequencerId INT, "
+                    + "FOREIGN KEY (projectId) REFERENCES projects(projectId), "
+                    + "FOREIGN KEY (sequencerId) REFERENCES sequencers(sequencerId))";
+            statement.execute(query);
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in your application
+        }
     }
 
     /**

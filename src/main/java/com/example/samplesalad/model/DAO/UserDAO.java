@@ -30,7 +30,7 @@ public class UserDAO implements ISampleSaladDAO<User> {
      * It also ensures the users table exists by invoking the {@code createTable()} method.
      */
     public UserDAO() {
-//        connection = DatabaseConnection.getInstance();
+        connection = DatabaseConnection.getInstance();
         createTable();
     }
 
@@ -40,16 +40,16 @@ public class UserDAO implements ISampleSaladDAO<User> {
      */
     private void createTable() {
         try {
-//            Statement statement = connection.createStatement();
-//            String query = "CREATE TABLE IF NOT EXISTS users ("
-//                    + "UserId INTEGER PRIMARY KEY AUTO_INCREMENT,"
-//                    + "firstName VARCHAR(255) NOT NULL,"
-//                    + "lastName VARCHAR(255) NOT NULL,"
-//                    + "password VARCHAR(255) NOT NULL,"
-//                    + "phone VARCHAR(255) NOT NULL,"
-//                    + "email VARCHAR(255) NOT NULL"
-//                    + ")";
-//            statement.execute(query);
+            Statement statement = connection.createStatement();
+            String query = "CREATE TABLE IF NOT EXISTS users ("
+                    + "UserId INTEGER PRIMARY KEY AUTO_INCREMENT,"
+                    + "firstName VARCHAR(255) NOT NULL,"
+                    + "lastName VARCHAR(255) NOT NULL,"
+                    + "password VARCHAR(255) NOT NULL,"
+                    + "phone VARCHAR(255) NOT NULL,"
+                    + "email VARCHAR(255) NOT NULL"
+                    + ")";
+            statement.execute(query);
         } catch (Exception e) {
             e.printStackTrace();
         }
