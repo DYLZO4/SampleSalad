@@ -57,6 +57,7 @@
 .spinner .increment-arrow-button {
     -fx-background-color: #0D1F2D;
     -fx-text-fill: #FAE1DF;
+    -fx-mark-color: #B5B3BC;
 }
 
 .spinner .increment-arrow-button:hover:pressed,
@@ -65,6 +66,10 @@
 .spinner .decrement-arrow-button:pressed {
     fx-background-color: #FAE1DF;
     -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+}
+
+.general-text {
+    -fx-fill: #FAE1DF;
 }
 
 .slider .track {
@@ -86,14 +91,6 @@
     -fx-background-color: #B5B3BC;
     -fx-border-color: #314554;
 }
-
-/*
-.accordion,
-.accordion-header,
-.accordion-item {
-    -fx-background-color: #1F3241;
-}
-*/
 
 .titled-pane {
     -fx-background-color: #1F3241;
@@ -133,7 +130,7 @@
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
-    -fx-background-color: #0D1F2D;
+    -fx-background-color: #B5B3BC;
 }
 
 /* Change button color on hover */
@@ -142,17 +139,17 @@
     -fx-background-color: #0D1F2D;
 }
 
-
-
 .table-view .column-header,
 .table-view .column-header-background .filler{
     -fx-background-color:  #1F3241;
 }
+
 .table-view .column-header .label{
    -fx-text-fill: #FAE1DF;
    -fx-font-weight: bold;
    -fx-alignment: CENTER_LEFT;
 }
+
 .table-view .cell{
    -fx-cell-size: 35;
   -fx-alignment: center-left;
@@ -170,4 +167,23 @@
 .table-row-cell:selected {
    -fx-background-color: #314554;
    -fx-text-color:  #FAE1DF;
+}
+
+.choice-box,
+.choice-box .context-menu {
+    -fx-background-color: #314554;
+    -fx-mark-color: #B5B3BC;
+}
+
+.choice-box .label,
+.choice-box .context-menu .label {
+    -fx-text-fill: #B5B3BC;
+}
+
+.choice-box .menu-item:focused {
+     -fx-background-color: #546A7B;
+}
+
+.choice-box .menu-item:focused .label {
+    -fx-text-fill: #FAE1DF;
 }
