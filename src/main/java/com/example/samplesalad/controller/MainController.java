@@ -131,6 +131,23 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         DrumKit drumKit = DrumKit.getInstance();
+
+        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
+        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
+        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
+        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
+        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
+        keyBindings.put(KeyCode.W, drumKit.getPad(5));
+        keyBindings.put(KeyCode.E, drumKit.getPad(6));
+        keyBindings.put(KeyCode.R, drumKit.getPad(7));
+        keyBindings.put(KeyCode.A, drumKit.getPad(8));
+        keyBindings.put(KeyCode.S, drumKit.getPad(9));
+        keyBindings.put(KeyCode.D, drumKit.getPad(10));
+        keyBindings.put(KeyCode.F, drumKit.getPad(11));
+        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
+        keyBindings.put(KeyCode.X, drumKit.getPad(13));
+        keyBindings.put(KeyCode.C, drumKit.getPad(14));
+        keyBindings.put(KeyCode.V, drumKit.getPad(15));
         User loggedInUser = userController.getLoggedInUser();
         // Exit button handler
         exit.setOnMouseClicked(event -> {

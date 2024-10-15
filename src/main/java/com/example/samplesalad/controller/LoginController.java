@@ -62,7 +62,7 @@ public class LoginController implements IController {
 
         if (userController.login(email, password)) {
             loginStatusLabel.setText("Login successful!");
-            loadPage("main"); // Load account.fxml if login is successful
+            loadPage("main-view"); // Load account.fxml if login is successful
         } else {
             loginStatusLabel.setText("Invalid email or password.");
         }
