@@ -12,14 +12,14 @@
 <?import javafx.scene.image.Image?>
 <?import com.jfoenix.controls.JFXButton?>
 <Scene xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.RangeSliderController" stylesheets="@CSS/style.css">
-    <AnchorPane prefHeight="287.0" prefWidth="538.0">
-    <Label fx:id="lowerValueLabel" layoutX="37.0" layoutY="50.0" prefHeight="16.0" prefWidth="201.0" />
-    <Label fx:id="upperValueLabel" layoutX="334.0" layoutY="50.0" prefHeight="16.0" prefWidth="169.0" />
+    <AnchorPane prefHeight="287.0" prefWidth="538.0" style="-fx-background-color:#162937">
+    <Label fx:id="lowerValueLabel" layoutX="37.0" layoutY="50.0" prefHeight="16.0" prefWidth="201.0" styleClass="general-text" />
+    <Label fx:id="upperValueLabel" layoutX="334.0" layoutY="50.0" prefHeight="16.0" prefWidth="169.0" styleClass="general-text" />
     <Canvas fx:id="rangeCanvas" height="60" layoutX="26.0" layoutY="93.0" width="487.0" />
       <Button layoutX="428.0" layoutY="238.0" mnemonicParsing="false" onMouseClicked="#onConfirmButtonClicked" text="Confirm" />
       <TextField fx:id="newFileName" layoutX="37.0" layoutY="226.0" prefHeight="24.0" prefWidth="218.0" promptText="Sample clip name" />
       <VBox layoutX="239.0" layoutY="153.0" prefHeight="60.0" prefWidth="200">
-          <JFXButton onMouseClicked="#togglePausePlay" prefHeight="60.0" prefWidth="60">
+          <JFXButton onMouseClicked="#togglePausePlay" prefHeight="60.0" prefWidth="60" styleClass="JFXButton">
             <graphic>
               <ImageView fx:id="playIcon" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true">
                 <Image url="@images/play.png"/>
