@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<BorderPane fx:id="bp" stylesheets="@CSS/style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
+<BorderPane fx:id="bp" stylesheets="@CSS/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
       <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #1F3241;">
          <children>
@@ -63,26 +53,26 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="pane2" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0">
+            <AnchorPane fx:id="pane2" layoutX="40.0" layoutY="46.19999999999999" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="40.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#goToMain" prefHeight="43.0" prefWidth="179.0" text="Main" styleClass="sidebarButton">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#goToMain" prefHeight="46.0" prefWidth="170.0" styleClass="sidebarButton" text="Main">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="signInButton" alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="43.0" prefWidth="179.0" text="Sign in" styleClass="sidebarButton">
+                        <JFXButton fx:id="signInButton" alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="46.0" prefWidth="170.0" styleClass="sidebarButton" text="Sign in">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openSettings" prefHeight="43.0" prefWidth="179.0" text="Settings" styleClass="sidebarButton">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openSettings" prefHeight="46.0" prefWidth="170.0" styleClass="sidebarButton" text="Settings">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openLibrary" prefHeight="43.0" prefWidth="179.0" text="Library" styleClass="sidebarButton">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openLibrary" prefHeight="46.0" prefWidth="170.0" styleClass="sidebarButton" text="Library">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -91,26 +81,26 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <AnchorPane layoutY="45.80000000000001" prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="279.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="20.0">
+                  <VBox alignment="TOP_CENTER" layoutY="27.0" prefHeight="279.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="27.0">
                      <children>
                         <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton">
                            <image>
                               <Image url="@images/home.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="10.0">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="15.0">
                            <image>
                               <Image url="@images/user.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="25.0">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="30.0">
                            <image>
                               <Image url="@images/settings.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="40.0">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="46.0">
                            <image>
                               <Image url="@images/library icon.png" />
                            </image>
@@ -153,7 +143,7 @@
                         <RowConstraints />
                      </rowConstraints>
                   </GridPane>
-                  <JFXButton fx:id="playButton" layoutX="300.0" layoutY="60.0" styleClass="JFXButton">
+                  <JFXButton fx:id="playButton" layoutX="280.0" layoutY="60.0" prefHeight="46.0" prefWidth="37.0" styleClass="JFXButton">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
                            <image>
@@ -161,7 +151,7 @@
                            </image>
                         </ImageView>
                      </graphic></JFXButton>
-                  <JFXButton fx:id="recordButton" layoutX="400.0" layoutY="60.0" styleClass="JFXButton">
+                  <JFXButton fx:id="recordButton" layoutX="361.0" layoutY="60.0" prefHeight="46.0" prefWidth="40.0" styleClass="JFXButton">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
                            <image>
@@ -169,7 +159,6 @@
                            </image>
                         </ImageView>
                      </graphic></JFXButton>
-                  <Slider layoutX="264.0" layoutY="33.0" prefHeight="30.0" prefWidth="200.0" />
                   <RadioButton fx:id="playSwitch" layoutX="162.0" layoutY="68.0" mnemonicParsing="false" text="Play" textFill="WHITE" />
                   <RadioButton fx:id="editSwitch" layoutX="162.0" layoutY="95.0" mnemonicParsing="false" text="Edit" textFill="WHITE" />
                   <Button fx:id="metroStart" layoutX="508.0" layoutY="87.0" mnemonicParsing="false" text="Start" />

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -82,6 +83,7 @@ public class LibraryController implements IController, Initializable {
     public void onTextEntered(ActionEvent actionEvent) {
         // TODO: Implement search functionality through table
     }
+
 
     /**
      * Loads the specified FXML page and sets it as the content of the main UI elements.
