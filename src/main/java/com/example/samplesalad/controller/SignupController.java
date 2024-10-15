@@ -49,20 +49,24 @@ public class SignupController {
 
         if (!UserValidator.validateEmail(email)) {
             statusLabel.setText("Invalid email format.");
+            statusLabel.setStyle("-fx-text-fill: white;");
             return;
         }
 
         if (!UserValidator.validatePhoneNumber(phone)) {
             statusLabel.setText("Invalid phone number format.");
+            statusLabel.setStyle("-fx-text-fill: white;");
             return;
         }
 
         if (!UserValidator.validatePassword(password)) {
             statusLabel.setText("Password must be at least 8 characters, include an uppercase letter, a digit, and a special character.");
+            statusLabel.setStyle("-fx-text-fill: white;");
             return;
         }
 
         userService.registerUser(firstName, lastName, password, email, phone);
         statusLabel.setText("User registered successfully...");
+        statusLabel.setStyle("-fx-text-fill: white;");
     }
 }

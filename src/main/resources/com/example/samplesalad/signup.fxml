@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="contentPane" prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SignupController">
+<AnchorPane fx:id="contentPane" prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SignupController">
    <children>
-      <ImageView fitHeight="71.0" fitWidth="137.0" layoutX="133.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="260.0" fitWidth="150.0" layoutX="220.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/logo.png" />
          </image>
       </ImageView>
-      <Button layoutX="175.0" layoutY="358.0" onMouseClicked="#handleSignup" text="Sign up" />
-      <VBox layoutX="98.0" layoutY="156.0" prefHeight="189.0" prefWidth="139.0" spacing="15.0">
+      <Button layoutX="220.0" layoutY="363.0" onMouseClicked="#handleSignup" text="Sign up" />
+      <VBox layoutX="220.0" layoutY="164.0" prefHeight="189.0" prefWidth="139.0" spacing="15.0">
          <children>
             <TextField fx:id="fnameField" promptText="First Name" />
             <TextField fx:id="lnameField" promptText="Last Name" />
@@ -26,6 +21,6 @@
             <PasswordField fx:id="passwordField" promptText="Password" />
          </children>
       </VBox>
-      <Label fx:id="statusLabel" layoutX="95.0" layoutY="400.0" text="" />
+      <Label fx:id="statusLabel" layoutX="95.0" layoutY="420.0" text="" />
    </children>
 </AnchorPane>
