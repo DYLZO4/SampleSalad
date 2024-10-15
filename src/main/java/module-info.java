@@ -8,7 +8,6 @@ module com.example.samplesalad {
     requires jlayer;
     requires TarsosDSP.core;
     requires TarsosDSP.jvm;
-    requires soundtouch.jni.core;
     requires com.sun.jna;
     requires com.google.gson;
 
