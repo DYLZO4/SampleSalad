@@ -1,11 +1,12 @@
 PadTest.class
 MetronomeTest.class
-SequencerTest.class
 UserTest.class
 PatternTest.class
-EffectTest.class
-SampleTest.class
-UserServiceTest.class
 UserValidatorTest.class
 DrumKitTest.class
 PadEventTest.class
+SequencerTest.class
+AudioClipTest.class
+EffectTest.class
+SampleTest.class
+UserServiceTest.class

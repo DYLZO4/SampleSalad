@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import com.jfoenix.controls.JFXButton?>
+<Scene xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.RangeSliderController" stylesheets="@CSS/style.css">
+    <AnchorPane prefHeight="287.0" prefWidth="538.0">
+    <Label fx:id="lowerValueLabel" layoutX="37.0" layoutY="50.0" prefHeight="16.0" prefWidth="201.0" />
+    <Label fx:id="upperValueLabel" layoutX="334.0" layoutY="50.0" prefHeight="16.0" prefWidth="169.0" />
+    <Canvas fx:id="rangeCanvas" height="60" layoutX="26.0" layoutY="93.0" width="487.0" />
+      <Button layoutX="428.0" layoutY="238.0" mnemonicParsing="false" onMouseClicked="#onConfirmButtonClicked" text="Confirm" />
+      <TextField fx:id="newFileName" layoutX="37.0" layoutY="226.0" prefHeight="24.0" prefWidth="218.0" promptText="Sample clip name" />
+      <VBox layoutX="239.0" layoutY="153.0" prefHeight="60.0" prefWidth="200">
+          <JFXButton onMouseClicked="#togglePausePlay" prefHeight="60.0" prefWidth="60">
+            <graphic>
+              <ImageView fx:id="playIcon" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true">
+                <Image url="@images/play.png"/>
+            </ImageView>
+            </graphic>
+          </JFXButton>
+      </VBox>
+    </AnchorPane>
+</Scene>

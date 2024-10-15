@@ -22,8 +22,8 @@ public class Sample {
     private String filePath;
     private double pitch;
     private double BPM;
-    private double startTime;
-    private double endTime;
+    private int startTime;
+    private int endTime;
     private List<Effect> appliedEffects;
     private Timestamp dateAdded;
     private double duration;
@@ -47,10 +47,12 @@ public class Sample {
         this.dateAdded =new Timestamp(System.currentTimeMillis());
         this.audioFile = new File(filePath);
         this.duration = duration;
+        startTime = 0;
+        endTime = (int) duration * 1000;
      }
 
 
-    public Sample(Integer sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double bpm, Timestamp dateAdded, Double duration) {
+    public Sample(Integer sampleID, String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double bpm, Timestamp dateAdded, double duration) {
         this.sampleID = sampleID;
         this.filePath = filePath;
         this.sampleName = sampleName;
@@ -61,6 +63,23 @@ public class Sample {
         this.appliedEffects = new ArrayList<>();
         this.dateAdded = dateAdded;
         this.duration = duration;
+        startTime = 0;
+        endTime = (int) duration * 1000;
+    }
+
+    public Sample(String filePath, String sampleName, String sampleArtist, String sampleGenre, Double pitch, Double bpm, int startTime, int endTime) {
+        this.sampleID = sampleID;
+        this.filePath = filePath;
+        this.sampleName = sampleName;
+        this.sampleGenre = sampleGenre;
+        this.sampleArtist = sampleArtist;
+        this.pitch = pitch;
+        this.BPM = bpm;
+        dateAdded = new Timestamp(System.currentTimeMillis());
+        this.appliedEffects = new ArrayList<>();
+        this.dateAdded = dateAdded;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
 
@@ -259,4 +278,36 @@ public class Sample {
      * @param newUser The user to set as this Samples user
      */
     public void setUser(User newUser) { user = newUser; }
+
+    /**
+     * Gets the start time in milliseconds
+     * @return startTime The timestamp marking the start of an audio clip.
+     */
+    public int getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * Gets the end time in milliseconds
+     * @return endTime The timestamp marking the end of an audio clip.
+     */
+    public int getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * Sets the end start in milliseconds
+     * @return endTime The timestamp marking the end of an audio clip.
+     */
+    public void setStartTime(int msStartTime) {
+        startTime = msStartTime;
+    }
+
+    /**
+     * Sets the end time in milliseconds
+     * @return endTime The timestamp marking the end of an audio clip.
+     */
+    public void setEndTime(int msEndTime) {
+        endTime = msEndTime;
+    }
 }

@@ -124,7 +124,6 @@ public class LibraryController implements IController, Initializable {
         popup.setScene(scene);
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.showAndWait();
-        // TODO: create dialogue box to upload a song to the database
     }
 
     @Override
@@ -155,7 +154,6 @@ public class LibraryController implements IController, Initializable {
             };
             return cell;
         });
-
         loadSampleData();
 }
 
