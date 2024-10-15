@@ -109,10 +109,12 @@ public class AudioClip implements LineListener {
      * If the file is not loaded, it throws an IllegalStateException.
      */
     public void playAudio() {
+        isPlaybackCompleted = false;
         if (audioClip == null) {
             throw new IllegalStateException("Audio file not loaded. Call loadFile() before playing.");
         }
         audioClip.start();
+        isPlaybackCompleted = true;
     }
 
     /**
@@ -127,9 +129,7 @@ public class AudioClip implements LineListener {
         if (audioStream != null) {
             audioStream.close();
         }
-//        if (inputStream != null) {
-//            inputStream.close();
-//        }
+
     }
 
     /**
@@ -140,33 +140,33 @@ public class AudioClip implements LineListener {
         return isPlaybackCompleted;
     }
 
+
     /**
-     * Slices a portion of the original audio file and saves in a new audio file.
-     * @param srcFileName the source file to slice from
-     * @param newFileName the destination file to save the sliced audio to
-     * @param startSecond the start second of the sliced audio
-     * @param endSecond the end second of the sliced audio
+     * Plays a segment of the loaded audio file between the specified start and end times in milliseconds.
+     * @param startMillisecond the start time of the segment in milliseconds.
+     * @param endMillisecond the end time of the segment in milliseconds.
      */
-    public static void copyAudio(String srcFileName, String newFileName, int startSecond, int endSecond) {
-        AudioInputStream inputStream = null;
-        AudioInputStream slicedStream = null;
-        try {
-            File file = new File(srcFileName);
-            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-            AudioFormat format = fileFormat.getFormat();
-            inputStream = AudioSystem.getAudioInputStream(file);
-            int bytesPerSecond = format.getFrameSize() * (int)format.getFrameRate();
-            inputStream.skip(startSecond * bytesPerSecond);
-            int secondsToSlice = endSecond - startSecond;
-            long framesOfAudioToCopy = secondsToSlice * (int)format.getFrameRate();
-            slicedStream = new AudioInputStream(inputStream, format, framesOfAudioToCopy);
-            File newFile = new File(newFileName);
-            AudioSystem.write(slicedStream, fileFormat.getType(), newFile);
-        } catch (Exception e) {
-            System.err.println(e);
-        } finally {
-            if (inputStream != null) try { inputStream.close(); } catch (Exception e) { System.err.println(e); }
-            if (slicedStream != null) try { slicedStream.close(); } catch (Exception e) { System.err.println(e); }
+    public void playAudio(int startMillisecond, int endMillisecond) {
+        isPlaybackCompleted = false;
+        if (audioClip == null) {
+            throw new IllegalStateException("Audio file not loaded. Call loadFile() before playing.");
         }
+        int frameRate = (int) audioClip.getFormat().getFrameRate();
+        int startFrame = (int) (startMillisecond / 1000.0 * frameRate);
+        int endFrame = (int) (endMillisecond / 1000.0 * frameRate);
+        endFrame = Math.min(endFrame, audioClip.getFrameLength());
+        audioClip.setFramePosition(startFrame);
+        audioClip.start();
+
+        new Thread(() -> {
+            try {
+                // Sleep for the duration (difference between end and start) in milliseconds
+                Thread.sleep(endMillisecond - startMillisecond);
+                audioClip.stop();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+        isPlaybackCompleted = true;
     }
 }

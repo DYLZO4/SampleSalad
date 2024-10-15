@@ -47,6 +47,8 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                     + "BPM DOUBLE, "
                     + "dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
                     + "duration DOUBLE, "
+                    + "startTime INT, "
+                    + "endTime INT, "
                     + "UserID INT, "  // Adding UserID field
                     + "FOREIGN KEY (UserID) REFERENCES users(UserID)"  // Setting UserID as a foreign key
                     + ")";
@@ -63,7 +65,7 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
      */
     @Override
     public void add(Sample sample) {
-        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Samples (filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration, startTime, endTime, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, sample.getFilePath());
             stmt.setString(2, sample.getSampleName());
@@ -73,7 +75,9 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
             stmt.setDouble(6, sample.getBPM());
             stmt.setTimestamp(7, new Timestamp(sample.getDateAdded().getTime()));
             stmt.setDouble(8, sample.getDuration());
-            stmt.setInt(9, userController.getLoggedInUser().getId());
+            stmt.setInt(9, sample.getStartTime());
+            stmt.setInt(10, sample.getEndTime());
+            stmt.setInt(11, userController.getLoggedInUser().getId());
             int affectedRows = stmt.executeUpdate();
 
             // Check if the insert was successful

@@ -41,10 +41,6 @@ public class fileUploadController {
     private AudioClip clip;
 
     Stage stage;
-    FileChooser.ExtensionFilter mp3 = new FileChooser.ExtensionFilter("mp3 Files", "*.mp3");
-    FileChooser.ExtensionFilter mp4 = new FileChooser.ExtensionFilter("mp4 Files", "*.mp4");
-    FileChooser.ExtensionFilter wav = new FileChooser.ExtensionFilter("wav Files", "*.wav");
-    FileChooser.ExtensionFilter allFiles = new FileChooser.ExtensionFilter("All Files", "*.*");
 
     private String filePath;
     public fileUploadController(){}
@@ -128,12 +124,31 @@ public class fileUploadController {
      */
     public void openFileExplorer(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(mp3, mp4, wav, allFiles);
+
+        // Ensure all extension filters are added correctly
+        fileChooser.getExtensionFilters().clear();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Supported Audio Files", "*.mp3", "*.mp4", "*.wav"),
+                new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
+                new FileChooser.ExtensionFilter("MP4 Files", "*.mp4"),
+                new FileChooser.ExtensionFilter("WAV Files", "*.wav"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+
         fileChooser.setTitle("Select music");
 
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        filePath = selectedFile.getAbsolutePath();
+        // Ensure the stage is properly initialized
+        Stage fileStage = (Stage) ((Button) mouseEvent.getSource()).getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(fileStage);  // Use the correct stage
+
+        if (selectedFile != null) {
+            filePath = selectedFile.getAbsolutePath();
+            System.out.println("Selected file: " + filePath); // For debugging
+        } else {
+            System.out.println("File selection was cancelled.");
+        }
     }
+
 
     /**
      * This function handles adding the new sample to the database when the "Add music" button is pressed

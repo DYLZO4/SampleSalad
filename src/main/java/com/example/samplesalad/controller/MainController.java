@@ -336,7 +336,12 @@ public class MainController implements Initializable {
             Pad pad = keyBindings.get(keyCode);
             try {
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
-                pad.getAudioClip().playAudio();
+                if (pad.getSample().getEndTime() == 0) {
+                    pad.getAudioClip().playAudio();
+                } else {
+                    pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
+                }
+
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error playing audio: " + e.getMessage());
                 // Handle the error appropriately (e.g., display an error message to the user)
@@ -358,14 +363,18 @@ public class MainController implements Initializable {
                 assignedSample.setValue(selectedPad.getSample());
                 BPM.getValueFactory().setValue(selectedPad.getBPM());
                 Pitch.getValueFactory().setValue(selectedPad.getPitch());
-                //TODO: add volume
+                //TODO: add volume1
             }
         } else if (playSwitch.isSelected()) {
             Pad pad = getPadFromButton(padButton);
 
             try {
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
-                pad.getAudioClip().playAudio();
+                if (pad.getSample().getEndTime() == 0) {
+                    pad.getAudioClip().playAudio();
+                } else {
+                    pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
+                }
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error playing audio: " + e.getMessage());
                 // Handle the error appropriately (e.g., display an error message to the user)
@@ -513,13 +522,15 @@ public class MainController implements Initializable {
             Scene scene = popupLoader.load();
             RangeSliderController controller = popupLoader.getController();
             controller.setMainController(this);
-            if (assignedSample.getValue() != null){
-                controller.setCurrentSample(assignedSample.getValue());
-            }
+//            if (assignedSample.getValue() != null){
+//                controller.setCurrentSample(assignedSample.getValue());
+//            }
+            controller.setCurrentSample(assignedSample.getValue());
+            controller.setCurrentPad(selectedPad);
 
-            if (selectedPad != null){
-                controller.setCurrentPad(selectedPad);
-            }
+//            if (selectedPad != null){
+//                controller.setCurrentPad(selectedPad);
+//            }
 
             Stage popup = new Stage();
             popup.setTitle("Edit split from audio");

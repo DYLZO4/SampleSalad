@@ -1,6 +1,7 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.Pad;
 import com.example.samplesalad.model.Sample;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class RangeSliderController {
     private int upperValue = 80;
 
     private Sample currentSample;
+    private SampleDAO sampleDAO;
     private Pad currentPad;
     private MainController mainController;
 
@@ -48,7 +50,18 @@ public class RangeSliderController {
      * sets the sample associated with the selected pad to edit in this menu
      * @param selectedSample the sample associated with the selected pad
      */
-    public void setCurrentSample(Sample selectedSample){ currentSample = selectedSample; }
+    public void setCurrentSample(Sample selectedSample){ currentSample = selectedSample;
+        if (currentSample != null) {
+            // Initialize slider values based on the sample's duration
+            double sampleDuration = currentSample.getDuration(); // Duration in seconds
+            minValue = 0; // Minimum value (0 seconds)
+            maxValue = (int) (sampleDuration * 1000); // Maximum value (duration in milliseconds)
+            lowerValue = 20; // Start value (0%)
+            upperValue = 80; // End value (100%)
+            drawSlider();
+            updateLabels();
+        }
+    }
 
     /**
      * sets the current pad that the user has selected for this menu to edit
@@ -62,6 +75,7 @@ public class RangeSliderController {
      */
     public void setMainController(MainController controller){ mainController = controller; }
 
+
     /**
      * Initialises the RangeSliderController class.
      * Sets up the UI and loads the associated audio clip with the pad.
@@ -73,7 +87,8 @@ public class RangeSliderController {
     public void initialize() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         drawSlider();
         updateLabels();
-        currentPad.getAudioClip().loadFile();
+        //currentPad.getAudioClip().loadFile();
+        sampleDAO = new SampleDAO();
 
         rangeCanvas.setOnMousePressed(this::handleMouse);
         rangeCanvas.setOnMouseDragged(this::handleMouse);
@@ -85,7 +100,7 @@ public class RangeSliderController {
      */
     private void handleMouse(MouseEvent event) {
         int mouseX = (int) event.getX();
-        int newValue = (int) ((double) mouseX / rangeCanvas.getWidth() * (maxValue - minValue) + minValue);
+        int newValue = (int) ((double) mouseX / rangeCanvas.getWidth() * 100);
 
         if (event.isPrimaryButtonDown()) {
             if (Math.abs(mouseX - getThumbLocation(lowerValue)) < 10) {
@@ -107,6 +122,7 @@ public class RangeSliderController {
      * Handles the logic for redrawing the slider when the user drags a thumb across the slider.
      */
     private void drawSlider() {
+
         GraphicsContext gc = rangeCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, rangeCanvas.getWidth(), rangeCanvas.getHeight());
 
@@ -131,11 +147,11 @@ public class RangeSliderController {
      * @return int value of where the thumb lies on the canvas.
      */
     private int getThumbLocation(int value) {
-        return (int) ((double) (value - minValue) / (maxValue - minValue) * rangeCanvas.getWidth());
+        return (int) ((double) value / 100 * rangeCanvas.getWidth());
     }
 
     /**
-     * Updates labels which show what duration has been selected using the range slider.
+     * Updates labels which show what duration  has been selected using the range slider.
      */
     private void updateLabels() {
         if (currentSample == null){
@@ -144,8 +160,8 @@ public class RangeSliderController {
             System.out.println("current pad is null");
         } else {
             double sampleDuration = currentSample.getDuration();
-            lowerValueLabel.setText("Lower Value: " + (lowerValue*sampleDuration/100)/60 + ":" + (lowerValue*sampleDuration/100)%60);
-            upperValueLabel.setText("Upper Value: " + (upperValue*sampleDuration/100)/60 + ":" + (upperValue*sampleDuration/100)%60);
+            lowerValueLabel.setText("Lower Value: " + (lowerValue*sampleDuration/100) + ":" + (lowerValue*sampleDuration/100));
+            upperValueLabel.setText("Upper Value: " + (upperValue*sampleDuration/100) + ":" + (upperValue*sampleDuration/100));
             System.out.println("current pad is NOT null");
         }
     }
@@ -157,12 +173,13 @@ public class RangeSliderController {
     public void onConfirmButtonClicked(MouseEvent mouseEvent) {
         if (currentSample != null){
             double sampleDuration = currentSample.getDuration();
-            int startTime = (int) (lowerValue* sampleDuration/100);
-            int endTime = (int) (upperValue*sampleDuration/100);
-            // Create new audio clip
-            currentPad.getAudioClip().copyAudio(currentSample.getSampleName(),newFileName.getText(), startTime, endTime);
-            // Show changes on drop down on main page
-            mainController.setAssignedSampleValue(new Sample(currentSample.getFilePath(), newFileName.getText(), currentSample.getSampleArtist(), currentSample.getSampleGenre(), startTime, endTime));
+            int startTime = (int) (lowerValue* sampleDuration*10);
+            int endTime = (int) (upperValue*sampleDuration*10);
+            System.out.println(startTime);
+            System.out.println(endTime);
+            Sample newSample = new Sample(currentSample.getFilePath(), newFileName.getText(), currentSample.getSampleArtist(), currentSample.getSampleGenre(), currentSample.getPitch(), currentSample.getBPM(),startTime, endTime);
+            mainController.setAssignedSampleValue(newSample);
+            sampleDAO.add(newSample);
         } else {
             mainController.setAssignedSampleValue(new Sample("home/", newFileName.getText(), "me", "the cool one", lowerValue, upperValue));
         }
