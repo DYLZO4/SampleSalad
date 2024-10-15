@@ -135,7 +135,13 @@ public class Pattern {
                     audioLock.lock();
                     try {
                         event.getPad().getAudioClip().loadFile();
-                        event.getPad().getAudioClip().playAudio();
+                        if (event.getPad().getSample().getEndTime() == 0) {
+                            event.getPad().getAudioClip().playAudio();
+
+                        } else {
+                            event.getPad().getAudioClip().playAudio(event.getPad().getSample().getStartTime(), event.getPad().getSample().getEndTime());
+
+                        }
                     } finally {
                         audioLock.unlock();
                     }

@@ -364,17 +364,11 @@ public class MainController implements Initializable {
             try {
 
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
-                if (pad.getSample().getEndTime() == 0) {
-                    pad.getAudioClip().playAudio();
-                    applyGlowEffect(padButton, pad); // Apply the glow effect
-                } else {
-                    pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
-                    applyGlowEffect(padButton, pad); // Apply the glow effect
-                }
+                playAudio(pad);
+                applyGlowEffect(padButton, pad); // Apply the glow effect
 
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error playing audio: " + e.getMessage());
-                // Handle the error appropriately (e.g., display an error message to the user)
             }
         }
     }
@@ -397,16 +391,11 @@ public class MainController implements Initializable {
         } else if (playSwitch.isSelected()) {
             Pad pad = getPadFromButton(padButton);
             padButton = getButtonFromPad(pad); // Get the corresponding button for the pad
+
             try {
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
-                if (pad.getSample().getEndTime() == 0) {
-                    pad.getAudioClip().playAudio();
-                    applyGlowEffect(padButton, pad); // Apply the glow effect on click
-                } else {
-                    pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
-                    applyGlowEffect(padButton, pad); // Apply the glow effect on click
-
-                }
+                playAudio(pad);
+                applyGlowEffect(padButton, pad); // Apply the glow effect on click
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error playing audio: " + e.getMessage());
                 // Handle the error appropriately (e.g., display an error message to the user)
@@ -625,5 +614,28 @@ public class MainController implements Initializable {
      */
     public void setAssignedSampleValue(Sample sample){
         assignedSample.setValue(sample);
+    }
+
+    private void playAudio(Pad pad){
+        if (pad != null) {
+            if (pad.getAudioClip() != null) {
+                try {
+                    pad.getAudioClip().loadFile();
+                    if (pad.getSample().getEndTime() == 0) {
+                        pad.getAudioClip().playAudio();
+
+                    } else {
+                        pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
+
+                    }
+                    if (pattern.isRecording()){
+                        pattern.addPadEvent(new PadEvent(pad, pattern.getStartTime()));
+                        System.out.println(pattern.getPadEvents());
+                    }
+
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                }
+            }
+        }
     }
 }

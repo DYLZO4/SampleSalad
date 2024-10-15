@@ -166,8 +166,13 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                 Double BPM = resultSet.getDouble("BPM");
                 Double pitch = resultSet.getDouble("pitch");
                 Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
+                Integer startTime = resultSet.getInt("startTime");
+                Integer endTime = resultSet.getInt("endTime");
                 Double duration = resultSet.getDouble("duration");
-                return new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration);
+                Sample newSample = new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration);
+                newSample.setStartTime(startTime);
+                newSample.setEndTime(endTime);
+                return newSample;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,10 +201,15 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                 Double pitch = resultSet.getDouble("pitch");
                 Double BPM = resultSet.getDouble("BPM");
                 Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
+                Integer startTime = resultSet.getInt("startTime");
+                Integer endTime = resultSet.getInt("endTime");
                 Double duration = resultSet.getDouble("duration");
 
                 // Create a Sample object and add it to the list
-                samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration));
+                Sample newSample = new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration);
+                newSample.setStartTime(startTime);
+                newSample.setEndTime(endTime);
+                samples.add(newSample);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -224,10 +234,16 @@ public class SampleDAO implements ISampleSaladDAO<Sample> {
                     Double pitch = resultSet.getDouble("pitch");
                     Double BPM = resultSet.getDouble("BPM");
                     Timestamp dateAdded = resultSet.getTimestamp("dateAdded");
+                    Integer startTime = resultSet.getInt("startTime");
+                    Integer endTime = resultSet.getInt("endTime");
                     Double duration = resultSet.getDouble("duration");
 
                     // Create a Sample object and add it to the list
-                    samples.add(new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration));
+                    Sample newSample = new Sample(sampleID, filePath, sampleName, sampleArtist, sampleGenre, pitch, BPM, dateAdded, duration);
+                    newSample.setStartTime(startTime);
+                    newSample.setEndTime(endTime);
+                    samples.add(newSample);
+
                 }
             }
         } catch (SQLException e) {

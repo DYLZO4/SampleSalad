@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import com.jfoenix.controls.JFXButton?>
-<Scene xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.RangeSliderController">
+<Scene xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.RangeSliderController" stylesheets="@CSS/style.css">
     <AnchorPane prefHeight="287.0" prefWidth="538.0">
     <Label fx:id="lowerValueLabel" layoutX="37.0" layoutY="50.0" prefHeight="16.0" prefWidth="201.0" />
     <Label fx:id="upperValueLabel" layoutX="334.0" layoutY="50.0" prefHeight="16.0" prefWidth="169.0" />

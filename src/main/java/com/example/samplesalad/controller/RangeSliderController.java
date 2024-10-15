@@ -179,6 +179,7 @@ public class RangeSliderController {
             System.out.println(endTime);
             Sample newSample = new Sample(currentSample.getFilePath(), newFileName.getText(), currentSample.getSampleArtist(), currentSample.getSampleGenre(), currentSample.getPitch(), currentSample.getBPM(),startTime, endTime);
             mainController.setAssignedSampleValue(newSample);
+            currentPad.setSample(newSample);
             sampleDAO.add(newSample);
         } else {
             mainController.setAssignedSampleValue(new Sample("home/", newFileName.getText(), "me", "the cool one", lowerValue, upperValue));

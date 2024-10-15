@@ -294,4 +294,20 @@ public class Sample {
     public int getEndTime() {
         return endTime;
     }
+
+    /**
+     * Sets the end start in milliseconds
+     * @return endTime The timestamp marking the end of an audio clip.
+     */
+    public void setStartTime(int msStartTime) {
+        startTime = msStartTime;
+    }
+
+    /**
+     * Sets the end time in milliseconds
+     * @return endTime The timestamp marking the end of an audio clip.
+     */
+    public void setEndTime(int msEndTime) {
+        endTime = msEndTime;
+    }
 }
