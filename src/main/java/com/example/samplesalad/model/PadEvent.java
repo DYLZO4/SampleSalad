@@ -2,23 +2,25 @@ package com.example.samplesalad.model;
 
 import com.example.samplesalad.model.user.User;
 
+import java.sql.Timestamp;
+
 /**
  * A record of a pad activity.
  */
 public class PadEvent {
     private Pad pad;
     private int padId;
-    private double timeStamp;
+    private long timeStamp;
     private User user;
 
     /**
      * Initializes a PadEvent with the triggered pad.
      * @param newPad The pad that was triggered.
      */
-    public PadEvent(Pad newPad) {
+    public PadEvent(Pad newPad, long patternStart) {
         this.pad = newPad;
         this.padId = pad.getPadId();
-        this.timeStamp = System.currentTimeMillis();
+        this.timeStamp = System.currentTimeMillis() - patternStart;
     }
 
     /**
@@ -26,7 +28,7 @@ public class PadEvent {
      * (Temporarily retrieve current time)
      */
     public void triggerEvent() {
-        this.timeStamp = (double) System.currentTimeMillis();
+        this.timeStamp = System.currentTimeMillis();
         System.out.println("Event recorded at: " +  timeStamp);
     }
 
@@ -34,10 +36,12 @@ public class PadEvent {
      * Retrieves the timestamp at which the pad was triggered.
      * @return The timestamp in seconds since the epoch (UNIX time).
      */
-    public double getTimeStamp() {
+    public long getTimeStamp() {
         System.out.println("Current time: " +  timeStamp);
         return timeStamp;
     }
+
+
 
     /**
      * Retrieves the pad ID associated with this event.

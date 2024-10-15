@@ -14,28 +14,28 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
+<BorderPane fx:id="bp" stylesheets="@CSS/style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.MainController">
    <center>
-      <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #e0dfdc;">
+      <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #1F3241;">
          <children>
-            <AnchorPane prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #002d4c;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0D1F2D;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <ImageView fx:id="exit" fitHeight="35.0" fitWidth="35.0" layoutX="762.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="exit" fitHeight="34.0" fitWidth="32.0" layoutX="758.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/exit.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="menu" fitHeight="46.0" fitWidth="32.0" layoutX="7.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/burger.png" />
-                     </image>
-                  </ImageView>
+<!--                  <ImageView fx:id="menu" fitHeight="46.0" fitWidth="32.0" layoutX="7.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                     <image>-->
+<!--                        <Image url="@images/burger.png" />-->
+<!--                     </image>-->
+<!--                  </ImageView>-->
+                  <AnchorPane fx:id="pane1" layoutX="361.0" layoutY="-229.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="229.0" AnchorPane.leftAnchor="361.0" AnchorPane.rightAnchor="-361.0" AnchorPane.topAnchor="-229.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="46.0" prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <AnchorPane layoutY="46.0" prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: #162937;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="20.0">
                      <children>
@@ -63,60 +63,54 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane fx:id="pane2" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0">
+            <AnchorPane fx:id="pane2" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#goToMain" prefHeight="38.0" prefWidth="179.0" text="Main">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#goToMain" prefHeight="43.0" prefWidth="179.0" text="Main" styleClass="sidebarButton">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="signInButton" alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="38.0" prefWidth="179.0" text="Sign in">
+                        <JFXButton fx:id="signInButton" alignment="BASELINE_LEFT" onMouseClicked="#login" prefHeight="43.0" prefWidth="179.0" text="Sign in" styleClass="sidebarButton">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openSettings" prefHeight="38.0" prefWidth="179.0" text="Setting">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openSettings" prefHeight="43.0" prefWidth="179.0" text="Settings" styleClass="sidebarButton">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openLibrary" prefHeight="38.0" prefWidth="179.0" text="Library">
+                        <JFXButton alignment="BASELINE_LEFT" onMouseClicked="#openLibrary" prefHeight="43.0" prefWidth="179.0" text="Library" styleClass="sidebarButton">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
                         </JFXButton>
-<!--                        <JFXButton fx:id="profileButton" alignment="BASELINE_LEFT" onMouseClicked="#account" prefHeight="38.0" prefWidth="179.0" text="Profile" visible="false">-->
-<!--                           <font>-->
-<!--                              <Font size="16.0" />-->
-<!--                           </font>-->
-<!--                        </JFXButton>-->
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <AnchorPane prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="20.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="279.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton">
                            <image>
                               <Image url="@images/home.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="10.0">
                            <image>
                               <Image url="@images/user.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="25.0">
                            <image>
                               <Image url="@images/settings.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="46.0" fitWidth="32.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton" translateY="40.0">
                            <image>
                               <Image url="@images/library icon.png" />
                            </image>
@@ -127,24 +121,24 @@
             </AnchorPane>
             <AnchorPane fx:id="contentPane" layoutX="220.0" layoutY="50.0" prefHeight="450.0" prefWidth="580.0">
                <children>
-                  <GridPane fx:id="gridPane" alignment="CENTER" hgap="10.0" layoutX="180.0" layoutY="120.0" prefHeight="320.0" prefWidth="320.0" vgap="10.0">
+                  <GridPane fx:id="gridPane" alignment="CENTER" hgap="10.0" layoutX="180.0" layoutY="120.0" prefHeight="320.0" prefWidth="320.0" stylesheets="@CSS/style.css" vgap="10.0">
                      <children>
                         <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Button prefHeight="70.0" prefWidth="70.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row0-glow" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row0-glow" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row0-glow" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row1-glow" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row1-glow" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row1-glow" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row1-glow" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row2-glow" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row2-glow" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row2-glow" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row2-glow" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row3-glow" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row3-glow" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row3-glow" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Button prefHeight="70.0" prefWidth="70.0" styleClass="grid-button row3-glow" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                      </children>
                      <columnConstraints>
                         <ColumnConstraints />
@@ -159,7 +153,7 @@
                         <RowConstraints />
                      </rowConstraints>
                   </GridPane>
-                  <JFXButton fx:id="playButton" layoutX="300.0" layoutY="90.0" text="">
+                  <JFXButton fx:id="playButton" layoutX="300.0" layoutY="60.0" styleClass="JFXButton">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
                            <image>
@@ -167,7 +161,7 @@
                            </image>
                         </ImageView>
                      </graphic></JFXButton>
-                  <JFXButton fx:id="recordButton" layoutX="400.0" layoutY="90.0" text="">
+                  <JFXButton fx:id="recordButton" layoutX="400.0" layoutY="60.0" styleClass="JFXButton">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
                            <image>
@@ -175,24 +169,21 @@
                            </image>
                         </ImageView>
                      </graphic></JFXButton>
-                  <Slider layoutX="280.0" layoutY="70.0" prefHeight="30.0" prefWidth="200.0" />
-                  <RadioButton fx:id="playSwitch" layoutX="161.0" layoutY="77.0" mnemonicParsing="false" text="Play" />
-                  <RadioButton fx:id="editSwitch" layoutX="162.0" layoutY="95.0" mnemonicParsing="false" text="Edit" />
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="editPane" layoutX="162.0" layoutY="171.0" prefHeight="315.0" prefWidth="236.0">
-               <children>
-                  <Text layoutX="66.0" layoutY="-6.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Sample" />
-                  <ChoiceBox fx:id="assignedSample" layoutX="63.0" layoutY="-1.0" prefWidth="150.0" />
-                  <Spinner fx:id="BPM" layoutX="64.0" layoutY="106.0" />
-                  <Button layoutX="114.0" layoutY="275.0" onAction="#applyPadChanges" text="Apply Changes" />
-                  <Spinner fx:id="Pitch" layoutX="64.0" layoutY="184.0" />
-                  <Slider fx:id="volume" layoutX="64.0" layoutY="148.0" max="1" min="0" prefHeight="16.0" prefWidth="172.0" value="0.5" />
-                  <Text layoutX="66.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BPM" />
-                  <Text layoutX="66.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" />
-                  <Text layoutX="67.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pitch" />
-                  <Button layoutX="65.0" layoutY="62.0" onAction="#editSampleSplit" text="Edit sample length" />
-                  <Text fx:id="warningMessage" fill="#ff0202" layoutX="65.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a sample or upload one through the library" wrappingWidth="179.6826171875" />
+                  <Slider layoutX="264.0" layoutY="33.0" prefHeight="30.0" prefWidth="200.0" />
+                  <RadioButton fx:id="playSwitch" layoutX="162.0" layoutY="68.0" mnemonicParsing="false" text="Play" textFill="WHITE" />
+                  <RadioButton fx:id="editSwitch" layoutX="162.0" layoutY="95.0" mnemonicParsing="false" text="Edit" textFill="WHITE" />
+                  <Button fx:id="metroStart" layoutX="508.0" layoutY="87.0" mnemonicParsing="false" text="Start" />
+                  <Spinner fx:id="metroBPM" layoutX="475.0" layoutY="48.0" prefHeight="30.0" prefWidth="88.0" />
+                  <Spinner fx:id="patternLength" layoutX="474.0" layoutY="14.0" prefHeight="30.0" prefWidth="90.0" />
+                  <AnchorPane fx:id="editPane" layoutX="4.0" layoutY="132.0" prefHeight="315.0" prefWidth="183.0">
+                     <children>
+                        <ChoiceBox fx:id="assignedSample" layoutX="18.0" layoutY="38.0" prefWidth="150.0" />
+                        <Spinner fx:id="BPM" layoutX="16.0" layoutY="76.0" prefHeight="29.0" prefWidth="156.0" />
+                        <Button layoutX="18.0" layoutY="226.0" onAction="#applyPadChanges" text="Apply Changes" />
+                        <Spinner fx:id="Pitch" layoutX="24.0" layoutY="144.0" prefHeight="23.0" prefWidth="143.0" />
+                        <Slider fx:id="volume" layoutX="25.0" layoutY="116.0" max="1" value="0.5" />
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </children>

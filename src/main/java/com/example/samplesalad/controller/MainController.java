@@ -1,12 +1,17 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.*;
+import com.example.samplesalad.model.DAO.KeyBindingDAO;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.service.UserService;
 import com.example.samplesalad.model.user.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -35,11 +40,13 @@ import javafx.util.StringConverter;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,9 +58,6 @@ public class MainController implements Initializable {
 
     public Text warningMessage;
 
-    public static void main(String[] args) {
-
-    }
 
     private Map<KeyCode, Pad> keyBindings = new HashMap<>();
 
@@ -82,10 +86,10 @@ public class MainController implements Initializable {
     private Slider Volume;
 
     @FXML
-    private Spinner<Integer> BPM;
+    private Spinner<Integer> BPM,metroBPM, patternLength;
 
     @FXML
-    private Button signInButton, playButton, recordButton;
+    private Button signInButton, playButton, recordButton, metroStart;
 
     private UserDAO userDAO;
     private SampleDAO sampleDAO;
@@ -93,7 +97,9 @@ public class MainController implements Initializable {
     private UserController userController;
 
     private Pad selectedPad; // Store the currently selected Pad
-    private boolean isRecording = false;
+    private KeyBindingDAO keyBindingDAO;
+
+
 
     private boolean isAnimating = false;
 
@@ -101,17 +107,26 @@ public class MainController implements Initializable {
     private EventHandler<MouseEvent> buttonAction;
     private Pattern pattern;
 
+    private Metronome metronome;
+    private Gson gson = new Gson();
+
+    private int preRecordBeats = 4; // Number of metronome beats before recording
+
+
+
     /**
      * Default constructor for the {@code HelloController} class.
      */
     public MainController() {
         userDAO = new UserDAO();
         sampleDAO = new SampleDAO();
+        keyBindingDAO = new KeyBindingDAO();
         userService = new UserService(userDAO);
         userController = new UserController(userService);
         buttonText = new SimpleStringProperty("Sign in");
         buttonAction = this::login;
-        pattern = new Pattern(16);
+        pattern = new Pattern(1, 120);
+        metronome = new Metronome();
     }
 
     /**
@@ -124,23 +139,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         DrumKit drumKit = DrumKit.getInstance();
-        keyBindings.put(KeyCode.DIGIT1, drumKit.getPad(0));
-        keyBindings.put(KeyCode.DIGIT2, drumKit.getPad(1));
-        keyBindings.put(KeyCode.DIGIT3, drumKit.getPad(2));
-        keyBindings.put(KeyCode.DIGIT4, drumKit.getPad(3));
-        keyBindings.put(KeyCode.Q, drumKit.getPad(4));
-        keyBindings.put(KeyCode.W, drumKit.getPad(5));
-        keyBindings.put(KeyCode.E, drumKit.getPad(6));
-        keyBindings.put(KeyCode.R, drumKit.getPad(7));
-        keyBindings.put(KeyCode.A, drumKit.getPad(8));
-        keyBindings.put(KeyCode.S, drumKit.getPad(9));
-        keyBindings.put(KeyCode.D, drumKit.getPad(10));
-        keyBindings.put(KeyCode.F, drumKit.getPad(11));
-        keyBindings.put(KeyCode.Z, drumKit.getPad(12));
-        keyBindings.put(KeyCode.X, drumKit.getPad(13));
-        keyBindings.put(KeyCode.C, drumKit.getPad(14));
-        keyBindings.put(KeyCode.V, drumKit.getPad(15));
-
+        User loggedInUser = userController.getLoggedInUser();
         // Exit button handler
         exit.setOnMouseClicked(event -> {
             System.exit(0);
@@ -151,14 +150,16 @@ public class MainController implements Initializable {
         editSwitch.setSelected(false);
         editPane.setVisible(false); // Initially hide editPane
 
+        pane1.setVisible(true);
+        pane1.setMouseTransparent(false);
 
-        // Initially set pane1 to be hidden and non-interactive
         pane1.setVisible(false);
         pane1.setMouseTransparent(true);
 
         Pitch.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 127, 60)); // Example for pitch
         BPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
-
+        metroBPM.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(60, 240, 120));
+        patternLength.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,4 , 1));
         // Create and play the fade-out transition for pane1
         FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.5), pane1);
         fadeOutTransition.setFromValue(1);
@@ -170,56 +171,20 @@ public class MainController implements Initializable {
         slideOutTransition.setByX(-600);
         slideOutTransition.play();
 
-        // Menu button click event to show pane1
-        menu.setOnMouseClicked(event -> {
-            if (!isAnimating) { // Check if an animation is currently running
-                isAnimating = true; // Set the flag to true
+        // Create and play the fade-in transition for pane1
+        FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.5), pane1);
+        fadeInTransition.setFromValue(0);
+        fadeInTransition.setToValue(1);
 
-                // Ensure pane1 is visible and interactive
-                pane1.setVisible(true);
-                pane1.setMouseTransparent(false);
-
-                // Create and play the fade-in transition for pane1
-                FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.5), pane1);
-                fadeInTransition.setFromValue(0);
-                fadeInTransition.setToValue(1);
-
-                fadeInTransition.setOnFinished(event1 -> {
-                    isAnimating = false; // Reset the flag when the animation finishes
-                });
-                fadeInTransition.play();
-
-                // Create and play the slide transition for pane2
-                TranslateTransition slideInTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
-                slideInTransition.setByX(600);
-                slideInTransition.play();
-            }
+        fadeInTransition.setOnFinished(event1 -> {
+            isAnimating = false; // Reset the flag when the animation finishes
         });
+        fadeInTransition.play();
 
-        // Pane1 click event to hide it
-        pane1.setOnMouseClicked(event -> {
-            if (!isAnimating) { // Check if an animation is currently running
-                isAnimating = true; // Set the flag to true
-
-                // Create and play the fade-out transition for pane1
-                FadeTransition fadeOutTransition1 = new FadeTransition(Duration.seconds(0.5), pane1);
-                fadeOutTransition1.setFromValue(1);
-                fadeOutTransition1.setToValue(0);
-
-                // Set an action to run after the fade-out transition finishes
-                fadeOutTransition1.setOnFinished(event1 -> {
-                    pane1.setVisible(false);
-                    pane1.setMouseTransparent(true); // Make pane1 non-interactive again
-                    isAnimating = false; // Reset the flag when the animation finishes
-                });
-                fadeOutTransition1.play();
-
-                // Create and play the slide transition for pane2
-                TranslateTransition slideOutTransition1 = new TranslateTransition(Duration.seconds(0.5), pane2);
-                slideOutTransition1.setByX(-600);
-                slideOutTransition1.play();
-            }
-        });
+        // Create and play the slide transition for pane2
+        TranslateTransition slideInTransition = new TranslateTransition(Duration.seconds(0.5), pane2);
+        slideInTransition.setByX(1);
+        slideInTransition.play();
 
         // Set up event handlers for radio buttons
         playSwitch.setOnAction(event -> {
@@ -244,27 +209,29 @@ public class MainController implements Initializable {
         });
 
         playButton.setOnMouseClicked(mouseEvent -> {
-            try {
+            if (!pattern.getIsPlaying()){
                 pattern.startPattern();
                 pattern.playPattern();
 
-            } catch (UnsupportedAudioFileException e) {
-                throw new RuntimeException(e);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } else{ pattern.stopPattern();}
         });
 
+        metroStart.setOnMouseClicked(mouseEvent -> {
+            if (!metronome.isPlaying){
+                pattern.setPatternLength(patternLength.getValueFactory().getValue());
+                metronome.startMetronome(metroBPM.getValueFactory().getValue());
+
+            } else{ metronome.stop();}
+        });
+
+
         recordButton.setOnMouseClicked(mouseEvent -> {
-            pattern.startRecordPattern();
-            if(!isRecording){
-                isRecording = true;
-                pattern.startRecordPattern();
+            if (!pattern.isRecording()) {
+                pattern.setLength(patternLength.getValueFactory().getValue());
+                startRecordingWithMetronomeDelay();
             } else {
-                isRecording=false;
                 pattern.endRecordPattern();
+                metronome.stop(); // Stop the metronome when recording stops
             }
         });
 
@@ -274,6 +241,11 @@ public class MainController implements Initializable {
         if (userController.isUserLoggedIn()) {
             buttonText.set("Account");
             buttonAction = this::account;
+
+            int userId = loggedInUser.getId();
+            String jsonBindings = keyBindingDAO.loadKeyBindings(userId);
+            keyBindings = convertJsonToKeyBindings(jsonBindings);
+            System.out.println("Key bindings: " + keyBindings);
 
             List<Sample> samples = sampleDAO.getSamplesByUserId(userController.getLoggedInUser());
             for (Sample sample : samples) {
@@ -292,6 +264,7 @@ public class MainController implements Initializable {
                 }
             });
 
+
         }
         //listener on sample selection to fetch properties
         assignedSample.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sample>() {
@@ -309,11 +282,7 @@ public class MainController implements Initializable {
                         throw new RuntimeException(e);
                     }
                 }
-
-
             }
-
-
         });
 
         for (Node node : gridPane.getChildren()) {
@@ -322,9 +291,48 @@ public class MainController implements Initializable {
                 padButton.setOnAction(event -> handlePadClick(padButton));
             }
         }
-
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
     }
+
+    private void startRecordingWithMetronomeDelay() {
+        int bpm = metroBPM.getValueFactory().getValue(); // Get BPM from your UI
+        long delay = ((60000 / bpm) * preRecordBeats); // Calculate delay for pre-record beats
+        pattern.setBPM(bpm);
+        new Thread(() -> {
+            try {
+
+                metronome.startMetronome(bpm); // Start the metronome immediately
+
+                Thread.sleep(delay); // Wait for the pre-record beats
+
+                Platform.runLater(() -> { // Ensure pattern recording starts on JavaFX Application Thread
+                    pattern.startRecordPattern();
+                    pattern.playPattern();
+                });
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+
+    }
+
+    private Map<KeyCode, Pad> convertJsonToKeyBindings(String jsonBindings) {
+        Map<KeyCode, Pad> keyBindings = new HashMap<>();
+        if (jsonBindings != null && !jsonBindings.isEmpty()) {
+            Type type = new TypeToken<Map<String, Integer>>() {}.getType();
+            Map<String, Integer> bindingsMap = gson.fromJson(jsonBindings, type);
+            for (Map.Entry<String, Integer> entry : bindingsMap.entrySet()) {
+                KeyCode keyCode = KeyCode.valueOf(entry.getKey());
+                int padIndex = entry.getValue();
+                DrumKit drumKit = DrumKit.getInstance();
+                keyBindings.put(keyCode, drumKit.getPad(padIndex));
+            }
+        }
+        return keyBindings;
+    }
+
 
     /**
      * This is called when a user presses a key on their keyboard or other device.
@@ -334,12 +342,17 @@ public class MainController implements Initializable {
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
             Pad pad = keyBindings.get(keyCode);
+            Button padButton = getButtonFromPad(pad); // Get the corresponding button for the pad
+
             try {
+
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
                 if (pad.getSample().getEndTime() == 0) {
                     pad.getAudioClip().playAudio();
+                    applyGlowEffect(padButton, pad); // Apply the glow effect
                 } else {
                     pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
+                    applyGlowEffect(padButton, pad); // Apply the glow effect
                 }
 
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -363,23 +376,75 @@ public class MainController implements Initializable {
                 assignedSample.setValue(selectedPad.getSample());
                 BPM.getValueFactory().setValue(selectedPad.getBPM());
                 Pitch.getValueFactory().setValue(selectedPad.getPitch());
-                //TODO: add volume1
             }
         } else if (playSwitch.isSelected()) {
             Pad pad = getPadFromButton(padButton);
-
+            padButton = getButtonFromPad(pad); // Get the corresponding button for the pad
             try {
                 pad.getAudioClip().loadFile(); // Load the audio file (if not already loaded)
                 if (pad.getSample().getEndTime() == 0) {
                     pad.getAudioClip().playAudio();
+                    applyGlowEffect(padButton, pad); // Apply the glow effect on click
                 } else {
                     pad.getAudioClip().playAudio(pad.getSample().getStartTime(), pad.getSample().getEndTime());
+                    applyGlowEffect(padButton, pad); // Apply the glow effect on click
+
                 }
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.err.println("Error playing audio: " + e.getMessage());
                 // Handle the error appropriately (e.g., display an error message to the user)
             }
         }
+    }
+
+    private void applyGlowEffect(Button padButton, Pad pad) {
+        // Apply the glow effect using the CSS class
+        String glowClass = getGlowClassForPad(pad);
+        padButton.getStyleClass().add(glowClass); // Add the glow class
+        padButton.getStyleClass().add("buttonWait");
+
+        // Remove the glow class after a short duration
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
+        pause.setOnFinished(event -> {
+            padButton.getStyleClass().remove("buttonWait");
+            padButton.getStyleClass().remove(glowClass);
+        }); // Remove the glow effect and active button effect
+        pause.play();
+    }
+
+    private String getGlowClassForPad(Pad pad) {
+        // Get the button associated with the pad
+        Button padButton = getButtonFromPad(pad);
+        if (padButton != null) {
+            // Retrieve the row index of the button in the grid
+            Integer rowIndex = GridPane.getRowIndex(padButton);
+
+            // Return the glow class based on the row index
+            if (rowIndex != null) {
+                return switch (rowIndex) {
+                    case 0 -> "row0-glow";
+                    case 1 -> "row1-glow";
+                    case 2 -> "row2-glow";
+                    case 3 -> "row3-glow";
+                    default -> ""; // No glow for rows beyond the defined range
+                };
+            }
+        }
+        return ""; // Return no glow if the padButton is not found or rowIndex is null
+    }
+
+
+    private Button getButtonFromPad(Pad pad) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Button) {
+                Button padButton = (Button) node;
+                Pad mappedPad = getPadFromButton(padButton);
+                if (mappedPad != null && mappedPad.equals(pad)) {
+                    return padButton; // Return the button associated with the given pad
+                }
+            }
+        }
+        return null; // If no matching button found
     }
 
     /**
@@ -401,7 +466,14 @@ public class MainController implements Initializable {
          */
     @FXML
     private void openSettings(MouseEvent event){
-        loadPage("settings");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/settings.fxml"));
+            Parent root = loader.load();
+            SettingsController settingsController = loader.getController();
+            contentPane.getChildren().setAll(root);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -483,22 +555,17 @@ public class MainController implements Initializable {
     @FXML
     private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (selectedPad != null) {
-            // Get the updated properties from the edit pane UI elements
             Sample newSample = assignedSample.getValue();
-            // TODO: apply split audio changes here
-            // newVolume = Volume.getValue();
             int newBPM = BPM.getValue();
             double newPitch = BPM.getValue();
 
-            // Apply the changes to the selectedPad
             selectedPad.setSample(newSample);
-            //selectedPad.setVolume(newVolume);
             selectedPad.setBPM(newBPM);
             selectedPad.setPitch(newPitch);
             selectedPad.setAudioClip(new AudioClip(newSample.getFilePath()));
-            // ... apply other properties as needed
         }
     }
+
 
     /**
      * Opens the relevant popup when a user clicks the Edit Sample Length button.
@@ -522,15 +589,10 @@ public class MainController implements Initializable {
             Scene scene = popupLoader.load();
             RangeSliderController controller = popupLoader.getController();
             controller.setMainController(this);
-//            if (assignedSample.getValue() != null){
-//                controller.setCurrentSample(assignedSample.getValue());
-//            }
+
             controller.setCurrentSample(assignedSample.getValue());
             controller.setCurrentPad(selectedPad);
 
-//            if (selectedPad != null){
-//                controller.setCurrentPad(selectedPad);
-//            }
 
             Stage popup = new Stage();
             popup.setTitle("Edit split from audio");

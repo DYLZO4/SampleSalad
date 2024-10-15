@@ -28,7 +28,7 @@ class MetronomeTest {
         assertFalse(metronome.isPlaying(), "Metronome should not be playing initially");
 
         // Act - start the metronome
-        metronome.start();
+        metronome.startMetronome(120);
 
         // Assert - check if the metronome is playing
         assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
@@ -41,7 +41,7 @@ class MetronomeTest {
     @Test
     void testStopMetronome() {
         // Arrange - start the metronome
-        metronome.start();
+        metronome.startMetronome(120);
         assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
 
         // Act - stop the metronome
@@ -97,7 +97,7 @@ class MetronomeTest {
     void testReset() {
         // Arrange - set BPM and start the metronome
         metronome.setBpm(150);
-        metronome.start();
+        metronome.startMetronome(120);
         assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
         assertEquals(150, metronome.getBpm(), "The BPM should be set to 150");
 

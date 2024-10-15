@@ -5,16 +5,15 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<DialogPane fx:id="popup" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SettingsController">
+<DialogPane style="-fx-background-color:#162937" fx:id="popup" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.SettingsController">
    <content>
       <TitledPane text="Press desired key">
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="237.0">
                <children>
                   <Button fx:id="keyBind" layoutX="61.0" layoutY="22.0" mnemonicParsing="false" onKeyTyped="#setKeyBind" prefHeight="106.0" prefWidth="112.0" />
-                  <Button layoutX="61.0" layoutY="136.0" mnemonicParsing="false" text="OK" />
-                  <Button layoutX="110.0" layoutY="136.0" mnemonicParsing="false" text="Cancel" />
-               </children>
+                  <Button layoutX="61.0" layoutY="136.0" mnemonicParsing="false" text="OK" onMouseClicked="#applyKeyBind" />
+                  <Button layoutX="110.0" layoutY="136.0" mnemonicParsing="false" text="Cancel" onMouseClicked="#closePopup" />               </children>
             </AnchorPane>
          </content>
       </TitledPane>

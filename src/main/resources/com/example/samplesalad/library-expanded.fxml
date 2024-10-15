@@ -11,12 +11,12 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.LibraryController">
+<AnchorPane prefHeight="450.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.samplesalad.controller.LibraryController" stylesheets="@CSS/style.css">
    <children>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="537.0">
                <Separator layoutX="4.0" layoutY="32.0" prefHeight="3.0" prefWidth="177.0" />
                <Separator layoutX="56.0" layoutY="33.0" orientation="VERTICAL" prefHeight="365.0" prefWidth="6.0" />
-               <JFXButton id="recentSongs" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="29.0" text="Button">
+               <JFXButton styleClass="JFXButton" id="recentSongs" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="29.0" text="Button">
                 <graphic>
                     <ImageView fitHeight="30.0" fitWidth="30.0">
                         <image>
@@ -25,7 +25,7 @@
                     </ImageView>
                 </graphic>
                </JFXButton>
-               <JFXButton id="uploadSong" onMouseClicked="#uploadSong" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="96.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="29.0" text="Button">
+               <JFXButton styleClass="JFXButton" id="uploadSong" onMouseClicked="#uploadSong" contentDisplay="GRAPHIC_ONLY" layoutX="14.0" layoutY="96.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="29.0" text="Button">
                    <graphic>
                        <ImageView fitHeight="30.0" fitWidth="30.0">
                            <image>
@@ -36,7 +36,7 @@
                </JFXButton>
                <AnchorPane layoutX="56.0" layoutY="35.0" prefHeight="416.0" prefWidth="525.0">
                    <TextField id="searchBar" onAction="#onTextEntered" prefHeight="24.0" prefWidth="237.0" promptText="Search..." />
-                   <ScrollPane hbarPolicy="NEVER" layoutX="2.0" layoutY="24.0" prefHeight="392.0" prefWidth="453.0" vbarPolicy="ALWAYS">
+                   <ScrollPane hbarPolicy="NEVER" layoutX="2.0" layoutY="24.0" prefHeight="392.0" prefWidth="453.0" vbarPolicy="ALWAYS" styleClass="scroll-pane">
                        <TableView fx:id="sampleTable" prefHeight="391.0" prefWidth="450.0">
                            <columns>
                                <TableColumn fx:id="songNameColumn" editable="false" prefWidth="130.0" sortType="DESCENDING" text="Song Name" />

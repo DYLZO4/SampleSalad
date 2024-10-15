@@ -1,11 +1,16 @@
 package com.example.samplesalad;
 
+import com.example.samplesalad.model.AudioClip;
+import com.example.samplesalad.model.Metronome;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -21,6 +26,16 @@ public class SampleSaladApplication extends Application {
      */
     public SampleSaladApplication(){}
     /**
+     * The main entry point for the JavaFX application.
+     * Launches the application by invoking the {@code launch} method.
+     *
+     * @param args Command-line arguments passed to the application.
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    /**
      * Starts the JavaFX application by setting up the primary stage.
      * Loads the FXML file to create the scene, applies an undecorated style to the stage,
      * and sets up drag functionality to move the window.
@@ -29,7 +44,7 @@ public class SampleSaladApplication extends Application {
      * @throws IOException If an error occurs while loading the FXML file.
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main-view.fxml")));
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
@@ -43,17 +58,13 @@ public class SampleSaladApplication extends Application {
             primaryStage.setX(event.getScreenX() - x);
             primaryStage.setY(event.getScreenY() - y);
         });
-        primaryStage.setScene(new Scene(root, 800, 500));
-        primaryStage.show();
-    }
+        Scene scene = new Scene(root, 800, 500);
 
-    /**
-     * The main entry point for the JavaFX application.
-     * Launches the application by invoking the {@code launch} method.
-     *
-     * @param args Command-line arguments passed to the application.
-     */
-    public static void main(String[] args) {
-        launch(args);
+        // Load the CSS file
+        System.out.println(getClass().getResource("CSS/style.css"));
+        scene.getStylesheets().add(getClass().getResource("CSS/style.css").toExternalForm());
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

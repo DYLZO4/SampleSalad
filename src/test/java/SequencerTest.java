@@ -20,18 +20,18 @@ class SequencerTest {
     void setUp() {
         sequencer = new Sequencer(120, 4, 4);
 
-        pattern1 = new Pattern(16);
-        pattern2 = new Pattern(8);
+        pattern1 = new Pattern(16, 120);
+        pattern2 = new Pattern(8, 120);
 
         // Add some events to the patterns for testing
         Pad pad1 = new Pad(null);
         pad1.setPadId(1);
-        PadEvent event1 = new PadEvent(pad1);
+        PadEvent event1 = new PadEvent(pad1, 0);
         pattern1.addPadEvent(event1);
 
         Pad pad2 = new Pad(null);
         pad2.setPadId(2);
-        PadEvent event2 = new PadEvent(pad2);
+        PadEvent event2 = new PadEvent(pad2, 0);
         pattern2.addPadEvent(event2);
     }
 
