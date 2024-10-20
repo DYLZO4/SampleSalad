@@ -11,8 +11,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BPMDetector{
+/**
+ * A service class for detecting the Beats Per Minute (BPM) of an audio file.
+ */
+public class BPMDetector {
 
+    /**
+     * Detects the BPM of an audio file.
+     *
+     * @param filePath The path to the audio file.
+     * @return The detected BPM, or 0 if not enough beats were detected.
+     * @throws IOException              If an I/O error occurs while reading the audio file.
+     * @throws UnsupportedAudioFileException If the audio file format is not supported.
+     */
     public static float detectBPM(String filePath) throws IOException, UnsupportedAudioFileException {
         File audioFile = new File(filePath);
 
@@ -24,6 +35,12 @@ public class BPMDetector{
 
         // Create an OnsetHandler to capture beats
         OnsetHandler handler = new OnsetHandler() {
+            /**
+             * Handles an onset event.
+             *
+             * @param time     The time of the onset in seconds.
+             * @param salience The salience of the onset.
+             */
             @Override
             public void handleOnset(double time, double salience) {
                 System.out.println(time);
@@ -42,11 +59,17 @@ public class BPMDetector{
         // Run the dispatcher to process the audio and detect beats
         dispatcher.run();
         System.out.println(beatTimestamps);
+
         // Calculate BPM based on beat timestamps
         return calculateBPM(beatTimestamps);
     }
 
-    // Calculate BPM by averaging intervals between detected beats
+    /**
+     * Calculates the BPM based on a list of beat timestamps.
+     *
+     * @param beatTimestamps A list of beat timestamps in seconds.
+     * @return The calculated BPM, or 0 if not enough beats were detected.
+     */
     private static float calculateBPM(List<Double> beatTimestamps) {
         if (beatTimestamps.size() < 2) {
             return 0;  // Not enough beats to calculate BPM
