@@ -4,7 +4,7 @@ import com.example.samplesalad.controller.UserController;
 import com.example.samplesalad.model.DatabaseConnection;
 import com.example.samplesalad.model.Sample;
 import com.example.samplesalad.model.service.UserService;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;

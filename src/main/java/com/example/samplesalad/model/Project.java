@@ -1,13 +1,12 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.model.user.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents a music project containing multiple sequences (or a single sequence),
- * with global settings such as BPM and project metadata.
+ * with global settings such as BPM and project metadata.  Supports adding, removing,
+ * and managing sequences, as well as saving and loading project data.
  */
 public class Project {
 
@@ -19,9 +18,10 @@ public class Project {
     private User user;
 
     /**
-     * Initializes the Project with a name and BPM.
+     * Initializes a new Project with a name and BPM.
+     *
      * @param projectName The name of the project.
-     * @param projectBPM The default BPM for the project.
+     * @param projectBPM  The default BPM for the project.
      */
     public Project(String projectName, int projectBPM) {
         this.projectName = projectName;
@@ -30,7 +30,8 @@ public class Project {
     }
 
     /**
-     * Adds a new sequence to the project.
+     * Adds a sequence to the project.
+     *
      * @param sequencer The sequence to add.
      */
     public void addSequence(Sequencer sequencer) {
@@ -40,6 +41,7 @@ public class Project {
 
     /**
      * Removes a sequence from the project.
+     *
      * @param sequencer The sequence to remove.
      */
     public void removeSequence(Sequencer sequencer) {
@@ -48,7 +50,8 @@ public class Project {
     }
 
     /**
-     * Gets the project's name.
+     * Gets the name of the project.
+     *
      * @return The project name.
      */
     public String getProjectName() {
@@ -56,7 +59,8 @@ public class Project {
     }
 
     /**
-     * Sets the project's name.
+     * Sets the name of the project.
+     *
      * @param projectName The new project name.
      */
     public void setProjectName(String projectName) {
@@ -64,25 +68,27 @@ public class Project {
     }
 
     /**
-     * Gets the project's BPM.
-     * @return The project's BPM.
+     * Gets the project's BPM (Beats Per Minute).
+     *
+     * @return The project BPM.
      */
     public int getProjectBPM() {
         return projectBPM;
     }
 
     /**
-     * Sets the project's BPM.
-     * @param projectBPM The new BPM.
+     * Sets the project's BPM (Beats Per Minute).
+     *
+     * @param projectBPM The new project BPM.
      */
     public void setProjectBPM(int projectBPM) {
         this.projectBPM = projectBPM;
-        // Potentially update each sequence's tempo based on project BPM
         System.out.println("Project BPM set to " + projectBPM + " bpm.");
     }
 
     /**
-     * Gets the file path where the project is saved or loaded from.
+     * Gets the file path associated with this project (for saving/loading).
+     *
      * @return The file path.
      */
     public String getFilePath() {
@@ -91,22 +97,24 @@ public class Project {
 
     /**
      * Sets the file path for saving/loading the project.
-     * @param filePath The file path.
+     *
+     * @param filePath The new file path.
      */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
     /**
-     * Gets the list of sequences in the project.
-     * @return A list of sequences.
+     * Gets the list of sequences in this project.
+     *
+     * @return The list of `Sequencer` objects.
      */
     public List<Sequencer> getSequences() {
         return sequences;
     }
 
     /**
-     * Loads the project from a file.
+     * Loads the project from the specified file path.  Currently prints a debug message.  File loading logic needs to be implemented.
      */
     public void loadProject() {
         // Logic to load the project from a file
@@ -114,30 +122,46 @@ public class Project {
     }
 
     /**
-     * Saves the project to a file.
+     * Saves the project to the specified file path.  Currently prints a debug message.  File saving logic needs to be implemented.
      */
     public void saveProject() {
         // Logic to save the project to a file
         System.out.println("Project saved to " + filePath);
     }
 
+    /**
+     * Gets the project ID.
+     *
+     * @return The project ID.
+     */
     public int getProjectID() {
         return projectID;
     }
 
+    /**
+     * Sets the project ID.
+     *
+     * @param newProjectID The new project ID.
+     */
     public void setProjectID(int newProjectID) {
         projectID = newProjectID;
     }
 
     /**
-     * Retrieve the corresponding user
-     * @return user The user of this Project
+     * Gets the user associated with this project.
+     *
+     * @return The associated user.
      */
-    public User getUser(){ return user; }
+    public User getUser() {
+        return user;
+    }
 
     /**
-     * Sets the user of this Project
-     * @param newUser The user to set as this Project user
+     * Sets the user associated with this project.
+     *
+     * @param newUser The user to associate.
      */
-    public void setUser(User newUser) { user = newUser; }
+    public void setUser(User newUser) {
+        user = newUser;
+    }
 }

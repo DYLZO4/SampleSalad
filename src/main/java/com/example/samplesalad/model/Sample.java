@@ -1,7 +1,5 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.model.user.User;
-
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -297,7 +295,6 @@ public class Sample {
 
     /**
      * Sets the end start in milliseconds
-     * @return endTime The timestamp marking the end of an audio clip.
      */
     public void setStartTime(int msStartTime) {
         startTime = msStartTime;
@@ -305,7 +302,6 @@ public class Sample {
 
     /**
      * Sets the end time in milliseconds
-     * @return endTime The timestamp marking the end of an audio clip.
      */
     public void setEndTime(int msEndTime) {
         endTime = msEndTime;

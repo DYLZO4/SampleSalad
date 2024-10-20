@@ -53,7 +53,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="pane2" layoutX="40.0" layoutY="46.19999999999999" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="40.0">
+            <AnchorPane fx:id="pane2" layoutX="44.0" layoutY="46.0" prefHeight="453.0" prefWidth="178.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="72.39999999999998" AnchorPane.leftAnchor="44.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                      <children>
@@ -81,9 +81,9 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="45.80000000000001" prefHeight="452.0" prefWidth="44.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0">
+            <AnchorPane layoutY="47.0" prefHeight="455.0" prefWidth="44.0" style="-fx-background-color: #0D1F2D;" AnchorPane.bottomAnchor="73.0" AnchorPane.leftAnchor="0.0">
                <children>
-                  <VBox alignment="TOP_CENTER" layoutY="27.0" prefHeight="279.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="27.0">
+                  <VBox alignment="TOP_CENTER" layoutX="4.0" layoutY="31.0" prefHeight="283.0" prefWidth="44.0" spacing="10.0" AnchorPane.topAnchor="31.0">
                      <children>
                         <ImageView fitHeight="46.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="JFXButton">
                            <image>
@@ -166,16 +166,16 @@
                   <Spinner fx:id="patternLength" layoutX="474.0" layoutY="14.0" prefHeight="30.0" prefWidth="90.0" />
                   <AnchorPane fx:id="editPane" layoutX="-50.0" layoutY="171.0" prefHeight="350.0" prefWidth="236.0">
                      <children>
-                        <Text layoutX="66.0" layoutY="-26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned Sample" styleClass="general-text"/>
+                        <Text layoutX="66.0" layoutY="-26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="general-text" text="Assigned Sample" />
                         <ChoiceBox fx:id="assignedSample" layoutX="63.0" layoutY="-21.0" prefWidth="150.0" />
-                        <Spinner fx:id="BPM" layoutX="64.0" layoutY="106.0" prefWidth="150"/>
+                        <Spinner fx:id="BPM" layoutX="64.0" layoutY="106.0" prefWidth="150" />
                         <Button layoutX="70.0" layoutY="226.0" onAction="#applyPadChanges" text="Apply Changes" />
-                        <Spinner fx:id="Pitch" layoutX="64.0" layoutY="184.0" prefWidth="150"/>
+                        <Spinner fx:id="Pitch" layoutX="64.0" layoutY="184.0" prefWidth="150" />
                         <Slider fx:id="volume" layoutX="64.0" layoutY="148.0" max="1" prefHeight="16.0" prefWidth="150.0" value="0.5" />
-                        <Text layoutX="66.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BPM" styleClass="general-text"/>
-                        <Text layoutX="66.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" styleClass="general-text"/>
-                        <Text layoutX="67.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pitch" styleClass="general-text"/>
-                        <Button layoutX="65.0" layoutY="42.0" onAction="#editSampleSplit" text="Edit sample length"  prefWidth="150"/>
+                        <Text layoutX="66.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="general-text" text="BPM" />
+                        <Text layoutX="66.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="general-text" text="Volume" />
+                        <Text layoutX="67.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="general-text" text="Pitch" />
+                        <Button layoutX="65.0" layoutY="42.0" onAction="#editSampleSplit" prefWidth="150" text="Edit sample length" />
                         <Text fx:id="warningMessage" fill="#ff0202" layoutX="65.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a sample or upload one through the library" wrappingWidth="179.6826171875" />
                      </children>
                   </AnchorPane>

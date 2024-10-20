@@ -1,15 +1,12 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.model.user.User;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 /**
- * A triggerable object that holds and plays a sample,
- * with properties for sensitivity, volume, and key binding,
- * simulating the physical pads on an Akai MPC.
+ * A triggerable object representing a pad (like on an Akai MPC), which holds and plays a sample.
+ * Includes properties for volume, pitch, BPM, key binding, and associated user.
  */
 public class Pad {
     private int padID;
@@ -22,9 +19,9 @@ public class Pad {
     private AudioClip audioClip;
 
     /**
-     * Initializes the pad with a specific sample.
+     * Initializes a new Pad with the given sample, setting default volume, BPM, and pitch to 1.
      *
-     * @param sample the sample object to be assigned to this pad
+     * @param sample The sample to be assigned to this pad.
      */
     public Pad(Sample sample) {
         this.sample = sample;
@@ -35,29 +32,34 @@ public class Pad {
     }
 
     /**
-     * Sets a new sample to this pad.
+     * Sets a new sample for this pad.
      *
-     * @param newSample the new sample object to be assigned
+     * @param newSample The new sample to assign.
      */
     public void setSample(Sample newSample) {
         sample = newSample;
     }
 
     /**
-     * Retrieves the sample assigned to this pad.
+     * Gets the sample currently assigned to this pad.
      *
-     * @return the sample object assigned to this pad
+     * @return The assigned sample.
      */
     public Sample getSample() {
         return sample;
     }
 
+    /**
+     * Gets the volume of this pad.
+     *
+     * @return The current volume.
+     */
     public Double getVolume() {
         return volume;
     }
 
     /**
-     * Triggers the sample audio to play if it's assigned and not currently playing.
+     * Triggers the pad to play its assigned sample.  Currently prints a debug message.  Actual playback logic needs to be implemented.
      */
     public void triggerPad() {
         // Logic for triggering the pad's sample
@@ -65,7 +67,7 @@ public class Pad {
     }
 
     /**
-     * Mutes the sample assigned to this pad.
+     * Mutes the pad. Currently prints a debug message. Actual muting logic needs to be implemented.
      */
     public void mutePad() {
         // Logic for muting the pad's sample
@@ -73,7 +75,7 @@ public class Pad {
     }
 
     /**
-     * Unmutes the sample assigned to this pad.
+     * Unmutes the pad. Currently prints a debug message.  Actual unmuting logic needs to be implemented.
      */
     public void unmutePad() {
         // Logic for unmuting the pad's sample
@@ -81,22 +83,21 @@ public class Pad {
     }
 
     /**
-     * Sets the volume for the sample assigned to this pad.
+     * Sets the volume for this pad.
      *
-     * @param volume the volume to set for the sample
+     * @param volume The new volume to set (typically between 0.0 and 1.0).
      */
     public void setVolume(double volume) {
         this.volume = volume;
         if (sample != null) {
-            sample.setBPM(volume);
             System.out.println("Volume was changed to " + volume);
         }
     }
 
     /**
-     * Retrieves the keybind mapped to this pad.
+     * Gets the keybind associated with this pad.
      *
-     * @return the key binding currently mapped to the pad
+     * @return The current keybind.
      */
     public String getKeybind() {
         System.out.println("Keybind is " + keybind);
@@ -104,9 +105,9 @@ public class Pad {
     }
 
     /**
-     * Sets a new keybind for this pad.
+     * Sets the keybind for this pad.
      *
-     * @param newKeybind the new key binding to map to the pad
+     * @param newKeybind The new keybind to assign.
      */
     public void setKeybind(String newKeybind) {
         System.out.println("Keybind has been set to " + newKeybind);
@@ -114,29 +115,29 @@ public class Pad {
     }
 
     /**
-     * Checks whether the sample assigned to this pad is currently playing.
+     * Checks if the pad's sample is currently playing.
+     * Currently always returns `false`.  Needs implementation to check actual playback status.
      *
-     * @return true if the sample is playing, false otherwise
+     * @return `true` if the sample is playing, `false` otherwise.
      */
     public boolean isPlaying() {
         System.out.println("Pad " + padID + " is currently playing");
-        return false; // This should be updated with actual logic to check playback
+        return false;
     }
 
     /**
      * Gets the ID of this pad.
      *
-     * @return the pad ID
+     * @return The pad ID.
      */
     public int getPadId() {
-//        System.out.println("Current pad: pad " + padID);
         return padID;
     }
 
     /**
-     * Sets the ID for this pad.
+     * Sets the ID of this pad.
      *
-     * @param padId the ID to be assigned to this pad
+     * @param padId The new ID to assign.
      */
     public void setPadId(int padId) {
         System.out.println("Pad has been set as pad " + padId);
@@ -144,44 +145,75 @@ public class Pad {
     }
 
     /**
-     * Retrieve the corresponding user
+     * Gets the user associated with this pad.
      *
-     * @return user The user of this Pad
+     * @return The associated user.
      */
     public User getUser() {
         return user;
     }
 
     /**
-     * Sets the user of this Pad
+     * Sets the user associated with this pad.
      *
-     * @param newUser The user to set as this Pads user
+     * @param newUser The user to associate.
      */
     public void setUser(User newUser) {
         this.user = newUser;
     }
 
-
+    /**
+     * Sets the BPM (Beats Per Minute) for this pad.
+     *
+     * @param BPM The new BPM value.
+     */
     public void setBPM(int BPM) {
         this.bpm = BPM;
     }
 
-    public int getBPM(){
+    /**
+     * Gets the BPM (Beats Per Minute) for this pad.
+     *
+     * @return The current BPM value.
+     */
+    public int getBPM() {
         return bpm;
     }
 
+    /**
+     * Sets the pitch for this pad.
+     *
+     * @param pitch The new pitch value.
+     */
     public void setPitch(double pitch) {
         this.pitch = pitch;
     }
 
-    public double getPitch(){
+    /**
+     * Gets the pitch for this pad.
+     *
+     * @return The current pitch value.
+     */
+    public double getPitch() {
         return pitch;
     }
 
+
+    /**
+     * Gets the AudioClip for this Pad
+     * @return The audioclip of this Pad
+     */
     public AudioClip getAudioClip() {
         return audioClip;
     }
 
+    /**
+     * Sets the AudioClip for this Pad
+     * @param audioClip The audioclip to set
+     * @throws UnsupportedAudioFileException If the file isn't supported
+     * @throws LineUnavailableException if the audio line is unavailable
+     * @throws IOException If the file can't be found or loaded
+     */
     public void setAudioClip(AudioClip audioClip) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.audioClip = audioClip;
         this.audioClip.loadFile();

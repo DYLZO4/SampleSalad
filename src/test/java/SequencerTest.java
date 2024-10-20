@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 class SequencerTest {
 
@@ -36,83 +34,111 @@ class SequencerTest {
     }
 
     @Test
-    void testAddPattern() {
+    void testAddPatternSize() {
         sequencer.addPattern(pattern1);
         sequencer.addPattern(pattern2);
-
-        List<Pattern> patterns = sequencer.getPatterns();
-        assertEquals(2, patterns.size(), "There should be 2 patterns in the sequence.");
-        assertTrue(patterns.contains(pattern1), "Pattern1 should be in the sequence.");
-        assertTrue(patterns.contains(pattern2), "Pattern2 should be in the sequence.");
+        assertEquals(2, sequencer.getPatterns().size());
     }
 
     @Test
-    void testRecordPattern() {
+    void testAddPatternContainsPattern1() {
+        sequencer.addPattern(pattern1);
+        assertTrue(sequencer.getPatterns().contains(pattern1));
+    }
+
+    @Test
+    void testAddPatternContainsPattern2() {
+        sequencer.addPattern(pattern2);
+        assertTrue(sequencer.getPatterns().contains(pattern2));
+    }
+
+
+
+
+    @Test
+    void testRecordPattern() {  // This test doesn't really test anything meaningful.  What's the expected behavior of recordPattern?
         sequencer.addPattern(pattern1);
         sequencer.recordPattern(pattern1);
-        List<Pattern> patterns = sequencer.getPatterns();
+        assertTrue(sequencer.getPatterns().contains(pattern1)); // This will always be true because addPattern was called
+    }
 
-        assertTrue(patterns.contains(pattern1), "Pattern1 should be recorded in the sequence.");
+
+
+    @Test
+    void testIsPlayingInitial() {
+        assertFalse(sequencer.isPlaying());
     }
 
     @Test
-    void testIsPlaying() {
-        sequencer.addPattern(pattern1);
-        // Initially, the sequence should not be playing
-        assertFalse(sequencer.isPlaying(), "The sequence should not be playing initially.");
-
+    void testIsPlayingAfterPlay() {
         sequencer.playSequence();
-        assertTrue(sequencer.isPlaying(), "The sequence should be playing after calling playSequence().");
+        assertTrue(sequencer.isPlaying());
+    }
 
+    @Test
+    void testIsPlayingAfterStop() {
+        sequencer.playSequence();
         sequencer.stopSequence();
-        assertFalse(sequencer.isPlaying(), "The sequence should not be playing after calling stopSequence().");
+        assertFalse(sequencer.isPlaying());
     }
 
 
     @Test
-    void testRemovePattern() {
+    void testRemovePatternSize() {
         sequencer.addPattern(pattern1);
         sequencer.addPattern(pattern2);
         sequencer.removePattern(pattern1);
-
-        List<Pattern> patterns = sequencer.getPatterns();
-        assertEquals(1, patterns.size(), "There should be 1 pattern left after removal.");
-        assertFalse(patterns.contains(pattern1), "Pattern1 should have been removed.");
-        assertTrue(patterns.contains(pattern2), "Pattern2 should still be in the sequence.");
+        assertEquals(1, sequencer.getPatterns().size());
     }
+
+    @Test
+    void testRemovePatternContainsPattern1() {
+        sequencer.addPattern(pattern1);
+        sequencer.addPattern(pattern2);
+        sequencer.removePattern(pattern1);
+        assertFalse(sequencer.getPatterns().contains(pattern1));
+    }
+
+    @Test
+    void testRemovePatternContainsPattern2() {
+        sequencer.addPattern(pattern1);
+        sequencer.addPattern(pattern2);
+        sequencer.removePattern(pattern1);
+        assertTrue(sequencer.getPatterns().contains(pattern2));
+    }
+
 
     @Test
     void testSetAndGetTempo() {
         sequencer.setTempo(140);
-        assertEquals(140, sequencer.getTempo(), "The tempo should be set to 140 bpm.");
+        assertEquals(140, sequencer.getTempo());
     }
 
     @Test
-    void testSetAndGetTimeSignature() {
+    void testSetTimeSignatureNumerator() {
         sequencer.setTimeSignature(3, 4);
-        assertEquals(3, sequencer.getTimeSignatureNumerator(), "The numerator should be set to 3.");
-        assertEquals(4, sequencer.getTimeSignatureDenominator(), "The denominator should be set to 4.");
+        assertEquals(3, sequencer.getTimeSignatureNumerator());
     }
+
+    @Test
+    void testSetTimeSignatureDenominator() {
+        sequencer.setTimeSignature(3, 4);
+        assertEquals(4, sequencer.getTimeSignatureDenominator());
+    }
+
+
 
     @Test
     void testPlaySequence() {
-        sequencer.addPattern(pattern1);
-        sequencer.addPattern(pattern2);
-
-        // Test that playing starts
         sequencer.playSequence();
-        assertTrue(sequencer.isPlaying(), "The sequencer should be playing.");
+        assertTrue(sequencer.isPlaying());
     }
+
 
     @Test
     void testStopSequence() {
-        sequencer.addPattern(pattern1);
         sequencer.playSequence();
-
-        // Test that stopping works
         sequencer.stopSequence();
-        assertFalse(sequencer.isPlaying(), "The sequencer should have stopped playing.");
+        assertFalse(sequencer.isPlaying());
     }
-
-
 }

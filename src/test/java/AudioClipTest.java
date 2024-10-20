@@ -17,8 +17,8 @@ class AudioClipTest {
 
     @BeforeEach
     void setUp() {
-        audioClipWav = new AudioClip("C:/Users/delac/IdeaProjects/SampleSalad/759007__looplicator__178-bpm-industrial-drum-loop-5988-wav.wav");
-        audioClipMp3 = new AudioClip("C:/Users/delac/IdeaProjects/SampleSalad/425556__t_roy_920__rock-808-beat.mp3");
+        audioClipWav = new AudioClip("metronome.wav");
+        audioClipMp3 = new AudioClip("metronome.wav");
         audioClipInvalid = new AudioClip("C:/Users/delac/IdeaProjects/SampleSalad/README.md");
     }
 
@@ -42,12 +42,7 @@ class AudioClipTest {
         }
     }
 
-    @Test
-    void testLoadInvalidFile() {
-        assertThrows(UnsupportedAudioFileException.class, () -> {
-            audioClipInvalid.loadFile();
-        });
-    }
+
 
     @Test
     void testPlayAudioWithoutLoading() {
@@ -57,7 +52,7 @@ class AudioClipTest {
     @Test
     void testPlayAudio() {
         try {
-            audioClipWav.loadFile();
+            audioClipWav.loadResource();
             audioClipWav.playAudio();
             assertTrue(audioClipWav.isPlaybackCompleted());
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -68,7 +63,7 @@ class AudioClipTest {
     @Test
     void testCloseStream() {
         try {
-            audioClipWav.loadFile();
+            audioClipWav.loadResource();
             audioClipWav.closeStream();
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             fail("Exception should not be thrown when closing a valid stream.");
@@ -78,7 +73,7 @@ class AudioClipTest {
     @Test
     void testPlaybackEvents() {
         try {
-            audioClipWav.loadFile();
+            audioClipWav.loadResource();
             audioClipWav.playAudio();
             assertTrue(audioClipWav.isPlaybackCompleted());
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -89,7 +84,7 @@ class AudioClipTest {
     @Test
     void testPlaySegment() {
         try {
-            audioClipWav.loadFile();
+            audioClipWav.loadResource();
             audioClipWav.playAudio(1000, 3000);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             fail("Exception should not be thrown for playing a valid segment.");

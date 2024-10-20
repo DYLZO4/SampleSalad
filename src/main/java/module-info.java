@@ -17,7 +17,6 @@ module com.example.samplesalad {
     exports com.example.samplesalad.controller;
     exports com.example.samplesalad.model;
     opens com.example.samplesalad.controller to javafx.fxml;
-    exports com.example.samplesalad.model.user;
     exports com.example.samplesalad.model.DAO;
     exports com.example.samplesalad.model.service;
 }

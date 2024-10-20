@@ -28,41 +28,73 @@ class PatternTest {
     }
 
     @Test
-    void testAddPadEvent() {
+    void testAddPadEventSize() {
         pattern.addPadEvent(event1);
-        List<PadEvent> events = pattern.getPadEvents();
-        assertEquals(1, events.size());
-        assertTrue(events.contains(event1), "event1 should be in the list of events");
+        assertEquals(1, pattern.getPadEvents().size());
     }
 
     @Test
-    void testRemovePadEvent() {
+    void testAddPadEventContains() {
+        pattern.addPadEvent(event1);
+        assertTrue(pattern.getPadEvents().contains(event1));
+    }
+
+
+    @Test
+    void testRemovePadEventSize() {
         pattern.addPadEvent(event1);
         pattern.addPadEvent(event2);
         pattern.removePadEvent(event1);
-
-        List<PadEvent> events = pattern.getPadEvents();
-        assertEquals(1, events.size());
-        assertFalse(events.contains(event1), "event1 should have been removed");
-        assertTrue(events.contains(event2), "event2 should still be in the list of events");
+        assertEquals(1, pattern.getPadEvents().size());
     }
 
     @Test
-    void testGetPadEvents() {
+    void testRemovePadEventContainsEvent1() {
         pattern.addPadEvent(event1);
         pattern.addPadEvent(event2);
-        List<PadEvent> events = pattern.getPadEvents();
-
-        assertEquals(2, events.size(), "There should be two PadEvent instances in the list");
-        assertEquals(event1, events.get(0), "The first event should be event 1");
-        assertEquals(event2, events.get(1), "The second event should be event 2");
+        pattern.removePadEvent(event1);
+        assertFalse(pattern.getPadEvents().contains(event1));
     }
 
     @Test
-    void testGetAndSetLength() {
-        assertEquals(16, pattern.getLength(), "The initial length should be 16");
+    void testRemovePadEventContainsEvent2() {
+        pattern.addPadEvent(event1);
+        pattern.addPadEvent(event2);
+        pattern.removePadEvent(event1);
+        assertTrue(pattern.getPadEvents().contains(event2));
+    }
 
+
+
+    @Test
+    void testGetPadEventsSize() {
+        pattern.addPadEvent(event1);
+        pattern.addPadEvent(event2);
+        assertEquals(2, pattern.getPadEvents().size());
+    }
+
+    @Test
+    void testGetPadEventsFirstEvent() {
+        pattern.addPadEvent(event1);
+        pattern.addPadEvent(event2);
+        assertEquals(event1, pattern.getPadEvents().get(0));
+    }
+
+    @Test
+    void testGetPadEventsSecondEvent() {
+        pattern.addPadEvent(event1);
+        pattern.addPadEvent(event2);
+        assertEquals(event2, pattern.getPadEvents().get(1));
+    }
+
+    @Test
+    void testGetLength() {
+        assertEquals(16, pattern.getLength());
+    }
+
+    @Test
+    void testSetLength() {
         pattern.setLength(32);
-        assertEquals(32, pattern.getLength(), "The length should be updated to 32");
+        assertEquals(32, pattern.getLength());
     }
 }

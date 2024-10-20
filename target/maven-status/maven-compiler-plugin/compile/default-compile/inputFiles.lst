@@ -5,6 +5,7 @@ C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\MainController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\fileUploadController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\ProjectDAO.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\User.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\UserController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\Pattern.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\PatternDAO.java
@@ -22,10 +23,10 @@ C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DatabaseConnection.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\service\UserService.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\Effect.java
+C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\RangeSliderController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\PadDAO.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\SampleSaladApplication.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\MockDatabaseConnection.java
-C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\user\User.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\MockUserDAO.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\controller\IController.java
 C:\Users\dylan\IdeaProjects\SampleSaladNew\src\main\java\com\example\samplesalad\model\DAO\ISampleSaladDAO.java

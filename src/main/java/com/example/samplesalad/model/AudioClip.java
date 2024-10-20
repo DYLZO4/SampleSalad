@@ -2,15 +2,12 @@ package com.example.samplesalad.model;
 
 import javax.sound.sampled.*;
 import java.io.*;
-import java.net.URL;
-
 import javazoom.jl.converter.Converter;
-import javax.sound.sampled.*;
-import java.io.*;
+
 
 
 /**
- * The AudioClip class is responsible for loading, playing, and managing audio files.
+ * The `AudioClip` class is responsible for loading, playing, and managing audio files. It supports WAV and MP3 formats.
  */
 public class AudioClip implements LineListener {
     private boolean isPlaybackCompleted;
@@ -19,17 +16,17 @@ public class AudioClip implements LineListener {
     private Clip audioClip;
 
     /**
-     * Constructs an AudioClip with an audio file.
-     * @param file the file path or name of the audio clip to be played.
+     * Constructs an `AudioClip` with the specified audio file path.
+     * @param file The file path or name of the audio clip to be played.
      */
     public AudioClip(String file) {
         this.filePath = file;
     }
 
     /**
-     * Callback method for handling LineEvents.
-     * Logs when playback starts and completes.
-     * @param event the LineEvent triggered during playback.
+     * Callback method for handling `LineEvent`s during audio playback.
+     * This method updates the `isPlaybackCompleted` flag when playback starts or stops.
+     * @param event The `LineEvent` triggered during playback.
      */
     @Override
     public void update(LineEvent event) {
@@ -42,10 +39,11 @@ public class AudioClip implements LineListener {
     }
 
     /**
-     * Loads the audio file into an AudioInputStream. Handles both WAV and MP3.
-     * @throws UnsupportedAudioFileException if the audio format is unsupported.
-     * @throws IOException if an I/O error occurs while loading the file.
-     * @throws LineUnavailableException if the system cannot open the audio line.
+     * Loads the audio file from the specified file path into an `AudioInputStream`.
+     * Handles both WAV and MP3 files.  MP3 files are converted to WAV format internally.
+     * @throws UnsupportedAudioFileException If the audio file format is unsupported.
+     * @throws IOException If an I/O error occurs while loading the file.
+     * @throws LineUnavailableException If the system cannot open the audio line.
      */
     public void loadFile() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         File file = new File(filePath);
@@ -105,6 +103,12 @@ public class AudioClip implements LineListener {
         audioClip.open(audioStream);
     }
 
+    /**
+     * Loads the audio file from the resources folder.
+     * @throws UnsupportedAudioFileException if the audio format is unsupported
+     * @throws IOException if an IO error occurs while loading the file
+     * @throws LineUnavailableException if an error occurs during audio output
+     */
     public void loadResource() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         // Load the file from the resources folder
         InputStream resourceStream = getClass().getClassLoader().getResourceAsStream(filePath);
@@ -125,7 +129,7 @@ public class AudioClip implements LineListener {
 
     /**
      * Plays the loaded audio file.
-     * If the file is not loaded, it throws an IllegalStateException.
+     * @throws IllegalStateException If the audio file is not loaded.
      */
     public void playAudio() {
         isPlaybackCompleted = false;
@@ -137,9 +141,9 @@ public class AudioClip implements LineListener {
     }
 
     /**
-     * Closes the audio clip
-     * Should be called after playback is completed or when no longer needed.
-     * @throws IOException if an IO error occurs while closing the audio stream.
+     * Closes the audio clip and releases resources.
+     * This method should be called after playback is completed or when the audio clip is no longer needed.
+     * @throws IOException If an I/O error occurs while closing the audio stream.
      */
     public void closeStream() throws IOException {
         if (audioClip != null) {
@@ -152,8 +156,8 @@ public class AudioClip implements LineListener {
     }
 
     /**
-     * Checks whether the playback is completed.
-     * @return true if playback is complete, otherwise false.
+     * Checks if the audio playback is completed.
+     * @return `true` if playback is complete, `false` otherwise.
      */
     public boolean isPlaybackCompleted() {
         return isPlaybackCompleted;
@@ -161,9 +165,10 @@ public class AudioClip implements LineListener {
 
 
     /**
-     * Plays a segment of the loaded audio file between the specified start and end times in milliseconds.
-     * @param startMillisecond the start time of the segment in milliseconds.
-     * @param endMillisecond the end time of the segment in milliseconds.
+     * Plays a segment of the loaded audio file between the specified start and end times.
+     * @param startMillisecond The start time of the segment in milliseconds.
+     * @param endMillisecond The end time of the segment in milliseconds.
+     * @throws IllegalStateException if audio clip has not yet been loaded using loadFile()
      */
     public void playAudio(int startMillisecond, int endMillisecond) {
         isPlaybackCompleted = false;

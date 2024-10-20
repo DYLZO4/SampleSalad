@@ -1,5 +1,4 @@
 package com.example.samplesalad.model;
-import com.example.samplesalad.model.user.User;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -33,17 +32,17 @@ public class Metronome {
     }
 
     /**
-     * Starts the metronome.
-     * <p>
-     * This method sets the playing state of the metronome to true.
-     * </p>
+     * Starts the metronome at the specified beats per minute (BPM).
+     * If the metronome is already playing, this method does nothing.
+     *
+     * @param bpm The desired tempo in beats per minute.
      */
     public void startMetronome(int bpm) {
         if (isPlaying) {
             return; // Already playing
         }
 
-        isPlaying = true;  // Set playing flag before scheduling
+        isPlaying = true;
 
         long delayBetweenBeats = 60000 / bpm;
 
@@ -56,11 +55,14 @@ public class Metronome {
         }, 0, delayBetweenBeats, TimeUnit.MILLISECONDS);
     }
 
-    // Method to play the metronome sound (you can customize this)
+    /**
+     * Plays the metronome sound.
+     * This method loads and plays the metronome audio clip.  Any exceptions during loading or playback are caught and printed to the console.
+     */
     public void playMetronomeSound() {
         try {
-            // Load the metronome sound file and play it
-            metronomeAudioClip.loadResource(); // Assuming you have an AudioClip for the metronome sound
+
+            metronomeAudioClip.loadResource();
             metronomeAudioClip.playAudio();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * including loading, playing, stopping samples, setting properties, and managing effects.
  * </p>
  */
-class SampleTest {
+class   SampleTest {
     private Sample sample;
 
     /**

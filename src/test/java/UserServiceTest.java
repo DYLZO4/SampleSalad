@@ -1,6 +1,5 @@
 import com.example.samplesalad.model.DAO.FakeUserDAO;
-import com.example.samplesalad.model.HashUtil;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 import com.example.samplesalad.model.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,92 +8,56 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for {@link UserService}.
- * <p>
- * This class contains test cases for the methods of the {@link UserService} class,
- * including user registration and login functionality using a {@link FakeUserDAO} for in-memory testing.
- * </p>
  */
 class UserServiceTest {
     private FakeUserDAO userDAO;
     private UserService userService;
+    private String firstName = "Dylan";
+    private String lastName = "Hessing";
+    private String password = "password123";
+    private String email = "dylanhessing@hotmail.com";
+    private String phone = "0450157926";
 
-    /**
-     * Sets up the test environment by initializing {@link FakeUserDAO} and {@link UserService}
-     * instances before each test.
-     */
+
+
     @BeforeEach
     void setUp() {
-        userDAO = new FakeUserDAO();  // FakeUserDAO is used as the in-memory implementation of UserDAO
+        userDAO = new FakeUserDAO();
         userService = new UserService(userDAO);
     }
 
-    /**
-     * Tests the {@link UserService#registerUser(String, String, String, String, String)} method.
-     * <p>
-     * Verifies that a user is registered and added to the {@link FakeUserDAO}.
-     * </p>
-     */
+
     @Test
-    void testRegisterUser() {
-        // Simulate registering a user
-        String firstName = "Dylan";
-        String lastName = "Hessing";
-        String password = "password123";
-        String email = "dylanhessing@hotmail.com";
-        String phone = "0450157926";
-
-        // Call the registerUser method
+    void testRegisterUserNotNull() {
         userService.registerUser(firstName, lastName, password, email, phone);
-
-        // Verify that the user was added to the FakeUserDAO
-        User registeredUser = userDAO.getByEmail(email);
-        assertNotNull(registeredUser, "User should be registered and present in the DAO.");
-        assertEquals(email, registeredUser.getEmail());
-        assertNotNull(registeredUser.getHashedPassword(), "User should have a hashed password.");
+        assertNotNull(userDAO.getByEmail(email));
     }
 
-    /**
-     * Tests the {@link UserService#authenticate(String, String)} method with correct credentials.
-     * <p>
-     * Verifies that login is successful when using the correct password.
-     * </p>
-     */
+    @Test
+    void testRegisterUserEmail() {
+        userService.registerUser(firstName, lastName, password, email, phone);
+        assertEquals(email, userDAO.getByEmail(email).getEmail());
+    }
+
+    @Test
+    void testRegisterUserPassword() {
+        userService.registerUser(firstName, lastName, password, email, phone);
+        assertNotNull(userDAO.getByEmail(email).getHashedPassword());
+    }
+
+
+
     @Test
     void testLoginUserWithCorrectPassword() {
-        // Simulate registering a user
-        String firstName = "Dylan";
-        String lastName = "Hessing";
-        String password = "password123";
-        String email = "dylanhessing@hotmail.com";
-        String phone = "0450157926";
-
-        // Register the user
         userService.registerUser(firstName, lastName, password, email, phone);
         User user = new User(firstName, lastName, password, email, phone);
-        // Test login with correct credentials
-        assertEquals(userService.authenticate(email, password).getEmail(), user.getEmail());
+        assertEquals(userService.authenticate(email, password).getEmail(), user.getEmail()); // This assertion is fine as it's comparing essential parts of the objects.
     }
 
-    /**
-     * Tests the {@link UserService#authenticate(String, String)} method with incorrect credentials.
-     * <p>
-     * Verifies that login fails when using an incorrect password.
-     * </p>
-     */
+
     @Test
     void testLoginUserWithIncorrectPassword() {
-        // Simulate registering a user
-        String firstName = "Dylan";
-        String lastName = "Hessing";
-        String password = "password123";
-        String email = "dylanhessing@hotmail.com";
-        String phone = "0450157926";
-
-        // Register the user
         userService.registerUser(firstName, lastName, password, email, phone);
-
-        // Test login with incorrect password
-        String incorrectPassword = "wrongPassword";
-        assertEquals(userService.authenticate(email, incorrectPassword), null);
+        assertNull(userService.authenticate(email, "wrongPassword"));
     }
 }

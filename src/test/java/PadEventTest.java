@@ -22,29 +22,13 @@ class PadEventTest {
     }
 
     @Test
-    void testPadEventInitialization() {
+    void testPadEventPadId() {
         assertEquals(mockPad.getPadId(), padEvent.getPadID());
+    }
+
+    @Test
+    void testPadEventTimeStamp() {
         assertTrue(padEvent.getTimeStamp() > 0);
     }
-/**
- * Disabled Test as it is failing for unkown reason
-    //@Test
-    void testTriggerEvent() {
-        double initialTimeStamp = padEvent.getTimeStamp();
-        padEvent.triggerEvent();
-        double newTimeStamp = padEvent.getTimeStamp();
 
-        assertTrue(newTimeStamp > initialTimeStamp, "Timestamp should be updated after triggering event");
-    }
-*/
-    @Test
-    void testGetPadId() {
-        assertEquals(mockPad.getPadId(), padEvent.getPadID());
-    }
-
-    @Test
-    void testGetTimeStamp() {
-        double timeStamp = padEvent.getTimeStamp();
-        assertTrue(timeStamp > 0, "Timestamp should be initialized");
-    }
 }
