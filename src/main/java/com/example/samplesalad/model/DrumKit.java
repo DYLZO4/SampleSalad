@@ -2,7 +2,6 @@ package com.example.samplesalad.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.samplesalad.model.user.User;
 
 /**
  * The {@code DrumKit} class represents a collection of pads, each of which can be assigned a {@link Sample}.
@@ -29,6 +28,12 @@ public class DrumKit {
         }
     }
 
+    /**
+     * Retrieves the singleton instance of the DrumKit.
+     * If no instance exists, a new one is created with the default kit name "currentKit".
+     *
+     * @return The single DrumKit instance.
+     */
     public static DrumKit getInstance() {
         if (instance == null) {
             instance = new DrumKit("currentKit");

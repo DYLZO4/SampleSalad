@@ -19,20 +19,23 @@ class MetronomeTest {
     }
 
     /**
-     * Tests the {@link Metronome#start()} method.
-     * Verifies that the metronome starts and is playing after calling the start method.
+     * Tests the {@link Metronome#startMetronome(int)} method.
+     * Verifies that the metronome starts and is playing after calling the startMetronome method.
      */
     @Test
     void testStartMetronome() {
-        // Arrange - metronome should not be playing by default
-        assertFalse(metronome.isPlaying(), "Metronome should not be playing initially");
-
-        // Act - start the metronome
         metronome.startMetronome(120);
-
-        // Assert - check if the metronome is playing
-        assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
+        assertTrue(metronome.isPlaying());
     }
+
+    /**
+     * Tests that the metronome is not playing initially.
+     */
+    @Test
+    void testInitialPlayingState() {
+        assertFalse(metronome.isPlaying());
+    }
+
 
     /**
      * Tests the {@link Metronome#stop()} method.
@@ -40,72 +43,61 @@ class MetronomeTest {
      */
     @Test
     void testStopMetronome() {
-        // Arrange - start the metronome
         metronome.startMetronome(120);
-        assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
-
-        // Act - stop the metronome
         metronome.stop();
-
-        // Assert - check if the metronome is not playing
-        assertFalse(metronome.isPlaying(), "Metronome should not be playing after stop");
+        assertFalse(metronome.isPlaying());
     }
 
     /**
-     * Tests the {@link Metronome#setBpm(int)} and {@link Metronome#getBpm()} methods.
-     * Verifies that the BPM is correctly set and retrieved.
+     * Tests the {@link Metronome#setBpm(int)} method.
      */
     @Test
-    void testSetAndGetBpm() {
-        // Arrange
+    void testSetBpm() {
         int bpm = 100;
-
-        // Act - set the BPM
         metronome.setBpm(bpm);
+        assertEquals(bpm, metronome.getBpm());
+    }
 
-        // Assert - check if the BPM is correctly set
-        assertEquals(bpm, metronome.getBpm(), "The BPM should match the set value");
+
+
+    /**
+     * Tests the {@link Metronome#togglePlay()} method starts the metronome.
+     */
+    @Test
+    void testTogglePlayStart() {
+        metronome.togglePlay();
+        assertTrue(metronome.isPlaying());
     }
 
     /**
-     * Tests the {@link Metronome#togglePlay()} method.
-     * Verifies that toggling the play state starts and stops the metronome correctly.
+     * Tests the {@link Metronome#togglePlay()} method stops the metronome.
      */
     @Test
-    void testTogglePlay() {
-        // Arrange - initially not playing
-        assertFalse(metronome.isPlaying(), "Metronome should not be playing initially");
-
-        // Act - toggle once to start the metronome
-        metronome.togglePlay();
-
-        // Assert - check if the metronome is playing
-        assertTrue(metronome.isPlaying(), "Metronome should be playing after toggle");
-
-        // Act - toggle again to stop the metronome
-        metronome.togglePlay();
-
-        // Assert - check if the metronome is not playing
-        assertFalse(metronome.isPlaying(), "Metronome should not be playing after second toggle");
+    void testTogglePlayStop() {
+        metronome.togglePlay(); // Start
+        metronome.togglePlay(); // Stop
+        assertFalse(metronome.isPlaying());
     }
 
+
+
     /**
-     * Tests the {@link Metronome#reset()} method.
-     * Verifies that the metronome resets to the default BPM and stops playing.
+     * Tests the {@link Metronome#reset()} resets the playing state.
      */
     @Test
-    void testReset() {
-        // Arrange - set BPM and start the metronome
-        metronome.setBpm(150);
+    void testResetPlayingState() {
         metronome.startMetronome(120);
-        assertTrue(metronome.isPlaying(), "Metronome should be playing after start");
-        assertEquals(150, metronome.getBpm(), "The BPM should be set to 150");
-
-        // Act - reset the metronome
         metronome.reset();
+        assertFalse(metronome.isPlaying());
+    }
 
-        // Assert - check if the metronome is reset to default BPM and stopped
-        assertFalse(metronome.isPlaying(), "Metronome should not be playing after reset");
-        assertEquals(120, metronome.getBpm(), "BPM should reset to default value 120");
+    /**
+     * Tests the {@link Metronome#reset()} resets the BPM.
+     */
+    @Test
+    void testResetBpm() {
+        metronome.setBpm(150);
+        metronome.reset();
+        assertEquals(120, metronome.getBpm());
     }
 }

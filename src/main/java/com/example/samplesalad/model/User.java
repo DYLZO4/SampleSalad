@@ -1,8 +1,5 @@
 package com.example.samplesalad.model;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * The {@code User} class represents a user in the system.
  * It contains personal information such as first name, last name, hashed password, email, and phone number.
@@ -30,7 +27,7 @@ public class User {
     public User(String firstName, String lastName, String password, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.hashedPassword = HashUtil.hashPassword(password);
+        this.hashedPassword = password;
         this.email = email;
         this.phone = phone;
     }

@@ -10,6 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * Controller for the signup view.
+ * Handles user registration.
+ */
 public class SignupController {
 
     @FXML
@@ -35,10 +39,20 @@ public class SignupController {
 
     private UserService userService;
 
+    /**
+     * Initializes a new instance of the SignupController.
+     * Creates a new UserService with a UserDAO.
+     */
     public SignupController() {
         userService = new UserService(new UserDAO());
     }
 
+    /**
+     * Handles the signup button click event.
+     * Validates user input and registers the user.
+     *
+     * @param event The mouse event triggered by the signup button click.
+     */
     @FXML
     private void handleSignup(MouseEvent event) {
         String firstName = fnameField.getText();

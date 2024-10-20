@@ -2,9 +2,8 @@ package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.DAO.KeyBindingDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
-import com.example.samplesalad.model.DrumKit;
 import com.example.samplesalad.model.Pad;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 import com.example.samplesalad.model.service.UserService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +19,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -29,6 +27,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+/**
+ * Controller for the settings view, managing key bindings and other user preferences.
+ * Implements {@link Initializable} to initialize components and load saved key bindings.
+ */
 public class SettingsController implements IController, Initializable {
 
     @FXML
@@ -50,6 +52,13 @@ public class SettingsController implements IController, Initializable {
     private Gson gson = new Gson();
     private Map<KeyCode, Pad> keyBindings = new HashMap<>();
 
+    /**
+     * Initializes the controller. Loads saved key bindings from the database and updates
+     * the pad buttons with the corresponding key assignments.  If no saved bindings
+     * are found, default bindings are used and saved to the database.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         keyBindingDAO = new KeyBindingDAO();
@@ -105,7 +114,11 @@ public class SettingsController implements IController, Initializable {
     }
 
 
-
+    /**
+     * Loads the specified FXML page into the content pane.
+     *
+     * @param page The name of the FXML file to load (without the .fxml extension).
+     */
     public void loadPage(String page) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/samplesalad/" + page + ".fxml"));
@@ -117,10 +130,19 @@ public class SettingsController implements IController, Initializable {
         }
     }
 
+    /**
+     * Placeholder for loading a popup. Currently not implemented.
+     * @param page The page to load
+     */
     public void loadPopup(String page) {
         // Implement the logic to load the popup
     }
 
+    /**
+     * Opens the key bind popup for the clicked pad button.
+     *
+     * @param mouseEvent The mouse event triggering the popup.
+     */
     public void openPopup(MouseEvent mouseEvent) {
         try {
             sourceButton = (Button) mouseEvent.getSource();
@@ -138,15 +160,28 @@ public class SettingsController implements IController, Initializable {
         }
     }
 
+    /**
+     * Sets the source button that triggered the key bind popup.
+     *
+     * @param sourceButton The button that triggered the popup.
+     */
     public void setSourceButton(Button sourceButton) {
         this.sourceButton = sourceButton;
     }
 
+    /**
+     * Captures the key pressed by the user in the key bind popup.
+     *
+     * @param keyEvent The key event.
+     */
     public void setKeyBind(KeyEvent keyEvent) {
         keyPressed = keyEvent.getCharacter().toUpperCase();
         keyBind.setText(keyPressed);
     }
 
+    /**
+     * Applies the selected key bind to the source button and closes the popup.
+     */
     @FXML
     public void applyKeyBind() {
         if (sourceButton != null && keyPressed != null) {
@@ -156,6 +191,13 @@ public class SettingsController implements IController, Initializable {
         stage.close();
     }
 
+    /**
+     * Converts the current key bindings to a JSON string.
+     * This method retrieves the text of each pad button (representing the assigned key),
+     * creates a map of pad number to key, converts it to JSON using Gson, and returns the JSON string.
+     * Also updates the key bindings in the database for the logged-in user.
+     * @return A JSON string representing the current key bindings.
+     */
     public String getButtonTextsAsJson() {
         Map<String, String> buttonTexts = new HashMap<>();
         Map<String, Integer> keyBindings = new HashMap<>();
@@ -184,6 +226,11 @@ public class SettingsController implements IController, Initializable {
         return json;
     }
 
+    /**
+     * Closes the key bind popup.
+     *
+     * @param mouseEvent The mouse event triggered by clicking the close button.
+     */
     @FXML
     public void closePopup(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Button) mouseEvent.getSource()).getScene().getWindow();

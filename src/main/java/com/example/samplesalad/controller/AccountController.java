@@ -1,7 +1,7 @@
 package com.example.samplesalad.controller;
 
 import com.example.samplesalad.model.service.UserService;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 import com.example.samplesalad.model.DAO.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;

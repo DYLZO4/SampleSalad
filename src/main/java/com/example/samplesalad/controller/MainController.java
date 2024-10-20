@@ -5,7 +5,7 @@ import com.example.samplesalad.model.DAO.KeyBindingDAO;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.DAO.UserDAO;
 import com.example.samplesalad.model.service.UserService;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.animation.FadeTransition;
@@ -46,13 +46,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Controller class for handling user interactions and scene transitions.
- * Implements {@link Initializable} to initialize UI components after they are loaded.
+ * Main controller for the application, handling user interactions, scene transitions,
+ * audio playback, and pad/sample management.  Implements `Initializable` to set
+ * up UI components and event handlers after the FXML file is loaded.
  */
 public class MainController implements Initializable {
 
@@ -115,7 +115,7 @@ public class MainController implements Initializable {
 
 
     /**
-     * Default constructor for the {@code HelloController} class.
+     * Initializes DAOs, services, controllers, UI properties, and the pattern object.
      */
     public MainController() {
         userDAO = new UserDAO();
@@ -130,11 +130,11 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Initializes the controller class. Sets up event handlers and transitions.
-     * This method is called after the FXML file has been loaded.
+     * Initializes the controller after the FXML file is loaded. Sets up key bindings, UI elements,
+     * event handlers, animations, and loads user-specific data if logged in.
      *
-     * @param url            The location used to resolve relative paths for the root object, or {@code null} if the location is not known.
-     * @param resourceBundle The resources used to localize the root object, or {@code null} if the root object is not localized.
+     * @param url            The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -311,6 +311,10 @@ public class MainController implements Initializable {
         gridPane.setOnKeyPressed(event -> handleKeyPress(event.getCode()));
     }
 
+    /**
+     * Starts recording a pattern after a delay determined by the metronome's BPM and pre-record beats.
+     * The delay allows the user to hear a few metronome clicks before recording begins.
+     */
     private void startRecordingWithMetronomeDelay() {
         int bpm = metroBPM.getValueFactory().getValue(); // Get BPM from your UI
         long delay = ((60000 / bpm) * preRecordBeats); // Calculate delay for pre-record beats
@@ -335,6 +339,12 @@ public class MainController implements Initializable {
 
     }
 
+    /**
+     * Converts a JSON string to a map of key bindings.
+     *
+     * @param jsonBindings The JSON string representing the key bindings.
+     * @return A map where keys are `KeyCode`s and values are `Pad` objects.
+     */
     private Map<KeyCode, Pad> convertJsonToKeyBindings(String jsonBindings) {
         Map<KeyCode, Pad> keyBindings = new HashMap<>();
         if (jsonBindings != null && !jsonBindings.isEmpty()) {
@@ -352,9 +362,10 @@ public class MainController implements Initializable {
 
 
     /**
-     * This is called when a user presses a key on their keyboard or other device.
-     * Plays sound and relevant effects associated with the assigned pad.
-     * @param keyCode The key/button pressed by the user
+     * Handles key presses for triggering pads in play mode.  Plays the assigned sample
+     * and applies a visual "glow" effect to the corresponding pad button.
+     *
+     * @param keyCode The key code of the pressed key.
      */
     private void handleKeyPress(KeyCode keyCode) {
         if (playSwitch.isSelected()) { // Only in play mode
@@ -374,9 +385,11 @@ public class MainController implements Initializable {
     }
 
     /**
-     * This is called when the user clicks the pad with their mouse.
-     * Plays sound associated with the pad and the relevant effects added to it.
-     * @param padButton The button which was clicked
+     * Handles pad button clicks.  In edit mode, selects the clicked pad and
+     * displays its properties.  In play mode, triggers the pad's sample and
+     * applies a visual glow effect.
+     *
+     * @param padButton The button that was clicked.
      */
     private void handlePadClick(Button padButton) {
         if (editSwitch.isSelected()) {
@@ -403,6 +416,14 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Applies a visual glow effect to the given pad button.  The glow effect is
+     * implemented using CSS classes and a `PauseTransition` to control the
+     * duration of the glow.
+     *
+     * @param padButton The button to apply the glow effect to.
+     * @param pad       The Pad object associated with the button (used to determine the correct glow color/class).
+     */
     private void applyGlowEffect(Button padButton, Pad pad) {
         // Apply the glow effect using the CSS class
         String glowClass = getGlowClassForPad(pad);
@@ -418,6 +439,13 @@ public class MainController implements Initializable {
         pause.play();
     }
 
+    /**
+     * Gets the appropriate CSS class name for the glow effect based on the
+     * row index of the pad button in the grid.
+     *
+     * @param pad The Pad object associated with the button.
+     * @return The CSS class name for the glow effect.
+     */
     private String getGlowClassForPad(Pad pad) {
         // Get the button associated with the pad
         Button padButton = getButtonFromPad(pad);
@@ -439,7 +467,12 @@ public class MainController implements Initializable {
         return ""; // Return no glow if the padButton is not found or rowIndex is null
     }
 
-
+    /**
+     * Retrieves the Button associated with a given Pad from the GridPane.
+     *
+     * @param pad The pad object whose button is needed.
+     * @return The Button associated with the Pad, or null if not found.
+     */
     private Button getButtonFromPad(Pad pad) {
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Button) {
@@ -454,9 +487,10 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Returns the {@code Pad} object based on which pad button the user has selected
-     * @param padButton The button which the user has selected
-     * @return {@code Pad} associated with the button
+     * Retrieves the Pad object corresponding to the clicked button in the grid pane.
+     *
+     * @param padButton The button that was clicked.
+     * @return The corresponding `Pad` object, or `null` if the button is not associated with a pad.
      */
     private Pad getPadFromButton(Button padButton) {
         int rowIndex = GridPane.getRowIndex(padButton);
@@ -467,9 +501,10 @@ public class MainController implements Initializable {
     }
 
     /**
-         * Handles the settings button click event. Loads settings page
-         * @param event The mouse event triggered by clicking the settings button
-         */
+     * Opens the settings page.
+     *
+     * @param event The mouse event triggered by clicking the settings button.
+     */
     @FXML
     private void openSettings(MouseEvent event){
         try {
@@ -553,10 +588,11 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Changes the settings applied to a particular pad after using the edit page.
-     * @throws UnsupportedAudioFileException if the audio format is unsupported.
-     * @throws LineUnavailableException if the system cannot open an audio line.
-     * @throws IOException if an I/O error occurs
+     * Applies changes made in the edit pane to the currently selected pad.
+     * Updates the pad's sample, BPM, and pitch.
+     * @throws UnsupportedAudioFileException If the audio file format is not supported.
+     * @throws LineUnavailableException If an audio line cannot be opened.
+     * @throws IOException If an I/O error occurs.
      */
     @FXML
     private void applyPadChanges() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -574,11 +610,11 @@ public class MainController implements Initializable {
 
 
     /**
-     * Opens the relevant popup when a user clicks the Edit Sample Length button.
-     * If no sample is selected, displays a warning message to select a sample before clicking the button.
-     * Provides new RangeSliderController with the current sample, the current pad and the current main controller.
-     * @param actionEvent The action event triggered by clicking the Edit Sample Length button
-     * @throws IOException if an I/O error occurs while opening the popup
+     * Opens the sample split editing popup, allowing the user to adjust the start and end times
+     * of the sample assigned to the selected pad.
+     *
+     * @param actionEvent The action event that triggers the popup.
+     * @throws IOException If there's an error loading the popup FXML file.
      */
     public void editSampleSplit(ActionEvent actionEvent) throws IOException {
         if(assignedSample.getValue() == null){
@@ -609,13 +645,21 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Sets the value for the assigned sample for the currently selected pad
-     * @param sample The new value for the {@code assignedSample} variable
+     * Sets the value of the assigned sample in the UI.
+     *
+     * @param sample The sample to assign.
      */
     public void setAssignedSampleValue(Sample sample){
         assignedSample.setValue(sample);
     }
 
+    /**
+     * Plays the audio associated with the given Pad. Handles loading the file and
+     * playing either the full sample or a specified segment.  Also adds a
+     * PadEvent to the current pattern if recording is active.
+     *
+     * @param pad The Pad whose audio should be played.
+     */
     private void playAudio(Pad pad){
         if (pad != null) {
             if (pad.getAudioClip() != null) {

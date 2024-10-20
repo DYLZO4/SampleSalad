@@ -29,37 +29,41 @@ class DrumKitTest {
         drumKit.addPad(sample1);
 
         // Verify that the pad was added correctly
-        assertEquals(17, drumKit.getPads().size(), "The pad count should be 1");
-        assertEquals(sample1, drumKit.getPad(16).getSample(), "The sample assigned to pad 0 should be sample1");
+        assertEquals(17, drumKit.getPads().size());
     }
+
+
 
     @Test
     void testGetPad_validPadNumber() {
-        // Add a pad with sample1 and sample2
+        // Add a pad with sample1
         drumKit.addPad(sample1);
-        drumKit.addPad(sample2);
 
-        // Verify that we can retrieve the pads
+        // Verify that we can retrieve the pad
         Pad pad1 = drumKit.getPad(16);
-        Pad pad2 = drumKit.getPad(17);
+        assertNotNull(pad1);
 
-        assertNotNull(pad1, "Pad 1 should not be null");
-        assertNotNull(pad2, "Pad 2 should not be null");
-        assertEquals(sample1, pad1.getSample(), "Pad 1 should have sample1 assigned");
-        assertEquals(sample2, pad2.getSample(), "Pad 2 should have sample2 assigned");
+    }
+    @Test
+    void testGetPad_validPadNumberSample() {
+        // Add a pad with sample1
+        drumKit.addPad(sample1);
+
+        // Verify that we can retrieve the pad
+        Pad pad1 = drumKit.getPad(16);
+
+        assertEquals(sample1, pad1.getSample());
     }
 
     @Test
     void testGetPad_invalidPadNumber() {
         // Try retrieving a pad from an invalid index
-        drumKit.addPad(sample1);
-
-        // Expect an exception when accessing an out-of-range pad
-        assertThrows(IllegalArgumentException.class, () -> drumKit.getPad(1000), "Accessing invalid pad number should throw IllegalArgumentException");
+        assertThrows(IllegalArgumentException.class, () -> drumKit.getPad(1000));
     }
 
+
     @Test
-    void testLoadKit() {
+    void testLoadKitPadSize() {
         // Create a list of samples
         List<Sample> samples = new ArrayList<>();
         samples.add(sample1);
@@ -69,21 +73,46 @@ class DrumKitTest {
         drumKit.loadKit(samples);
 
         // Verify that the samples were assigned to the pads correctly
-        assertEquals(18, drumKit.getPads().size(), "The drum kit should have 2 pads after loading the kit");
-        assertEquals(sample1, drumKit.getPad(16).getSample(), "Pad 0 should have sample1 assigned");
-        assertEquals(sample2, drumKit.getPad(17).getSample(), "Pad 1 should have sample2 assigned");
+        assertEquals(18, drumKit.getPads().size());
+
+    }
+    @Test
+    void testLoadKitPadSample1() {
+        // Create a list of samples
+        List<Sample> samples = new ArrayList<>();
+        samples.add(sample1);
+        samples.add(sample2);
+
+        // Load the samples into the drum kit
+        drumKit.loadKit(samples);
+
+
+        assertEquals(sample1, drumKit.getPad(16).getSample());
+
+    }
+    @Test
+    void testLoadKitPadSample2() {
+        // Create a list of samples
+        List<Sample> samples = new ArrayList<>();
+        samples.add(sample1);
+        samples.add(sample2);
+
+        // Load the samples into the drum kit
+        drumKit.loadKit(samples);
+
+        assertEquals(sample2, drumKit.getPad(17).getSample());
     }
 
     @Test
     void testGetKitName() {
         // Verify the kit name
-        assertEquals("Test Kit", drumKit.getKitName(), "The kit name should be 'Test Kit'");
+        assertEquals("Test Kit", drumKit.getKitName());
     }
 
     @Test
     void testSetKitName() {
         // Change the kit name and verify
         drumKit.setKitName("New Kit Name");
-        assertEquals("New Kit Name", drumKit.getKitName(), "The kit name should be 'New Kit Name'");
+        assertEquals("New Kit Name", drumKit.getKitName());
     }
 }

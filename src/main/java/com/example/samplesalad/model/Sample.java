@@ -1,7 +1,5 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.model.user.User;
-
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;

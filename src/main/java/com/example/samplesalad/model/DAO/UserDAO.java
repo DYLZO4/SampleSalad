@@ -1,7 +1,7 @@
 package com.example.samplesalad.model.DAO;
 
 import com.example.samplesalad.model.DatabaseConnection;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 import javafx.scene.input.KeyCode;
 
 import java.sql.*;

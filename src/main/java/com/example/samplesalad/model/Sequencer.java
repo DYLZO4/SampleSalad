@@ -1,7 +1,5 @@
 package com.example.samplesalad.model;
 
-import com.example.samplesalad.model.user.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +44,6 @@ public class Sequencer {
     public void playSequence() {
         if (patterns.isEmpty()) {
             System.out.println("No patterns to play.");
-            return;
         }
 
         isPlaying = true;

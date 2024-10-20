@@ -1,7 +1,7 @@
 package com.example.samplesalad.model.DAO;
 
 import com.example.samplesalad.model.MockDatabaseConnection;
-import com.example.samplesalad.model.user.User;
+import com.example.samplesalad.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
