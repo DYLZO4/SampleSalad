@@ -620,16 +620,16 @@ public class MainController implements Initializable {
         if(assignedSample.getValue() == null){
             warningMessage.setVisible(true);
         } else {
-            URL popupURL = getClass().getResource("/com/example/samplesalad/range-slider.fxml");
+            URL popupURL = getClass().getResource("/com/example/samplesalad/slice-audio-popup.fxml");
             if (popupURL == null) {
-                Logger.getLogger(LibraryController.class.getName()).log(Level.SEVERE, "FXML file not found: range-slider.fxml");
+                Logger.getLogger(LibraryController.class.getName()).log(Level.SEVERE, "FXML file not found: slice-audio-popup.fxml");
                 return;
             }
             Logger.getLogger(LibraryController.class.getName()).log(Level.INFO, "Loading FXML file: " + popupURL.toString());
             FXMLLoader popupLoader = new FXMLLoader(popupURL);
 
             Scene scene = popupLoader.load();
-            RangeSliderController controller = popupLoader.getController();
+            SliceAudioPopup controller = popupLoader.getController();
             controller.setMainController(this);
 
             controller.setCurrentSample(assignedSample.getValue());

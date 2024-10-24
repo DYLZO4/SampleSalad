@@ -1,6 +1,5 @@
 package com.example.samplesalad.controller;
 
-import com.example.samplesalad.model.AudioClip;
 import com.example.samplesalad.model.DAO.SampleDAO;
 import com.example.samplesalad.model.Pad;
 import com.example.samplesalad.model.Sample;
@@ -21,9 +20,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 /**
- * The RangeSliderController class is responsible for handling the popup that allows users to select which range of audio will be used when pressing a pad.
+ * The SliceAudioPopup class is responsible for handling the popup that allows users to select which range of audio will be used when pressing a pad.
  */
-public class RangeSliderController {
+public class SliceAudioPopup {
     public TextField newFileName;
     public ImageView playIcon;
     public ImageView pauseIcon;
@@ -77,7 +76,7 @@ public class RangeSliderController {
 
 
     /**
-     * Initialises the RangeSliderController class.
+     * Initialises the SliceAudioPopup class.
      * Sets up the UI and loads the associated audio clip with the pad.
      * @throws UnsupportedAudioFileException if the stored audio format is unsupported
      * @throws LineUnavailableException if the system cannot open the audio line.
