@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,8 +16,8 @@ class AudioClipTest {
 
     @BeforeEach
     void setUp() {
-        audioClipWav = new AudioClip("metronome.wav");
-        audioClipMp3 = new AudioClip("metronome.wav");
+        audioClipWav = new AudioClip("com/example/samplesalad/audio/metronome.wav");
+        audioClipMp3 = new AudioClip("com/example/samplesalad/audio/metronome.wav");
         audioClipInvalid = new AudioClip("C:/Users/delac/IdeaProjects/SampleSalad/README.md");
     }
 

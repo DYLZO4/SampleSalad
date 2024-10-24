@@ -26,7 +26,7 @@ public class Metronome {
      * Constructs a {@code Metronome} with the specified BPM and playing state.
      */
     public Metronome() {
-        this.metronomeAudioClip = new AudioClip("metronome.wav"); // Update path as needed.
+        this.metronomeAudioClip = new AudioClip("com/example/samplesalad/audio/metronome.wav"); // Update path as needed.
         this.isPlaying = false;
         this.metronomeScheduler = Executors.newScheduledThreadPool(10); // Create the scheduler
     }
